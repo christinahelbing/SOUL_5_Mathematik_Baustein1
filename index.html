@@ -48,7 +48,7 @@
   .levelup-overlay{position:fixed;inset:0;z-index:200;display:none;align-items:center;justify-content:center;
     background:radial-gradient(circle at center,rgba(0,0,0,.5) 0%, rgba(0,0,0,.85) 100%);pointer-events:none}
   .levelup-overlay.show{display:flex;animation:fade .3s ease}
-  .levelup-card{background:linear-gradient(135deg,var(--gold) 0%,#FFA000 100%);
+  .levelup-card{background:linear-gradient(135deg,var(--gold) 0%,#FFA000 100%);
     padding:2.5rem 3rem;border-radius:24px;text-align:center;color:#fff;
     box-shadow:0 20px 60px rgba(0,0,0,.5);animation:bounce-in .6s cubic-bezier(.34,1.56,.64,1)}
   .levelup-card .ico{font-size:4rem;line-height:1;margin-bottom:.4rem}
@@ -63,9 +63,9 @@
     padding:.7rem 1.2rem;display:flex;align-items:center;gap:1rem;
     box-shadow:0 2px 8px rgba(0,0,0,.18)}
   .brand{display:flex;align-items:center;gap:.6rem;font-weight:700;font-size:1.15rem}
-  .brand .logo{width:34px;height:34px;border-radius:50%;background:var(--gold);
-    display:flex;align-items:center;justify-content:center;color:var(--teal-dark);
-    font-weight:800;font-size:1.1rem;box-shadow:inset 0 -3px 0 rgba(0,0,0,.1)}
+  .brand .logo{width:38px;height:38px;border-radius:50%;background:#fff;
+    display:flex;align-items:center;justify-content:center;color:var(--teal);
+    font-weight:800;font-size:1.1rem;box-shadow:0 2px 6px rgba(0,0,0,.18);overflow:hidden}
   .nav{display:flex;gap:.3rem;flex-wrap:wrap;margin-left:auto}
   .nav button{padding:.5rem .9rem;border-radius:999px;color:#fff;font-weight:600;
     font-size:.95rem;opacity:.85}
@@ -338,7 +338,7 @@
 
   .bars{margin:.6rem 0}
   .bar-row{display:flex;align-items:center;gap:.6rem;margin:.45rem 0}
-  .bar-row .name{flex:0 0 160px;font-weight:600;font-size:.92rem;color:var(--dark)}
+  .bar-row .name{flex:0 0 160px;font-weight:600;font-size:.92rem;color:var(--dark)}
   .bar-row .bar{flex:1;height:14px;background:#ECEFF2;border-radius:99px;overflow:hidden;position:relative}
   .bar-row .bar i{display:block;height:100%;background:var(--teal);border-radius:99px;transition:.4s}
   .bar-row .pct{flex:0 0 50px;text-align:right;font-weight:700;font-size:.88rem;color:var(--teal-dark)}
@@ -514,7 +514,37 @@
 <!-- ============ TOP BAR ============ -->
 <div class="topbar" id="topbar">
   <div class="brand">
-    <div class="logo">5</div>
+    <div class="logo" id="brand-logo" title="SOUL · Selbstorganisiertes Umfeld zum Lernen" style="background:#fff;padding:3px;overflow:hidden">
+      <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block;color:var(--teal)">
+        <!-- Strahlen -->
+        <g stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none">
+          <line x1="30" y1="2" x2="30" y2="6"/>
+          <line x1="50" y1="9" x2="47" y2="12"/>
+          <line x1="10" y1="9" x2="13" y2="12"/>
+          <line x1="4" y1="22" x2="8" y2="23"/>
+          <line x1="56" y1="22" x2="52" y2="23"/>
+        </g>
+        <!-- Glühbirnen-Umriss -->
+        <path d="M30 5 C20 5 13 13 13 22 C13 28 17 33 22 36 L22 41 L38 41 L38 36 C43 33 47 28 47 22 C47 13 40 5 30 5 Z"
+              fill="currentColor" opacity="0.12"/>
+        <path d="M30 5 C20 5 13 13 13 22 C13 28 17 33 22 36 L22 41 L38 41 L38 36 C43 33 47 28 47 22 C47 13 40 5 30 5 Z"
+              fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/>
+        <!-- Sockel-Ringe -->
+        <line x1="22" y1="44" x2="38" y2="44" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="23" y1="48" x2="37" y2="48" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        <line x1="25" y1="52" x2="35" y2="52" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        <path d="M27 55 L33 55 L31 58 L29 58 Z" fill="currentColor"/>
+        <!-- Großes Zahnrad in der Mitte -->
+        <path d="M30 11 L32 14.5 L35.5 13.5 L35.5 17 L39 17.5 L37 20.5 L40 22.5 L37 24.5 L39 27.5 L35.5 28 L35.5 31.5 L32 30.5 L30 34 L28 30.5 L24.5 31.5 L24.5 28 L21 27.5 L23 24.5 L20 22.5 L23 20.5 L21 17.5 L24.5 17 L24.5 13.5 L28 14.5 Z"
+              fill="currentColor"/>
+        <circle cx="30" cy="22.5" r="3.5" fill="#fff"/>
+        <!-- Kleines zweites Zahnrad oben rechts -->
+        <g fill="currentColor">
+          <circle cx="40" cy="14" r="3.5"/>
+        </g>
+        <circle cx="40" cy="14" r="1.4" fill="#fff"/>
+      </svg>
+    </div>
     <div>Zahlen-Entdecker</div>
   </div>
   <div class="nav">
@@ -958,18 +988,18 @@ const KNOBEL = [
     a:"594", hint:"6 · 100 ist easy – dann den Unterschied korrigieren."},
   {id:"t3", cat:"tricks", title:"Distributiv-Trick",
     text:"Rechne mit Distributivgesetz: 13 · 99 = ?",
-    a:"1287", hint:"13 · 100 = 1 300. Wie viel musst du abziehen, weil 99 statt 100?"},
+    a:"1287", hint:"13 · 100 = 1 300. Wie viel musst du abziehen, weil 99 statt 100?"},
 
   /* === Riesen-Knobel (3) === */
   {id:"g1", cat:"giants", title:"Quersummen-Jäger",
     text:"Wie groß ist die größte fünfstellige Zahl, deren Quersumme genau 9 ist?",
     a:"90000", hint:"Größte fünfstellige Zahl → möglichst große Ziffern links. Aber die Quersumme darf nur 9 sein."},
   {id:"g2", cat:"giants", title:"Schritte zum Mond",
-    text:"Bis zum Mond sind es etwa 384 000 km. Ein Schritt eines Erwachsenen ≈ 60 cm. Wie viele Schritte wären das? (Antwort als ganze Zahl, auf Millionen gerundet, z. B. 640000000)",
-    a:"640000000", hint:"384 000 km = 38 400 000 000 cm. Geteilt durch 60 cm pro Schritt."},
+    text:"Bis zum Mond sind es etwa 384 000 km. Ein Schritt eines Erwachsenen ≈ 60 cm. Wie viele Schritte wären das? (Antwort als ganze Zahl, auf Millionen gerundet, z. B. 640000000)",
+    a:"640000000", hint:"384 000 km = 38 400 000 000 cm. Geteilt durch 60 cm pro Schritt."},
   {id:"g3", cat:"giants", title:"Sandkorn-Schätzung",
-    text:"Ein Eimer Sand enthält etwa 5 000 000 Sandkörner. Wie viele Körner sind in 200 Eimern?",
-    a:"1000000000", hint:"5 000 000 · 200. Trick: 5·2 und dann die Nullen zählen."},
+    text:"Ein Eimer Sand enthält etwa 5 000 000 Sandkörner. Wie viele Körner sind in 200 Eimern?",
+    a:"1000000000", hint:"5 000 000 · 200. Trick: 5·2 und dann die Nullen zählen."},
 ];
 /* ==== Level-System (stars-basiert) ==== */
 const LEVELS = [
@@ -1867,26 +1897,26 @@ function renderDiagnose(){
   /* Themen-Tag pro Aufgabe steuert die Empfehlungs-Auswertung am Ende */
   const DIAG = [
     /* Stellenwert (3) */
-    {topic:"swt", q:"Welche Ziffer steht in der Zahl 12 045 an der Tausenderstelle?", opts:["1","2","0","4"], a:1,
+    {topic:"swt", q:"Welche Ziffer steht in der Zahl 12 045 an der Tausenderstelle?", opts:["1","2","0","4"], a:1,
      hint:"Stellen von rechts: Einer, Zehner, Hunderter, Tausender. Die Tausenderstelle ist die 4. von rechts."},
-    {topic:"swt", q:"Welche Zahl ist „einhundertachttausendsiebzig“?", opts:["108 070","180 070","108 700","18 070"], a:0,
+    {topic:"swt", q:"Welche Zahl ist „einhundertachttausendsiebzig“?", opts:["108 070","180 070","108 700","18 070"], a:0,
      hint:"Lies in Dreierblöcken: erst die Tausender, dann der Rest. Pass auf die Nullen mittendrin auf."},
-    {topic:"swt", q:"Welchen Wert hat die 5 in 35 048?", opts:["5","50","500","5 000"], a:3,
+    {topic:"swt", q:"Welchen Wert hat die 5 in 35 048?", opts:["5","50","500","5 000"], a:3,
      hint:"Schau, wo die 5 steht – Tausender, Hunderter, Zehner oder Einer?"},
     /* Zahlenstrahl (2) */
     {topic:"zs", q:"Auf welcher Position liegt 350 ungefähr auf einem Zahlenstrahl von 0 bis 1000?", opts:["am Anfang (Nähe 0)","etwa beim ersten Drittel","in der Mitte","am Ende (Nähe 1000)"], a:1,
-     hint:"350 ist etwas mehr als ein Drittel von 1 000."},
-    {topic:"zs", q:"Skala 0–500, 5 Striche bis 500. Pfeil beim 2. Strich. Welche Zahl?", opts:["100","200","250","400"], a:1,
+     hint:"350 ist etwas mehr als ein Drittel von 1 000."},
+    {topic:"zs", q:"Skala 0–500, 5 Striche bis 500. Markierung beim 2. Strich. Welche Zahl?", opts:["100","200","250","400"], a:1,
      hint:"Wie viel ist 1 Strich wert? (500 geteilt durch 5)"},
     /* Vergleichen & Ordnen (2) */
-    {topic:"ordnen", q:"Setze das richtige Zeichen: 8 091 ☐ 8 109", opts:["<",">","=","keine Aussage"], a:0,
+    {topic:"ordnen", q:"Setze das richtige Zeichen: 8 091 ☐ 8 109", opts:["<",">","=","keine Aussage"], a:0,
      hint:"Tausender gleich, Hunderter gleich, dann Zehner: 9 vs. 0. Aber halt – ist die Zahl an der Zehnerstelle 9 oder 0? Vergleiche Stelle für Stelle von links."},
-    {topic:"ordnen", q:"Welche Zahl ist am größten?", opts:["3 421","3 241","3 412","3 124"], a:0,
+    {topic:"ordnen", q:"Welche Zahl ist am größten?", opts:["3 421","3 241","3 412","3 124"], a:0,
      hint:"Vergleiche Stelle für Stelle. Wenn vorne gleich, geh eine Stelle weiter."},
     /* Runden (2) */
-    {topic:"runden", q:"Runde 4 728 auf den nächsten Hunderter:", opts:["4 700","4 800","4 730","4 720"], a:0,
+    {topic:"runden", q:"Runde 4 728 auf den nächsten Hunderter:", opts:["4 700","4 800","4 730","4 720"], a:0,
      hint:"Hunderterstelle ist die 7. Rechts daneben ist die 2 → abrunden!"},
-    {topic:"runden", q:"Runde 9 950 auf Hunderter:", opts:["9 900","10 000","9 950","9 990"], a:1,
+    {topic:"runden", q:"Runde 9 950 auf Hunderter:", opts:["9 900","10 000","9 950","9 990"], a:1,
      hint:"Zehnerstelle prüfen. Achtung beim Aufrunden – springt der Hunderter über?"},
     /* Kopfrechnen / 1×1 (2) */
     {topic:"kopf", q:"Rechne im Kopf: 9 · 7 = ?", opts:["63","56","72","81"], a:0,
@@ -1988,6 +2018,14 @@ function renderDiagnose(){
     const stark   = topicQuotes.filter(t => t.quote === 1);
 
     let recommendHtml = "";
+    if(allRight){
+      recommendHtml += '<div style="background:linear-gradient(135deg,#F9C846,#FFA000);color:#fff;padding:1.1rem 1.2rem;border-radius:16px;margin:1rem 0;box-shadow:var(--shadow-lg)">'
+        + '<div style="font-size:.82rem;letter-spacing:.08em;text-transform:uppercase;font-weight:700;opacity:.95">🏆 Expertenstandard erreichbar!</div>'
+        + '<h3 style="color:#fff;margin:.35rem 0 .5rem">Volltreffer! Alle Aufgaben richtig.</h3>'
+        + '<p style="color:#fff;margin:.3rem 0;line-height:1.55">Bei dir sitzt das Klasse-4-Wissen sicher — herzlichen Glückwunsch! Damit du den <strong>Expertenstandard</strong> erreichst, machst du <strong>zusätzlich zu den 12 Pflichtstationen unbedingt auch die Wahlstationen</strong>. Dort warten die Schätz-Olympiade, Detektiv-Aufgaben, Magische Quadrate und ein erster Vorgeschmack auf Klasse-5-Inhalte (Rechengesetze und Primzahlen).</p>'
+        + '<p style="color:rgba(255,255,255,.96);margin:.4rem 0 0;font-size:.92rem">So holst du das Maximum aus diesem Baustein heraus.</p>'
+        + '</div>';
+    }
     if(wichtig.length){
       recommendHtml += `<p><strong>Diese Stationen sind für dich besonders wichtig:</strong></p><ul style="line-height:1.8">`;
       wichtig.forEach(t=>{
@@ -1995,14 +2033,16 @@ function renderDiagnose(){
         recommendHtml += `<li><strong>${info.name}</strong> – du hattest ${t.correct} von ${t.total} richtig. <a href="#" onclick="openStation('${info.stationId}');return false">Jetzt üben →</a></li>`;
       });
       recommendHtml += `</ul>`;
-    } else {
+    } else if(!allRight){
       recommendHtml += `<p>Super – kein Thema ist eine echte Baustelle! Du kannst in deinem Tempo durch die Stationen gehen.</p>`;
     }
     if(stark.length){
       recommendHtml += `<p style="margin-top:.8rem"><strong>Da bist du schon richtig stark:</strong> ${stark.map(t=>TOPIC_INFO[t.topic].name).join(", ")} – diese Stationen kannst du locker durchklicken.</p>`;
     }
 
+    const allRight = correct === DIAG.length;
     const note =
+      allRight ? "🌟 Wow, ALLES richtig! Das war absolut perfekt." :
       correct >= DIAG.length * 0.9 ? "Wow, fast alles richtig! Du startest in der Wahl-Spur." :
       correct >= DIAG.length * 0.7 ? "Solider Start. Schau dir die markierten Themen genau an." :
       correct >= DIAG.length * 0.4 ? "Kein Problem – wir trainieren jetzt gezielt deine Baustellen." :
@@ -2763,16 +2803,16 @@ window.STATION_RETRY_POOLS.detektiv = [
 
 /* Schätz-Olympiade: eigene Fermi-Aufgaben (keine generischen Sachaufgaben mehr) */
 window.STATION_RETRY_POOLS.fermi = [
-  {type:"mc", q:"Wie viele Sekunden vergehen, bis du langsam bis 100 zählst (etwa 1 Zahl pro Sekunde)?", opts:["~10","~100","~1 000","~10 000"], a:1, hint:"Eine Zahl pro Sekunde, insgesamt 100 Zahlen – wie viele Sekunden sind das ungefähr?"},
+  {type:"mc", q:"Wie viele Sekunden vergehen, bis du langsam bis 100 zählst (etwa 1 Zahl pro Sekunde)?", opts:["~10","~100","~1 000","~10 000"], a:1, hint:"Eine Zahl pro Sekunde, insgesamt 100 Zahlen – wie viele Sekunden sind das ungefähr?"},
   {type:"input", q:"Schätze: Wie viele Schultaschen passen nebeneinander an die Längsseite eines Klassenzimmers, wenn eine Tasche ungefähr 40 cm breit ist und die Wand 8 m lang ist?", a:"20", hint:"8 m sind 800 cm. Wie oft passt 40 cm in 800 cm?"},
-  {type:"mc", q:"Wie viele Sandkörner passen ungefähr in einen Esslöffel? (Ein Korn ist sehr klein.)", opts:["~100","~1 000","~10 000","~1 000 000"], a:2, hint:"Schätze in Größenordnungen: tausend, zehntausend oder Million?"},
+  {type:"mc", q:"Wie viele Sandkörner passen ungefähr in einen Esslöffel? (Ein Korn ist sehr klein.)", opts:["~100","~1 000","~10 000","~1 000 000"], a:2, hint:"Schätze in Größenordnungen: tausend, zehntausend oder Million?"},
   {type:"input", q:"Du brauchst etwa 10 Sekunden, um deine Schuhe zu binden. Wie viele Sekunden bindest du in einem Schuljahr mit 200 Schultagen deine Schuhe? (Annahme: 2× pro Schultag)", a:"4000", hint:"Pro Schultag: 2 mal Schuhe binden, jedes Mal 10 Sekunden. Multipliziere mit der Anzahl der Schultage."},
-  {type:"mc", q:"Wie viel Liter Wasser läuft ungefähr in 5 Minuten Duschen (etwa 10 Liter pro Minute)?", opts:["~5","~50","~500","~5 000"], a:1, hint:"10 Liter pro Minute mal 5 Minuten – das ist eine einfache Multiplikation."},
-  {type:"mc", q:"Ungefähr wie viele Wörter sprichst du an einem normalen Tag? (Annahme: rund 100 Wörter pro Minute, etwa 2,5 Stunden Redezeit insgesamt)", opts:["~150","~1 500","~15 000","~150 000"], a:2, hint:"100 Wörter pro Minute mal 60 Minuten ergibt einen Stundenwert. Dann mit den Stunden multiplizieren."},
+  {type:"mc", q:"Wie viel Liter Wasser läuft ungefähr in 5 Minuten Duschen (etwa 10 Liter pro Minute)?", opts:["~5","~50","~500","~5 000"], a:1, hint:"10 Liter pro Minute mal 5 Minuten – das ist eine einfache Multiplikation."},
+  {type:"mc", q:"Ungefähr wie viele Wörter sprichst du an einem normalen Tag? (Annahme: rund 100 Wörter pro Minute, etwa 2,5 Stunden Redezeit insgesamt)", opts:["~150","~1 500","~15 000","~150 000"], a:2, hint:"100 Wörter pro Minute mal 60 Minuten ergibt einen Stundenwert. Dann mit den Stunden multiplizieren."},
   {type:"input", q:"In eine Eimer passen ungefähr 100 Tennisbälle. Wie viele Tennisbälle passen in 25 Eimer?", a:"2500", hint:"100 Bälle pro Eimer mal 25 Eimer – Trick: 25 mit eingebauter 0, also 25·1 und 00 anhängen."},
-  {type:"mc", q:"Wenn deine Klasse mit 24 Kindern alle gleichzeitig 1-mal in die Hände klatscht, wie viele Klatscher passieren in einer ganzen Schulstunde, wenn jeder Schüler etwa alle 2 Minuten einmal klatscht (45 Minuten)?", opts:["~250","~540","~1 200","~5 400"], a:1, hint:"Pro 2 Minuten klatscht jeder einmal. In 45 Minuten klatscht jeder etwa 22 Mal. Multipliziere mit der Klassenstärke."},
+  {type:"mc", q:"Wenn deine Klasse mit 24 Kindern alle gleichzeitig 1-mal in die Hände klatscht, wie viele Klatscher passieren in einer ganzen Schulstunde, wenn jeder Schüler etwa alle 2 Minuten einmal klatscht (45 Minuten)?", opts:["~250","~540","~1 200","~5 400"], a:1, hint:"Pro 2 Minuten klatscht jeder einmal. In 45 Minuten klatscht jeder etwa 22 Mal. Multipliziere mit der Klassenstärke."},
   {type:"input", q:"Ein Bleistift ist neu etwa 18 cm lang. Du schreibst pro Tag etwa 1 mm Blei weg. Wie viele Tage hält ein Bleistift? (1 cm = 10 mm)", a:"180", hint:"18 cm sind 180 mm. Pro Tag 1 mm weg – wie viele Tage hält das?"},
-  {type:"mc", q:"Wie viele Salzkörner sind ungefähr in einem gestrichenen Esslöffel Salz?", opts:["~500","~5 000","~50 000","~500 000"], a:2, hint:"Salzkörner sind sehr klein. Schätze in Größenordnungen: einige Tausend oder eher Zehntausende?"}
+  {type:"mc", q:"Wie viele Salzkörner sind ungefähr in einem gestrichenen Esslöffel Salz?", opts:["~500","~5 000","~50 000","~500 000"], a:2, hint:"Salzkörner sind sehr klein. Schätze in Größenordnungen: einige Tausend oder eher Zehntausende?"}
 ];
 
 /* Magische Quadrate: eigene Aufgaben mit konkreten 3×3-Quadraten */
@@ -2822,7 +2862,7 @@ window.STATION_RETRY_POOLS["neu5-prim"] = [
   {type:"input", q:"Wie viele Primzahlen gibt es zwischen 1 und 20?", a:"8", hint:"Zähle die Primzahlen 2, 3, 5, 7, 11, 13, 17, 19. Wie viele sind das?"},
   {type:"mc", q:"Welche Primfaktorzerlegung gehört zu 24?", opts:["2 · 12","2 · 2 · 6","2 · 2 · 2 · 3","3 · 8"], a:2, hint:"In einer Primfaktorzerlegung dürfen nur Primzahlen vorkommen. 12, 6 und 8 sind keine Primzahlen."},
   {type:"input", q:"Zerlege 30 in Primfaktoren. Die kleinste Primzahl, die in der Zerlegung vorkommt?", a:"2", hint:"30 = 2 · 3 · 5. Welche dieser drei Zahlen ist die kleinste?"},
-  {type:"mc", q:"Ist 5 124 durch 4 teilbar?", opts:["Ja","Nein","Nur mit Rest","Geht nicht"], a:0, hint:"Schau nur die letzten zwei Ziffern an: 24. Ist 24 durch 4 teilbar?"},
+  {type:"mc", q:"Ist 5 124 durch 4 teilbar?", opts:["Ja","Nein","Nur mit Rest","Geht nicht"], a:0, hint:"Schau nur die letzten zwei Ziffern an: 24. Ist 24 durch 4 teilbar?"},
   {type:"mc", q:"Ist 132 durch 6 teilbar?", opts:["Ja","Nein","Nur mit Rest","Geht nicht"], a:0, hint:"Durch 6 teilbar heißt: durch 2 UND durch 3 teilbar. Prüfe beide Bedingungen."},
   {type:"input", q:"Wie viele Teiler hat 13?", a:"2", hint:"13 ist eine Primzahl. Wie viele Teiler hat jede Primzahl?"},
   {type:"mc", q:"Welche Zahl ist KEINE Primzahl?", opts:["19","23","27","29"], a:2, hint:"27 = 3 · 9. Das sind zwei zusätzliche Teiler – also keine Primzahl."}
@@ -3322,7 +3362,7 @@ window.STATION_CONTENT.riesen = function(host){
         Wenn du große Zahlen lesen und schätzen kannst, verstehst du die Welt ein Stück besser.</p>
       <div class="info-box">
         <strong>Trick zum Lesen großer Zahlen:</strong>
-        Lies die Zahl in Dreierblöcken von rechts. 2 580 137 = „zwei Millionen · fünfhundertachtzigtausend · einhundertsiebenunddreißig”.
+        Lies die Zahl in Dreierblöcken von rechts. 2 580 137 = „zwei Millionen · fünfhundertachtzigtausend · einhundertsiebenunddreißig”.
       </div>
       <p class="muted" style="margin-top:.6rem">
         💡 Wie die einzelnen Ziffern an ihre Plätze gehören, lernst du genau in der Station <strong>Stellenwerttafel</strong>. Hier geht es ums Schätzen und Vergleichen.
@@ -3335,32 +3375,32 @@ window.STATION_CONTENT.riesen = function(host){
       <div class="grid cols-3" style="margin-top:.5rem">
         <div class="card flat" style="text-align:center;margin:0">
           <div style="font-size:2rem">🌍</div>
-          <div style="font-weight:800;color:var(--teal-dark);font-size:1.1rem">~ 40 000 km</div>
+          <div style="font-weight:800;color:var(--teal-dark);font-size:1.1rem">~ 40 000 km</div>
           <div class="muted" style="font-size:.85rem">Erdumfang am Äquator</div>
         </div>
         <div class="card flat" style="text-align:center;margin:0">
           <div style="font-size:2rem">🌌</div>
-          <div style="font-weight:800;color:var(--teal-dark);font-size:1.1rem">~ 5 000</div>
+          <div style="font-weight:800;color:var(--teal-dark);font-size:1.1rem">~ 5 000</div>
           <div class="muted" style="font-size:.85rem">Sterne, die du mit bloßem Auge sehen kannst</div>
         </div>
         <div class="card flat" style="text-align:center;margin:0">
           <div style="font-size:2rem">🏔️</div>
-          <div style="font-weight:800;color:var(--teal-dark);font-size:1.1rem">~ 8 849 m</div>
+          <div style="font-weight:800;color:var(--teal-dark);font-size:1.1rem">~ 8 849 m</div>
           <div class="muted" style="font-size:.85rem">Höhe des Mount Everest</div>
         </div>
         <div class="card flat" style="text-align:center;margin:0">
           <div style="font-size:2rem">❤️</div>
-          <div style="font-weight:800;color:var(--teal-dark);font-size:1.1rem">~ 100 000</div>
+          <div style="font-weight:800;color:var(--teal-dark);font-size:1.1rem">~ 100 000</div>
           <div class="muted" style="font-size:.85rem">Herzschläge pro Tag</div>
         </div>
         <div class="card flat" style="text-align:center;margin:0">
           <div style="font-size:2rem">🐝</div>
-          <div style="font-weight:800;color:var(--teal-dark);font-size:1.1rem">~ 50 000</div>
+          <div style="font-weight:800;color:var(--teal-dark);font-size:1.1rem">~ 50 000</div>
           <div class="muted" style="font-size:.85rem">Bienen leben in einem Bienenstock</div>
         </div>
         <div class="card flat" style="text-align:center;margin:0">
           <div style="font-size:2rem">📚</div>
-          <div style="font-weight:800;color:var(--teal-dark);font-size:1.1rem">~ 800 000</div>
+          <div style="font-weight:800;color:var(--teal-dark);font-size:1.1rem">~ 800 000</div>
           <div class="muted" style="font-size:.85rem">Bücher in einer großen Stadtbibliothek</div>
         </div>
       </div>
@@ -3375,15 +3415,15 @@ window.STATION_CONTENT.riesen = function(host){
   const quizHost = document.createElement("div");
   host.appendChild(quizHost);
   makeMiniQuiz(quizHost, [
-    {type:"mc", q:"Wie viele Einwohner hat Sachsen ungefähr?", opts:["400 000","4 100 000","41 000 000","410 000"], a:1, hint:"Denk an die Größe deines Bundeslandes – wie viele Städte gibt es ungefähr? Sachsen ist eines der mittelgroßen deutschen Bundesländer."},
-    {type:"mc", q:"Wie heißt die Zahl 1 020 405 in Worten?", opts:["eine Million zwanzigtausendvierhundertfünf","eine Million zweitausendvierhundertfünf","eine Million zwanzigtausenddreihundertfünf","eine Million zweihunderttausendvierhundertfünf"], a:0, hint:"Lies in Dreierblöcken von rechts: erst die Million, dann die Tausender-Gruppe, dann der Rest."},
+    {type:"mc", q:"Wie viele Einwohner hat Sachsen ungefähr?", opts:["400 000","4 100 000","41 000 000","410 000"], a:1, hint:"Denk an die Größe deines Bundeslandes – wie viele Städte gibt es ungefähr? Sachsen ist eines der mittelgroßen deutschen Bundesländer."},
+    {type:"mc", q:"Wie heißt die Zahl 1 020 405 in Worten?", opts:["eine Million zwanzigtausendvierhundertfünf","eine Million zweitausendvierhundertfünf","eine Million zwanzigtausenddreihundertfünf","eine Million zweihunderttausendvierhundertfünf"], a:0, hint:"Lies in Dreierblöcken von rechts: erst die Million, dann die Tausender-Gruppe, dann der Rest."},
     {type:"input", q:"Wie schreibst du in Ziffern: „dreihundertzweitausendvierzig”?", a:"302040", hint:"Lies das Wort in Teilen: was sind die Tausender, was kommt danach? Achte besonders auf Stellen, wo eine 0 als Platzhalter steht."},
-    {type:"mc", q:"Welche Zahl ist größer?", opts:["999 999","1 000 000","Beide gleich","Kommt drauf an"], a:1, hint:"Schreib beide Zahlen untereinander und vergleiche Stelle für Stelle. Welche hat mehr Ziffern?"},
-    {type:"mc", q:"Welche Schätzung passt am besten: Wie viele Sekunden hat ein Tag?", opts:["etwa 1 500","etwa 3 600","etwa 86 000","etwa 1 Million"], a:2, hint:"1 Stunde hat 3 600 Sekunden. Ein Tag hat 24 Stunden. Schätze grob, welche Antwort am besten passt."},
-    {type:"mc", q:"Welche Schätzung passt am besten: Wie viele Stunden hat 1 Jahr?", opts:["etwa 600","etwa 2 000","etwa 8 800","etwa 100 000"], a:2, hint:"1 Tag hat 24 Stunden. Ein Jahr hat etwa 365 Tage. Schätze: 24·365 ist mehr als 1 000, aber weniger als 100 000."},
-    {type:"mc", q:"Wie viele Pixel hat ein Handy-Display ungefähr?", opts:["1 000 (eintausend)","1 000 000 (eine Million)","1 000 000 000 (eine Milliarde)","10"], a:1, hint:"Stell dir vor, der Bildschirm besteht aus winzigen farbigen Punkten. Schätze in Größenordnungen: tausend, Million oder Milliarde?"},
-    {type:"input", q:"Schätzung: 5 000 Schritte pro Tag. Wie viele in 100 Tagen?", a:"500000", hint:"Multiplizieren mit 100 – überlege, wie sich Zahlen verändern, wenn man sie mit einer „glatten“ Zahl wie 100 multipliziert."},
-    {type:"mc", q:"Welche dieser Zahlen ist größer als 1 Million?", opts:["999 999","1 000 001","100 000","99 999"], a:1, hint:"1 Million sind 1 000 000. Welche Option ist mehr?"},
+    {type:"mc", q:"Welche Zahl ist größer?", opts:["999 999","1 000 000","Beide gleich","Kommt drauf an"], a:1, hint:"Schreib beide Zahlen untereinander und vergleiche Stelle für Stelle. Welche hat mehr Ziffern?"},
+    {type:"mc", q:"Welche Schätzung passt am besten: Wie viele Sekunden hat ein Tag?", opts:["etwa 1 500","etwa 3 600","etwa 86 000","etwa 1 Million"], a:2, hint:"1 Stunde hat 3 600 Sekunden. Ein Tag hat 24 Stunden. Schätze grob, welche Antwort am besten passt."},
+    {type:"mc", q:"Welche Schätzung passt am besten: Wie viele Stunden hat 1 Jahr?", opts:["etwa 600","etwa 2 000","etwa 8 800","etwa 100 000"], a:2, hint:"1 Tag hat 24 Stunden. Ein Jahr hat etwa 365 Tage. Schätze: 24·365 ist mehr als 1 000, aber weniger als 100 000."},
+    {type:"mc", q:"Wie viele Pixel hat ein Handy-Display ungefähr?", opts:["1 000 (eintausend)","1 000 000 (eine Million)","1 000 000 000 (eine Milliarde)","10"], a:1, hint:"Stell dir vor, der Bildschirm besteht aus winzigen farbigen Punkten. Schätze in Größenordnungen: tausend, Million oder Milliarde?"},
+    {type:"input", q:"Schätzung: 5 000 Schritte pro Tag. Wie viele in 100 Tagen?", a:"500000", hint:"Multiplizieren mit 100 – überlege, wie sich Zahlen verändern, wenn man sie mit einer „glatten“ Zahl wie 100 multipliziert."},
+    {type:"mc", q:"Welche dieser Zahlen ist größer als 1 Million?", opts:["999 999","1 000 001","100 000","99 999"], a:1, hint:"1 Million sind 1 000 000. Welche Option ist mehr?"},
     {type:"input", q:"60 · 60 = ? (Sekunden pro Stunde)", a:"3600", hint:"Zerlege 60 in 6·10. Dann hast du 6·10·6·10 – wie kannst du das geschickt zusammenfassen?"}
   ], "riesen", "main");
 
@@ -3391,7 +3431,7 @@ window.STATION_CONTENT.riesen = function(host){
     <p class="muted">Hake ab, was du gemacht hast – dein Fortschritt wird gespeichert.</p></div>`);
   const ckHost = document.createElement("div"); ckHost.className="card";
   ckHost.appendChild(makeChecklist("riesen", [
-    "Ich habe die Erklärung gelesen und das Beispiel 305 048 verstanden.",
+    "Ich habe die Erklärung gelesen und das Beispiel 305 048 verstanden.",
     "Ich kann eine große Zahl in Dreierblöcken von rechts lesen.",
     "Ich kann eine Zahl in Worten in Ziffern schreiben und umgekehrt.",
     "Ich kann eine Riesenzahl der Größe nach schätzen, ohne sie genau zu kennen.",
@@ -3402,20 +3442,20 @@ window.STATION_CONTENT.riesen = function(host){
 /* === STATION SWT: Stellenwerttafel === */
 window.STATION_CONTENT.swt = function(host){
   const st = stationById("swt");
-  stationHeader(host, st, "Jede Ziffer hat ihren Platz. Lerne die Stellenwerttafel kennen und nutze sie für jede Zahl bis 1 000 000.");
+  stationHeader(host, st, "Jede Ziffer hat ihren Platz. Lerne die Stellenwerttafel kennen und nutze sie für jede Zahl bis 1 000 000.");
 
   host.insertAdjacentHTML("beforeend", `
     <div class="card">
       <span class="label">Wissen</span>
       <h3>Die Stellenwerttafel</h3>
       <p>Jede Ziffer in einer Zahl hat einen <strong>Wert</strong>, der von ihrer <strong>Stelle</strong> abhängt.
-        Die 7 in 4 728 ist nicht „eine Sieben” – sie steht für 700.</p>
+        Die 7 in 4 728 ist nicht „eine Sieben” – sie steht für 700.</p>
       <table class="swt">
         <thead><tr><th>Zahl</th><th>M</th><th>HT</th><th>ZT</th><th>T</th><th>H</th><th>Z</th><th>E</th></tr></thead>
         <tbody>
-          <tr><td class="label">4 728</td><td>·</td><td>·</td><td>·</td><td>4</td><td>7</td><td>2</td><td>8</td></tr>
-          <tr><td class="label">305 048</td><td>·</td><td>3</td><td class="zero">0</td><td>5</td><td class="zero">0</td><td>4</td><td>8</td></tr>
-          <tr><td class="label">1 020 405</td><td>1</td><td class="zero">0</td><td>2</td><td class="zero">0</td><td>4</td><td class="zero">0</td><td>5</td></tr>
+          <tr><td class="label">4 728</td><td>·</td><td>·</td><td>·</td><td>4</td><td>7</td><td>2</td><td>8</td></tr>
+          <tr><td class="label">305 048</td><td>·</td><td>3</td><td class="zero">0</td><td>5</td><td class="zero">0</td><td>4</td><td>8</td></tr>
+          <tr><td class="label">1 020 405</td><td>1</td><td class="zero">0</td><td>2</td><td class="zero">0</td><td>4</td><td class="zero">0</td><td>5</td></tr>
         </tbody>
       </table>
       <div class="info-box gold">
@@ -3444,20 +3484,20 @@ window.STATION_CONTENT.swt = function(host){
   `);
   const quizHost = document.createElement("div"); host.appendChild(quizHost);
   makeMiniQuiz(quizHost, [
-    {type:"mc", q:"Welche Ziffer steht in 42 087 an der Zehnerstelle?", opts:["4","2","8","0"], a:2, hint:"Stellen von rechts zählen: 1. = Einer, 2. = Zehner, 3. = Hunderter …"},
-    {type:"mc", q:"Welche Ziffer steht in 503 290 an der Zehntausenderstelle?", opts:["5","0","3","2"], a:1, hint:"Schreibe in eine Stellenwerttafel HT-ZT-T-H-Z-E und ordne die Ziffern zu."},
-    {type:"mc", q:"Welche Zahl ist „einhundertachttausendsiebzig”?", opts:["108 070","180 070","108 700","18 070"], a:0, hint:"Lies in Dreierblöcken: erst die Tausender, dann der Rest. Pass auf die Nullen mittendrin auf."},
+    {type:"mc", q:"Welche Ziffer steht in 42 087 an der Zehnerstelle?", opts:["4","2","8","0"], a:2, hint:"Stellen von rechts zählen: 1. = Einer, 2. = Zehner, 3. = Hunderter …"},
+    {type:"mc", q:"Welche Ziffer steht in 503 290 an der Zehntausenderstelle?", opts:["5","0","3","2"], a:1, hint:"Schreibe in eine Stellenwerttafel HT-ZT-T-H-Z-E und ordne die Ziffern zu."},
+    {type:"mc", q:"Welche Zahl ist „einhundertachttausendsiebzig”?", opts:["108 070","180 070","108 700","18 070"], a:0, hint:"Lies in Dreierblöcken: erst die Tausender, dann der Rest. Pass auf die Nullen mittendrin auf."},
     {type:"input", q:"Schreibe in Ziffern: „dreihundertzweitausendsechzig” (ohne Leerzeichen)", a:"302060", hint:"Schreibe zuerst die Tausender hin und überleg dann, welche Stellen noch fehlen (mit Nullen!)."},
     {type:"input", q:"Schreibe in Ziffern: „fünfhundertneuntausend” (ohne Leerzeichen)", a:"509000", hint:"Was bedeutet „tausend“? Erst die Tausender-Zahl, dann was kommt danach?"},
-    {type:"mc", q:"In 305 048 stehen zwei Nullen (an der Zehntausender- und an der Hunderterstelle). Was bedeuten diese Nullen?", opts:["nichts – sie sind nur Verzierung","Platzhalter, damit alle anderen Ziffern an ihrer richtigen Stelle stehen","Tippfehler","Geheimcode"], a:1, hint:"Was würde passieren, wenn du die Nullen einfach weglässt? Schreib die Zahl mal ohne sie auf – wird sie noch richtig gelesen?"},
+    {type:"mc", q:"In 305 048 stehen zwei Nullen (an der Zehntausender- und an der Hunderterstelle). Was bedeuten diese Nullen?", opts:["nichts – sie sind nur Verzierung","Platzhalter, damit alle anderen Ziffern an ihrer richtigen Stelle stehen","Tippfehler","Geheimcode"], a:1, hint:"Was würde passieren, wenn du die Nullen einfach weglässt? Schreib die Zahl mal ohne sie auf – wird sie noch richtig gelesen?"},
     {type:"mc", q:"Ist 0 eine natürliche Zahl?", opts:["Nein","Ja – die kleinste","Nur in Klasse 1","Nur bei Multiplikation"], a:1, hint:"Frag dich: Wo beginnt die Zahlenreihe in der Mathematik?"},
-    {type:"mc", q:"Welchen Wert hat die 7 in 7 425?", opts:["7","70","700","7 000"], a:3, hint:"An welcher Stelle steht die 7? Welche Stelle ist das von rechts gezählt?"},
-    {type:"mc", q:"Welchen Wert hat die 5 in 35 048?", opts:["5","50","500","5 000"], a:3, hint:"Die 5 steht an der Tausenderstelle."},
-    {type:"input", q:"Wie schreibst du „eine Million” in Ziffern? (ohne Leerzeichen)", a:"1000000", hint:"1 Million sind 1 000 · 1 000. Zähle die Nullen."},
+    {type:"mc", q:"Welchen Wert hat die 7 in 7 425?", opts:["7","70","700","7 000"], a:3, hint:"An welcher Stelle steht die 7? Welche Stelle ist das von rechts gezählt?"},
+    {type:"mc", q:"Welchen Wert hat die 5 in 35 048?", opts:["5","50","500","5 000"], a:3, hint:"Die 5 steht an der Tausenderstelle."},
+    {type:"input", q:"Wie schreibst du „eine Million” in Ziffern? (ohne Leerzeichen)", a:"1000000", hint:"1 Million sind 1 000 · 1 000. Zähle die Nullen."},
     {type:"input", q:"Welche Zahl hat 4 Hunderter, 7 Zehner und 3 Einer?", a:"473", hint:"Schreibe die drei Ziffern in der richtigen Reihenfolge: H Z E."},
     {type:"input", q:"Welche dreistellige Zahl hat 3 Hunderter, 0 Zehner und 5 Einer?", a:"305", hint:"Pass auf die 0 in der Mitte auf – sie ist wichtig!"},
-    {type:"input", q:"Schreibe in Ziffern: „siebenhunderttausend” (ohne Leerzeichen)", a:"700000", hint:"700 mal 1 000. Wie viele Nullen hängst du an?"},
-    {type:"mc", q:"In welcher Stelle steht die 9 in 290 510?", opts:["Einer","Zehntausender","Hunderttausender","Tausender"], a:1, hint:"Schreibe 290 510 in die Stellenwerttafel und suche die 9."},
+    {type:"input", q:"Schreibe in Ziffern: „siebenhunderttausend” (ohne Leerzeichen)", a:"700000", hint:"700 mal 1 000. Wie viele Nullen hängst du an?"},
+    {type:"mc", q:"In welcher Stelle steht die 9 in 290 510?", opts:["Einer","Zehntausender","Hunderttausender","Tausender"], a:1, hint:"Schreibe 290 510 in die Stellenwerttafel und suche die 9."},
     {type:"input", q:"Schreibe in Ziffern: „eine Million zwanzigtausend” (ohne Leerzeichen)", a:"1020000", hint:"Erst die Million, dann die Tausender. Wo brauchst du Nullen als Platzhalter?"}
   ], "swt", "main");
   host.insertAdjacentHTML("beforeend", `<div class="card"><h3>Deine Checkliste</h3></div>`);
@@ -3509,14 +3549,14 @@ window.STATION_CONTENT.zs = function(host){
       <p>Bevor du eine Zahl einträgst, schau auf die Skala:
         Wie viele Einheiten liegen zwischen zwei Strichen?</p>
       <div class="info-box">
-        Beispiel: Zahlenstrahl 0 bis 1 000. Auf der Strecke sind 10 Markierungen → eine Markierung ≙ 100.
+        Beispiel: Zahlenstrahl 0 bis 1 000. Auf der Strecke sind 10 Markierungen → eine Markierung ≙ 100.
       </div>
     </div>
     <div class="card">
       <h3>Beispiel: Wo liegt 350?</h3>
-      <svg viewBox="0 0 700 90" style="width:100%;max-width:680px">
+      <svg viewBox="0 0 700 90" style="width:100%;max-width:680px">
         <line x1="20" y1="50" x2="680" y2="50" stroke="#01566A" stroke-width="3"/>
-        <polygon points="680,50 670,44 670,56" fill="#01566A"/>
+        <polygon points="680,50 670,44 670,56" fill="#01566A"/>
         ${Array.from({length:11}).map((_,i)=>{
           const x = 20 + i*66;
           const label = i*100;
@@ -3550,7 +3590,7 @@ window.STATION_CONTENT.zs = function(host){
       <ol style="line-height:1.7">
         <li>Zeichne einen Zahlenstrahl von <strong>0 bis 30</strong>. Wähle 1 cm für den Abstand von 0 bis 2. Markiere die Zahlen <strong>5, 13, 19, 24</strong>.</li>
         <li>Zeichne einen Zahlenstrahl von <strong>100 bis 300</strong>. Wähle 1 cm für den Abstand von 100 bis 120. Markiere <strong>120, 150, 190, 240</strong>.</li>
-        <li>Zeichne einen Zahlenstrahl von <strong>0 bis 30 000</strong>. Wähle 1 cm für den Abstand von 0 bis 2 000. Markiere <strong>6 000, 11 000, 18 000, 24 000</strong>.</li>
+        <li>Zeichne einen Zahlenstrahl von <strong>0 bis 30 000</strong>. Wähle 1 cm für den Abstand von 0 bis 2 000. Markiere <strong>6 000, 11 000, 18 000, 24 000</strong>.</li>
       </ol>
       <div class="info-box" style="background:#fff;border-left:4px solid var(--teal);margin-top:.7rem">
         <strong>So gehst du vor:</strong> Erst entscheiden, wie lang dein Zahlenstrahl sein soll. Dann mit Lineal eine gerade Linie ziehen, am Anfang einen kleinen Punkt für 0 setzen, am Ende einen Pfeil. Trage die Zahlen mit kleinen Strichen ein.
@@ -3565,18 +3605,18 @@ window.STATION_CONTENT.zs = function(host){
     </div>`);
   const quizHost = document.createElement("div"); host.appendChild(quizHost);
   makeMiniQuiz(quizHost, [
-    {type:"mc", q:"Skala 0–1 000, 1 cm ≙ 100. Wo liegt 575?", opts:["bei 0,575 cm","bei 5,75 cm","bei 57,5 cm","bei 575 cm"], a:1, hint:"1 cm = 100. Wie viele cm sind 500? Und wie viel kommt für 75 dazu?"},
-    {type:"mc", q:"Welche Zahl liegt auf einem Zahlenstrahl 0–1 000 etwa in der Mitte?", opts:["100","250","500","999"], a:2, hint:"Halbiere die größte Zahl – das ist die Mitte."},
-    {type:"input", q:"Skala 0–500, 5 Striche bis 500. Pfeil beim 3. Strich. Welche Zahl?", a:"300", hint:"Wie viel ist 1 Strich wert? (500 : 5)"},
-    {type:"mc", q:"Welche Skala passt am besten zum Markieren von 18 000?", opts:["0–100","0–1 000","0–30 000","0–10 000 000"], a:2, hint:"Die Skala muss groß genug sein, dass 18 000 drauf passt, aber nicht so riesig, dass die Markierung unsichtbar ist."},
-    {type:"mc", q:"Was liegt direkt rechts von 999 auf dem Zahlenstrahl?", opts:["1 000","998","99","9 990"], a:0, hint:"Auf dem Zahlenstrahl wachsen die Zahlen nach rechts. Was kommt im Zählen nach 999?"},
-    {type:"input", q:"Auf einem Zahlenstrahl 0 bis 20 liegt der Pfeil genau zwischen 11 und 13. Welche Zahl ist markiert?", a:"12", hint:"Mitten zwischen zwei Zahlen liegt die Zahl, die zu beiden gleich weit entfernt ist."},
+    {type:"mc", q:"Skala 0–1 000, 1 cm ≙ 100. Wo liegt 575?", opts:["bei 0,575 cm","bei 5,75 cm","bei 57,5 cm","bei 575 cm"], a:1, hint:"1 cm = 100. Wie viele cm sind 500? Und wie viel kommt für 75 dazu?"},
+    {type:"mc", q:"Welche Zahl liegt auf einem Zahlenstrahl 0–1 000 etwa in der Mitte?", opts:["100","250","500","999"], a:2, hint:"Halbiere die größte Zahl – das ist die Mitte."},
+    {type:"input", q:"Skala 0–500, 5 Striche bis 500. Markierung beim 3. Strich. Welche Zahl?", a:"300", hint:"Wie viel ist 1 Strich wert? (500 : 5)"},
+    {type:"mc", q:"Welche Skala passt am besten zum Markieren von 18 000?", opts:["0–100","0–1 000","0–30 000","0–10 000 000"], a:2, hint:"Die Skala muss groß genug sein, dass 18 000 drauf passt, aber nicht so riesig, dass die Markierung unsichtbar ist."},
+    {type:"mc", q:"Was liegt direkt rechts von 999 auf dem Zahlenstrahl?", opts:["1 000","998","99","9 990"], a:0, hint:"Auf dem Zahlenstrahl wachsen die Zahlen nach rechts. Was kommt im Zählen nach 999?"},
+    {type:"input", q:"Auf einem Zahlenstrahl 0 bis 20 liegt die Markierung genau zwischen 11 und 13. Welche Zahl ist markiert?", a:"12", hint:"Mitten zwischen zwei Zahlen liegt die Zahl, die zu beiden gleich weit entfernt ist."},
     {type:"mc", q:"Auf einem Strahl 0–100 sind 10 Markierungen. Wofür steht eine Markierung?", opts:["1","5","10","100"], a:2, hint:"Teil 100 in 10 gleiche Stücke – wie groß ist ein Stück?"},
     {type:"input", q:"Skala 0–200, 1 cm ≙ 20. Bei wie viel cm liegt 140?", a:"7", hint:"Wie oft passt 20 in 140?"},
     {type:"mc", q:"Welche Zahl liegt näher an 100: 70 oder 130?", opts:["70","130","beide gleich nah","keine Aussage"], a:2, hint:"Rechne den Abstand zu 100 aus: 100−70 und 130−100. Welcher ist kleiner?"},
-    {type:"mc", q:"Zahlenstrahl 0 bis 1 000 000. Wo etwa liegt 500 000?", opts:["ganz links","in der Mitte","ganz rechts","gibt es nicht"], a:1, hint:"500 000 ist die Hälfte von 1 Million."},
-    {type:"input", q:"Skala 0–1 000, Markierungen alle 100. Beim 8. Strich – welche Zahl?", a:"800", hint:"Jeder Strich ist 100 wert."},
-    {type:"mc", q:"Welche Zahl liegt zwischen 6 480 und 6 490?", opts:["6 470","6 485","6 495","6 500"], a:1, hint:"„Zwischen“ heißt: größer als 6 480 UND kleiner als 6 490."}
+    {type:"mc", q:"Zahlenstrahl 0 bis 1 000 000. Wo etwa liegt 500 000?", opts:["ganz links","in der Mitte","ganz rechts","gibt es nicht"], a:1, hint:"500 000 ist die Hälfte von 1 Million."},
+    {type:"input", q:"Skala 0–1 000, Markierungen alle 100. Beim 8. Strich – welche Zahl?", a:"800", hint:"Jeder Strich ist 100 wert."},
+    {type:"mc", q:"Welche Zahl liegt zwischen 6 480 und 6 490?", opts:["6 470","6 485","6 495","6 500"], a:1, hint:"„Zwischen“ heißt: größer als 6 480 UND kleiner als 6 490."}
   ], "zs", "main");
   host.insertAdjacentHTML("beforeend", `<div class="card"><h3>Deine Checkliste</h3></div>`);
   const ckHost = document.createElement("div"); ckHost.className="card";
@@ -3603,8 +3643,8 @@ window.STATION_CONTENT.runden = function(host){
         <strong>0–4 → abrunden</strong> (Ziffer bleibt)<br>
         <strong>5–9 → aufrunden</strong> (Ziffer +1)
       </div>
-      <p><strong>Beispiel:</strong> 4 728 auf Hunderter runden.
-        Die 7 ist die Rundungsstelle, rechts steht eine 2 → abrunden → <strong>4 700</strong>.</p>
+      <p><strong>Beispiel:</strong> 4 728 auf Hunderter runden.
+        Die 7 ist die Rundungsstelle, rechts steht eine 2 → abrunden → <strong>4 700</strong>.</p>
     </div>
     <div class="card">
       <span class="label">Tipp</span>
@@ -3612,25 +3652,25 @@ window.STATION_CONTENT.runden = function(host){
       <p>Schätzen heißt: vor dem genauen Ausrechnen eine ungefähre Größe einplanen.
         Runde jede Zahl, addiere/multipliziere im Kopf.</p>
       <div class="info-box gold">
-        487 + 213 + 698 ≈ 500 + 200 + 700 = <strong>1 400</strong>. Genau wäre 1 398.
+        487 + 213 + 698 ≈ 500 + 200 + 700 = <strong>1 400</strong>. Genau wäre 1 398.
       </div>
     </div>
   `);
   const quizHost = document.createElement("div"); host.appendChild(quizHost);
   makeMiniQuiz(quizHost, [
-    {type:"mc", q:"Runde 1 749 auf Hunderter:", opts:["1 700","1 800","1 740","1 750"], a:0, hint:"Schau die Zehnerstelle an und denk an die 5er-Regel."},
-    {type:"input", q:"Runde 6 481 auf Tausender:", a:"6000", hint:"Hunderterstelle prüfen. 0–4 → ab, 5–9 → auf."},
-    {type:"input", q:"Runde 9 950 auf Hunderter:", a:"10000", hint:"Zehnerstelle ist 5 → aufrunden. Aus 99 Hundertern werden 100, also 10 000."},
-    {type:"input", q:"Runde 3 412 auf Tausender:", a:"3000", hint:"Welche Stelle entscheidet beim Runden auf Tausender?"},
-    {type:"input", q:"Runde 17 850 auf Tausender:", a:"18000", hint:"Hunderterstelle prüfen, dann 5er-Regel."},
+    {type:"mc", q:"Runde 1 749 auf Hunderter:", opts:["1 700","1 800","1 740","1 750"], a:0, hint:"Schau die Zehnerstelle an und denk an die 5er-Regel."},
+    {type:"input", q:"Runde 6 481 auf Tausender:", a:"6000", hint:"Hunderterstelle prüfen. 0–4 → ab, 5–9 → auf."},
+    {type:"input", q:"Runde 9 950 auf Hunderter:", a:"10000", hint:"Zehnerstelle ist 5 → aufrunden. Aus 99 Hundertern werden 100, also 10 000."},
+    {type:"input", q:"Runde 3 412 auf Tausender:", a:"3000", hint:"Welche Stelle entscheidet beim Runden auf Tausender?"},
+    {type:"input", q:"Runde 17 850 auf Tausender:", a:"18000", hint:"Hunderterstelle prüfen, dann 5er-Regel."},
     {type:"input", q:"Runde 86 auf Zehner:", a:"90", hint:"Einerstelle anschauen. Über 5 → auf, unter 5 → ab."},
     {type:"input", q:"Runde 131 auf Zehner:", a:"130", hint:"Einerstelle prüfen. Welche Regel passt?"},
-    {type:"input", q:"Runde 4 728 auf Hunderter:", a:"4700", hint:"Zehnerstelle anschauen – 5er-Regel anwenden."},
+    {type:"input", q:"Runde 4 728 auf Hunderter:", a:"4700", hint:"Zehnerstelle anschauen – 5er-Regel anwenden."},
     {type:"input", q:"Überschlag auf Hunderter: 487 + 213 ≈ ?", a:"700", hint:"Erst jede Zahl auf den nächsten Hunderter runden, dann im Kopf addieren."},
     {type:"input", q:"Überschlag auf Hunderter: 487 + 213 + 698 ≈", a:"1400", hint:"Erst runden (alle drei), dann zusammenrechnen."},
     {type:"mc", q:"Runde 248 auf Hunderter:", opts:["200","250","300","240"], a:0, hint:"Zehnerstelle prüfen → 5er-Regel."},
     {type:"mc", q:"Runde 651 auf Hunderter:", opts:["600","650","700","655"], a:2, hint:"Zehnerstelle prüfen → was sagt die 5er-Regel?"},
-    {type:"input", q:"Runde 24 499 auf Tausender:", a:"24000", hint:"Hunderterstelle prüfen."},
+    {type:"input", q:"Runde 24 499 auf Tausender:", a:"24000", hint:"Hunderterstelle prüfen."},
     {type:"input", q:"Runde 999 auf Hunderter:", a:"1000", hint:"Zehnerstelle ist 9 – die Regel sagt aufrunden. Was passiert dabei mit den Hundertern?"},
     {type:"mc", q:"Welche Zahl ist ungefähr 700?", opts:["638","748","712","712 und 748"], a:3, hint:"Runde jede Zahl in den Optionen auf Hunderter. Welche werden zu 700?"}
   ], "runden", "main");
@@ -3661,18 +3701,18 @@ window.STATION_CONTENT.ordnen = function(host){
     <div class="card">
       <span class="label">Beispiel</span>
       <h3>So vergleichst du Schritt für Schritt</h3>
-      <p>Wir vergleichen <strong>8 091</strong> und <strong>8 109</strong>:</p>
+      <p>Wir vergleichen <strong>8 091</strong> und <strong>8 109</strong>:</p>
       <table class="swt" style="max-width:480px">
         <thead><tr><th>Zahl</th><th>T</th><th>H</th><th>Z</th><th>E</th></tr></thead>
         <tbody>
-          <tr><td class="label">8 091</td><td>8</td><td>0</td><td style="background:#FFF1F1;color:var(--coral-dark)">9</td><td>1</td></tr>
-          <tr><td class="label">8 109</td><td>8</td><td>1</td><td style="background:#FFF1F1;color:var(--coral-dark)">0</td><td>9</td></tr>
+          <tr><td class="label">8 091</td><td>8</td><td>0</td><td style="background:#FFF1F1;color:var(--coral-dark)">9</td><td>1</td></tr>
+          <tr><td class="label">8 109</td><td>8</td><td>1</td><td style="background:#FFF1F1;color:var(--coral-dark)">0</td><td>9</td></tr>
         </tbody>
       </table>
       <ol style="line-height:1.7;margin-top:.5rem">
         <li>Tausender: 8 = 8 → gleich, weiter rechts schauen.</li>
-        <li>Hunderter: 0 &lt; 1 → STOP! Hier ist 8 109 schon größer.</li>
-        <li>Du musst gar nicht weiter schauen. Es gilt: <strong>8 091 &lt; 8 109</strong>.</li>
+        <li>Hunderter: 0 &lt; 1 → STOP! Hier ist 8 109 schon größer.</li>
+        <li>Du musst gar nicht weiter schauen. Es gilt: <strong>8 091 &lt; 8 109</strong>.</li>
       </ol>
     </div>
     <div class="card">
@@ -3680,8 +3720,8 @@ window.STATION_CONTENT.ordnen = function(host){
       <h3>🐊 Das Krokodil-Maul zeigt zur größeren Zahl</h3>
       <p>Stell dir das Zeichen <strong>&lt;</strong> oder <strong>&gt;</strong> als hungriges Krokodil-Maul vor. Es will immer die <strong>größere Zahl</strong> fressen – also zeigt das offene Maul dorthin.</p>
       <div class="croc-wrap">
-        <div class="croc-num">8 091</div>
-        <svg viewBox="0 0 120 80" style="width:120px;height:80px" aria-label="Krokodil-Maul zeigt nach rechts">
+        <div class="croc-num">8 091</div>
+        <svg viewBox="0 0 120 80" style="width:120px;height:80px" aria-label="Krokodil-Maul zeigt nach rechts">
           <!-- Krokodil-Auge oben -->
           <circle cx="35" cy="14" r="6" fill="#84B59F"/>
           <circle cx="35" cy="14" r="2.5" fill="#1a3d2a"/>
@@ -3697,15 +3737,15 @@ window.STATION_CONTENT.ordnen = function(host){
           <circle cx="20" cy="42" r="2" fill="#2d5d4a" opacity=".5"/>
           <circle cx="14" cy="38" r="1.5" fill="#2d5d4a" opacity=".5"/>
         </svg>
-        <div class="croc-num">8 109</div>
+        <div class="croc-num">8 109</div>
       </div>
-      <p style="text-align:center;font-weight:700;color:var(--coral-dark);font-size:1.1rem">8 091 &lt; 8 109 – das Maul zeigt zur 8 109, weil die größer ist!</p>
+      <p style="text-align:center;font-weight:700;color:var(--coral-dark);font-size:1.1rem">8 091 &lt; 8 109 – das Maul zeigt zur 8 109, weil die größer ist!</p>
     </div>
     <div class="card">
       <span class="label">Trick</span>
       <h3>Verschieden lange Zahlen</h3>
       <p>Bei natürlichen Zahlen gilt: <strong>mehr Stellen = größere Zahl</strong>
-        (führende Nullen zählen nicht). 99 999 hat 5 Stellen, 100 000 hat 6 – also 99 999 &lt; 100 000.</p>
+        (führende Nullen zählen nicht). 99 999 hat 5 Stellen, 100 000 hat 6 – also 99 999 &lt; 100 000.</p>
     </div>
     <div class="card">
       <span class="label">🎯 Übung: Sortieren</span>
@@ -3719,18 +3759,18 @@ window.STATION_CONTENT.ordnen = function(host){
   
   const quizHost = document.createElement("div"); host.appendChild(quizHost);
   makeMiniQuiz(quizHost, [
-    {type:"mc", q:"Welches Zeichen passt: 7 080 ☐ 7 008?", opts:["<",">","="," keins"], a:1, hint:"Vergleiche Stelle für Stelle von links. Wo unterscheiden sich die Zahlen zum ersten Mal?"},
-    {type:"mc", q:"Welche Aussage stimmt?", opts:["99 999 > 100 000","99 999 = 100 000","99 999 < 100 000","Nicht vergleichbar"], a:2, hint:"Zähle die Stellen jeder Zahl. Mehr Stellen = größere Zahl."},
-    {type:"mc", q:"Welche Zahl ist am größten?", opts:["3 421","3 241","3 412","3 124"], a:0, hint:"Tausender gleich. Hunderter: 4, 2, 4, 1. Bei 4 weiter: Zehner 2 vs. 1. Höhere gewinnt."},
-    {type:"input", q:"Sortiere klein → groß: 4 825, 4 285, 4 528, 4 852, 4 258. Die kleinste?", a:"4258", hint:"Tausender sind alle 4. Schau die Hunderter an – wo ist die kleinste?"},
-    {type:"input", q:"Sortiere klein → groß: 4 825, 4 285, 4 528, 4 852, 4 258. Die größte?", a:"4852", hint:"Tausender sind alle 4. Bei welcher Zahl ist der Hunderter am größten?"},
-    {type:"input", q:"Welche Zahl ist genau 1 mehr als 9 999?", a:"10000", hint:"Was passiert beim Zählen, wenn alle Stellen 9 sind und du noch eins draufpackst?"},
-    {type:"input", q:"Welche Zahl ist genau 1 weniger als 1 000 000?", a:"999999", hint:"Eine Million minus 1 – wie viele Neunen kommen raus?"},
-    {type:"mc", q:"Welches Zeichen passt: 23 400 ☐ 23 040?", opts:["<",">","="," keins"], a:1, hint:"Stelle für Stelle von links: wo unterscheidet sich was?"},
-    {type:"mc", q:"Welche Zahl ist am kleinsten?", opts:["12 050","12 005","12 500","12 055"], a:1, hint:"Vergleiche Stelle für Stelle von links – die kleinste hat dort die niedrigste Ziffer."},
+    {type:"mc", q:"Welches Zeichen passt: 7 080 ☐ 7 008?", opts:["<",">","="," keins"], a:1, hint:"Vergleiche Stelle für Stelle von links. Wo unterscheiden sich die Zahlen zum ersten Mal?"},
+    {type:"mc", q:"Welche Aussage stimmt?", opts:["99 999 > 100 000","99 999 = 100 000","99 999 < 100 000","Nicht vergleichbar"], a:2, hint:"Zähle die Stellen jeder Zahl. Mehr Stellen = größere Zahl."},
+    {type:"mc", q:"Welche Zahl ist am größten?", opts:["3 421","3 241","3 412","3 124"], a:0, hint:"Tausender gleich. Hunderter: 4, 2, 4, 1. Bei 4 weiter: Zehner 2 vs. 1. Höhere gewinnt."},
+    {type:"input", q:"Sortiere klein → groß: 4 825, 4 285, 4 528, 4 852, 4 258. Die kleinste?", a:"4258", hint:"Tausender sind alle 4. Schau die Hunderter an – wo ist die kleinste?"},
+    {type:"input", q:"Sortiere klein → groß: 4 825, 4 285, 4 528, 4 852, 4 258. Die größte?", a:"4852", hint:"Tausender sind alle 4. Bei welcher Zahl ist der Hunderter am größten?"},
+    {type:"input", q:"Welche Zahl ist genau 1 mehr als 9 999?", a:"10000", hint:"Was passiert beim Zählen, wenn alle Stellen 9 sind und du noch eins draufpackst?"},
+    {type:"input", q:"Welche Zahl ist genau 1 weniger als 1 000 000?", a:"999999", hint:"Eine Million minus 1 – wie viele Neunen kommen raus?"},
+    {type:"mc", q:"Welches Zeichen passt: 23 400 ☐ 23 040?", opts:["<",">","="," keins"], a:1, hint:"Stelle für Stelle von links: wo unterscheidet sich was?"},
+    {type:"mc", q:"Welche Zahl ist am kleinsten?", opts:["12 050","12 005","12 500","12 055"], a:1, hint:"Vergleiche Stelle für Stelle von links – die kleinste hat dort die niedrigste Ziffer."},
     {type:"input", q:"Welche Zahl liegt genau zwischen 200 und 400?", a:"300", hint:"Mitten zwischen zwei Zahlen – addiere sie und teile durch 2."},
     {type:"mc", q:"Was ist größer: 5 · 100 oder 502?", opts:["5 · 100","502","beide gleich","keine Aussage"], a:1, hint:"Rechne zuerst 5 · 100 aus, dann vergleichen."},
-    {type:"input", q:"Sortiere: 999, 1 000, 998. Die mittlere Zahl?", a:"999", hint:"Welche Zahl ist nicht die kleinste und nicht die größte?"}
+    {type:"input", q:"Sortiere: 999, 1 000, 998. Die mittlere Zahl?", a:"999", hint:"Welche Zahl ist nicht die kleinste und nicht die größte?"}
   ], "ordnen", "main");
   host.insertAdjacentHTML("beforeend", `<div class="card"><h3>Deine Checkliste</h3></div>`);
   const ckHost = document.createElement("div"); ckHost.className="card";
@@ -3747,14 +3787,14 @@ window.STATION_CONTENT.ordnen = function(host){
 /* === STATION KOPF: Kopfrechen-Werkstatt === */
 window.STATION_CONTENT.kopf = function(host){
   const st = stationById("kopf");
-  stationHeader(host, st, "Plus, Minus und Mal müssen sitzen. Hier festigst du das kleine 1×1 und Kopfrechnungen bis 1 000.");
+  stationHeader(host, st, "Plus, Minus und Mal müssen sitzen. Hier festigst du das kleine 1×1 und Kopfrechnungen bis 1 000.");
   host.insertAdjacentHTML("beforeend", `
     <div class="card">
       <span class="label">Wissen</span>
       <h3>Was muss sicher sitzen?</h3>
       <ul style="line-height:1.8">
         <li>Das kleine 1×1 (1·1 bis 10·10) – auswendig!</li>
-        <li>Plus und Minus im Zahlraum bis 1 000 ohne Stocken.</li>
+        <li>Plus und Minus im Zahlraum bis 1 000 ohne Stocken.</li>
         <li>Umkehraufgaben: zu jeder Mal-Aufgabe gibt es eine Geteilt-Aufgabe.</li>
       </ul>
     </div>
@@ -3799,7 +3839,7 @@ window.STATION_CONTENT.kopf = function(host){
   const ckHost = document.createElement("div"); ckHost.className="card";
   ckHost.appendChild(makeChecklist("kopf", [
     "Ich kann das kleine 1×1 sicher im Kopf.",
-    "Ich rechne Plus und Minus im Zahlraum bis 1 000 ohne Stocken.",
+    "Ich rechne Plus und Minus im Zahlraum bis 1 000 ohne Stocken.",
     "Ich kenne zu jeder Mal-Aufgabe die Umkehr-Aufgabe.",
     "Ich nutze das Tagestraining mindestens 1× pro Woche für Schnellrechnen.",
   ]));
@@ -3987,13 +4027,13 @@ window.STATION_CONTENT.schriftl = function(host){
     {type:"input", q:"478 + 365 = ?", a:"843", hint:"Untereinander schreiben (Einer unter Einer). Übertrag bei Bedarf merken."},
     {type:"input", q:"912 − 287 = ?", a:"625", hint:"Schriftlich abziehen. Bei Bedarf borgen."},
     {type:"input", q:"325 + 168 = ?", a:"493", hint:"Schriftlich untereinander: Einer + Einer (Übertrag merken), Zehner + Zehner (+ Übertrag), Hunderter + Hunderter."},
-    {type:"input", q:"1 234 + 567 = ?", a:"1801", hint:"Achte auf die Tausenderstelle der ersten Zahl."},
+    {type:"input", q:"1 234 + 567 = ?", a:"1801", hint:"Achte auf die Tausenderstelle der ersten Zahl."},
     {type:"input", q:"24 · 6 = ?", a:"144", hint:"Erst die Einerstelle (4·6) mit Übertrag, dann die Zehnerstelle (2·6) plus Übertrag."},
     {type:"input", q:"58 · 7 = ?", a:"406", hint:"Erst 8·7 mit Übertrag, dann 5·7 plus Übertrag."},
     {type:"input", q:"123 · 4 = ?", a:"492", hint:"Schriftlich: Einer mal 4, Übertrag, Zehner mal 4 plus Übertrag, Hunderter mal 4."},
     {type:"input", q:"237 · 5 = ?", a:"1185", hint:"Einer, Zehner, Hunderter – Schritt für Schritt mal 5, jeweils mit Übertrag."},
     {type:"input", q:"800 − 247 = ?", a:"553", hint:"Trick: 800−200=600 ist easy. Was bleibt dann noch abzuziehen?"},
-    {type:"input", q:"1 005 − 326 = ?", a:"679", hint:"Trick: Erst 1000−326, dann die 5 wieder dazu."},
+    {type:"input", q:"1 005 − 326 = ?", a:"679", hint:"Trick: Erst 1000−326, dann die 5 wieder dazu."},
     {type:"input", q:"45 + 67 + 89 = ?", a:"201", hint:"Erst zwei Zahlen addieren, dann die dritte dazu."},
     {type:"input", q:"345 + 678 = ?", a:"1023", hint:"Schriftlich untereinander, mit Überträgen."},
     {type:"input", q:"99 · 6 = ?", a:"594", hint:"Trick: 100·6 ist easy – wie viel musst du danach abziehen?"},
@@ -4021,7 +4061,7 @@ window.STATION_CONTENT.geschickt = function(host){
       <h3>Reihenfolge tauschen</h3>
       <p>Bei <strong>Plus</strong> und <strong>Mal</strong> darfst du die Reihenfolge frei wählen.
         Tausche so, dass es im Kopf leicht geht.</p>
-      <div class="info-box">25 · 17 · 4 = 25 · 4 · 17 = <strong>100 · 17 = 1 700</strong></div>
+      <div class="info-box">25 · 17 · 4 = 25 · 4 · 17 = <strong>100 · 17 = 1 700</strong></div>
     </div>
     <div class="card">
       <span class="label">Trick</span>
@@ -4141,7 +4181,7 @@ window.STATION_CONTENT.teil = function(host){
     {type:"mc", q:"Welche Zahl ist NICHT durch 5 teilbar?", opts:["40","65","73","100"], a:2, hint:"Welche Endung haben durch-5-Zahlen? Welche der Optionen passt da NICHT?"},
     {type:"input", q:"Wie viele Teiler hat 6?", a:"4", hint:"Schreibe alle Zahlen auf, die 6 ohne Rest teilen."},
     {type:"input", q:"Wie viele Teiler hat 7?", a:"2", hint:"7 ist eine Primzahl – wie viele Teiler hat eine Primzahl immer?"},
-    {type:"mc", q:"Ist 1 234 567 890 durch 5 teilbar?", opts:["Ja","Nein","Vielleicht","Zu groß zum Prüfen"], a:0, hint:"Nur die letzte Ziffer entscheidet bei der 5er-Regel."},
+    {type:"mc", q:"Ist 1 234 567 890 durch 5 teilbar?", opts:["Ja","Nein","Vielleicht","Zu groß zum Prüfen"], a:0, hint:"Nur die letzte Ziffer entscheidet bei der 5er-Regel."},
     {type:"input", q:"Welche Zahl von 11, 12, 13, 14, 15 ist durch 3 teilbar? (Es gibt mehrere – eine reicht.)", a:"12|15", hint:"Bilde von jeder die Quersumme und schau, welche durch 3 teilbar sind. Tipp: Es gibt sogar mehr als eine!"},
     {type:"mc", q:"Was bedeutet: „a ist Teiler von b”?", opts:["a · b = 0","b : a geht ohne Rest","a < b","a ist gerade"], a:1, hint:"Was muss bei der Division b : a herauskommen, damit a Teiler von b heißt?"}
   ], "teil", "main");
@@ -4217,7 +4257,7 @@ window.STATION_CONTENT.projekt = function(host){
     {type:"input", q:"Im Restaurant kostet eine Pizza 8 €. Wie viel Euro kosten 5 solche Pizzen zusammen?", a:"40", hint:"5 mal den Preis einer Pizza."},
     {type:"input", q:"Lara isst jeden Tag 3 Bonbons. Wie viele Bonbons isst sie in einer ganzen Woche?", a:"21", hint:"Eine Woche hat 7 Tage. 3 Bonbons mal 7 Tage."},
     {type:"input", q:"In Mias Klasse sind 28 Kinder. Davon sind 14 Kinder Mädchen. Wie viele Jungen sind in der Klasse?", a:"14", hint:"28 Kinder insgesamt, davon die Mädchen abziehen."},
-    {type:"input", q:"Ein Schwimmbecken fasst 1 000 Liter Wasser. Wie viele Eimer mit je 10 Litern muss man hineinkippen, damit es voll ist?", a:"100", hint:"1 000 Liter geteilt durch 10 Liter pro Eimer."}
+    {type:"input", q:"Ein Schwimmbecken fasst 1 000 Liter Wasser. Wie viele Eimer mit je 10 Litern muss man hineinkippen, damit es voll ist?", a:"100", hint:"1 000 Liter geteilt durch 10 Liter pro Eimer."}
   ], "projekt", "main");
   host.insertAdjacentHTML("beforeend", `<div class="card"><h3>Deine Checkliste</h3></div>`);
   const ckHost = document.createElement("div"); ckHost.className="card";
@@ -4252,7 +4292,7 @@ window.STATION_CONTENT["neu5-rg"] = function(host){
       <span class="label">Gesetz 1</span>
       <h3>Kommutativgesetz – „Tauschen ist erlaubt”</h3>
       <p>Bei Plus und Mal darfst du die Reihenfolge ändern.</p>
-      <div class="info-box">25 · 17 · 4 = 25 · 4 · 17 = 100 · 17 = <strong>1 700</strong></div>
+      <div class="info-box">25 · 17 · 4 = 25 · 4 · 17 = 100 · 17 = <strong>1 700</strong></div>
     </div>
     <div class="card">
       <span class="label">Gesetz 2</span>
@@ -4318,7 +4358,7 @@ window.STATION_CONTENT["neu5-prim"] = function(host){
       <h3>Neue Teilbarkeitsregeln</h3>
       <ul style="line-height:1.8">
         <li><strong>Durch 4:</strong> die letzten zwei Ziffern bilden eine Zahl, die durch 4 teilbar ist.<br>
-          (z. B. 3 612 → 12 ist durch 4 teilbar → ja)</li>
+          (z. B. 3 612 → 12 ist durch 4 teilbar → ja)</li>
         <li><strong>Durch 6:</strong> die Zahl ist durch 2 UND durch 3 teilbar.<br>
           (z. B. 18 → gerade ✓ und Quersumme 9 ✓ → ja)</li>
       </ul>
@@ -4330,7 +4370,7 @@ window.STATION_CONTENT["neu5-prim"] = function(host){
     {type:"mc", q:"Welche Primfaktorzerlegung gehört zu 18?", opts:["2 · 9","2 · 3 · 3","3 · 6","2 · 2 · 4"], a:1, hint:"Eine Primfaktorzerlegung darf NUR Primzahlen enthalten. 9 ist keine Primzahl."},
     {type:"input", q:"20 = 2 · 2 · ___?", a:"5", hint:"Welche Primzahl mal 4 ist 20?"},
     {type:"mc", q:"Wann ist eine Zahl durch 6 teilbar?", opts:["Wenn sie gerade ist","Wenn die Quersumme 6 ist","Wenn sie durch 2 und durch 3 teilbar ist","Wenn sie mit 6 endet"], a:2, hint:"6 = 2 · 3. Welche beiden Bedingungen muss eine Zahl erfüllen?"},
-    {type:"mc", q:"Ist 3 612 durch 4 teilbar?", opts:["Ja","Nein","Nur mit Rest","Mit Komma"], a:0, hint:"Schau nur die letzten zwei Ziffern an. Sind sie durch 4 teilbar?"},
+    {type:"mc", q:"Ist 3 612 durch 4 teilbar?", opts:["Ja","Nein","Nur mit Rest","Mit Komma"], a:0, hint:"Schau nur die letzten zwei Ziffern an. Sind sie durch 4 teilbar?"},
     {type:"input", q:"Wie viele Teiler hat 7?", a:"2", hint:"Primzahl: nur 1 und 7."},
     {type:"input", q:"Wie viele Primzahlen gibt es unter 20?", a:"8", hint:"Schreibe die Primzahlen 2, 3, 5, 7, 11, 13, 17, 19 auf und zähle."},
     {type:"mc", q:"Ist 36 durch 6 teilbar?", opts:["Ja","Nein","Nur mit Rest","Vielleicht"], a:0, hint:"Prüfe: ist 36 gerade? Ist die Quersumme durch 3 teilbar?"}
@@ -4364,28 +4404,28 @@ window.STATION_CONTENT.fermi = function(host){
     <div class="card">
       <h3>Beispiel: Wie viele Schritte machst du pro Jahr?</h3>
       <div class="info-box">
-        Annahme: 5 000 Schritte/Tag (Schule + Spielen) · 365 Tage<br>
-        ≈ 5 000 · 365 ≈ 5 000 · 400 = 2 000 000 → ungefähr <strong>1,8 Millionen Schritte</strong>.
+        Annahme: 5 000 Schritte/Tag (Schule + Spielen) · 365 Tage<br>
+        ≈ 5 000 · 365 ≈ 5 000 · 400 = 2 000 000 → ungefähr <strong>1,8 Millionen Schritte</strong>.
       </div>
     </div>
   `);
   const quizHost = document.createElement("div"); host.appendChild(quizHost);
   makeMiniQuiz(quizHost, [
-    {type:"mc", q:"Wie viele Atemzüge macht ein Mensch ungefähr an einem ganzen Tag?", opts:["~5 000","~10 000","~23 000","~100 000"], a:2, hint:"Etwa 16 Atemzüge pro Minute. Überlege, wie viele Minuten ein ganzer Tag hat – dann eine grobe Größenordnung wählen."},
-    {type:"mc", q:"Dein Herz schlägt ungefähr 70 Mal pro Minute. Wie oft schlägt es ungefähr in einer Stunde?", opts:["~700","~4 200","~42 000","~100 000"], a:1, hint:"Eine Stunde hat 60 Minuten. Schätze grob: 70 mal 60 – das liegt bei etwa 4 000."},
-    {type:"input", q:"Schätze: Wie viele Schritte brauchst du für 1 km, wenn ein Schritt etwa 50 cm lang ist?", a:"2000", hint:"1 km sind 1 000 m, also 100 000 cm. Überlege, wie oft 50 cm in 100 000 cm hineinpasst."},
-    {type:"mc", q:"Wie viele Haare hat ein erwachsener Mensch ungefähr auf dem Kopf?", opts:["~1 000","~10 000","~100 000","~10 000 000"], a:2, hint:"Schätze in Größenordnungen – tausend, zehntausend, hunderttausend oder zehn Millionen?"},
+    {type:"mc", q:"Wie viele Atemzüge macht ein Mensch ungefähr an einem ganzen Tag?", opts:["~5 000","~10 000","~23 000","~100 000"], a:2, hint:"Etwa 16 Atemzüge pro Minute. Überlege, wie viele Minuten ein ganzer Tag hat – dann eine grobe Größenordnung wählen."},
+    {type:"mc", q:"Dein Herz schlägt ungefähr 70 Mal pro Minute. Wie oft schlägt es ungefähr in einer Stunde?", opts:["~700","~4 200","~42 000","~100 000"], a:1, hint:"Eine Stunde hat 60 Minuten. Schätze grob: 70 mal 60 – das liegt bei etwa 4 000."},
+    {type:"input", q:"Schätze: Wie viele Schritte brauchst du für 1 km, wenn ein Schritt etwa 50 cm lang ist?", a:"2000", hint:"1 km sind 1 000 m, also 100 000 cm. Überlege, wie oft 50 cm in 100 000 cm hineinpasst."},
+    {type:"mc", q:"Wie viele Haare hat ein erwachsener Mensch ungefähr auf dem Kopf?", opts:["~1 000","~10 000","~100 000","~10 000 000"], a:2, hint:"Schätze in Größenordnungen – tausend, zehntausend, hunderttausend oder zehn Millionen?"},
     {type:"input", q:"In einer 500-g-Tüte Gummibärchen wiegt ein Bärchen etwa 2 g. Wie viele Bärchen sind ungefähr in der Tüte?", a:"250", hint:"Insgesamt 500 g, jedes Bärchen 2 g. Wie oft passt 2 g in 500 g?"},
     {type:"input", q:"Du putzt jeden Tag zweimal Zähne. Wie oft putzt du in einem ganzen Jahr mit 365 Tagen deine Zähne?", a:"730", hint:"Zweimal pro Tag, ein ganzes Jahr lang – das sind 2 mal 365."},
     {type:"mc", q:"Du schläfst durchschnittlich 9 Stunden pro Nacht. Wie viele Stunden schläfst du in einer ganzen Woche?", opts:["~30","~50","~63","~90"], a:2, hint:"9 Stunden Schlaf pro Nacht, eine Woche hat 7 Tage. Zerlege: 9 mal 7."},
     {type:"input", q:"Du läufst zur Schule und brauchst pro Strecke 15 Minuten. Wie viele Minuten bist du in einer ganzen Schulwoche mit 5 Tagen hin und zurück unterwegs?", a:"150", hint:"Pro Tag sind das 15 Minuten hin plus 15 Minuten zurück. Dieses Ergebnis dann mit den Schultagen multiplizieren."},
-    {type:"mc", q:"Eine Schulbibliothek hat etwa 5 Bücher pro Schüler. Wie viele Bücher hat eine Schule mit 400 Schülern ungefähr?", opts:["~400","~1 000","~2 000","~20 000"], a:2, hint:"5 Bücher pro Schüler, insgesamt 400 Schüler. Schätze grob, welche Größenordnung passt."},
+    {type:"mc", q:"Eine Schulbibliothek hat etwa 5 Bücher pro Schüler. Wie viele Bücher hat eine Schule mit 400 Schülern ungefähr?", opts:["~400","~1 000","~2 000","~20 000"], a:2, hint:"5 Bücher pro Schüler, insgesamt 400 Schüler. Schätze grob, welche Größenordnung passt."},
     {type:"mc", q:"Ein A4-Blatt wiegt etwa 5 g. Wie schwer ist ein Stapel aus 200 Blättern (eine ganze Packung Papier) ungefähr?", opts:["~100 g","~500 g","~1 kg","~5 kg"], a:2, hint:"5 g mal 200 Blätter – das ergibt einen Wert in Gramm. Rechne dann grob in Kilogramm um."},
     {type:"input", q:"In Lisas Schule gibt es 16 Klassen mit jeweils ungefähr 24 Kindern. Wie viele Schüler hat die Schule ungefähr?", a:"384", hint:"Schätze: 24 Kinder pro Klasse mal 16 Klassen. Du kannst zerlegen in 24·10 + 24·6."},
-    {type:"mc", q:"Wie viele 1-Cent-Münzen ergeben aufeinandergestapelt ungefähr 1 Meter Höhe? (Eine Münze ist ca. 1,5 mm dick.)", opts:["~100","~250","~670","~10 000"], a:2, hint:"1 m sind 1 000 mm. Überlege, wie oft 1,5 mm in 1 000 mm passt – das Ergebnis liegt grob bei einigen Hundert."},
-    {type:"mc", q:"In einem Pausenkiosk werden pro Schultag etwa 80 Brötchen verkauft. Wie viele Brötchen sind das in einer ganzen Schulwoche mit 5 Tagen?", opts:["~80","~160","~400","~4 000"], a:2, hint:"Schätze grob: 80 Brötchen pro Tag mal 5 Schultage."},
+    {type:"mc", q:"Wie viele 1-Cent-Münzen ergeben aufeinandergestapelt ungefähr 1 Meter Höhe? (Eine Münze ist ca. 1,5 mm dick.)", opts:["~100","~250","~670","~10 000"], a:2, hint:"1 m sind 1 000 mm. Überlege, wie oft 1,5 mm in 1 000 mm passt – das Ergebnis liegt grob bei einigen Hundert."},
+    {type:"mc", q:"In einem Pausenkiosk werden pro Schultag etwa 80 Brötchen verkauft. Wie viele Brötchen sind das in einer ganzen Schulwoche mit 5 Tagen?", opts:["~80","~160","~400","~4 000"], a:2, hint:"Schätze grob: 80 Brötchen pro Tag mal 5 Schultage."},
     {type:"input", q:"Eine Pizza ist in 8 Stücke geschnitten. In einer Klasse mit 25 Kindern möchte jedes Kind 2 Stücke essen. Wie viele ganze Pizzen müssen mindestens bestellt werden?", a:"7", hint:"Erst die Stücke insgesamt schätzen: 25 mal 2. Dann durch 8 Stücke pro Pizza teilen – wenn es nicht aufgeht, immer aufrunden."},
-    {type:"mc", q:"Wie viele Reiskörner sind ungefähr in einer 500-g-Packung Reis, wenn ein Korn etwa 25 mg wiegt?", opts:["~2 000","~20 000","~200 000","~2 000 000"], a:1, hint:"500 g sind 500 000 mg. Überlege, wie oft 25 mg in 500 000 mg passt – wähle die passende Größenordnung."}
+    {type:"mc", q:"Wie viele Reiskörner sind ungefähr in einer 500-g-Packung Reis, wenn ein Korn etwa 25 mg wiegt?", opts:["~2 000","~20 000","~200 000","~2 000 000"], a:1, hint:"500 g sind 500 000 mg. Überlege, wie oft 25 mg in 500 000 mg passt – wähle die passende Größenordnung."}
   ], "fermi", "main");
   host.insertAdjacentHTML("beforeend", `<div class="card"><h3>Deine Checkliste</h3></div>`);
   const ckHost = document.createElement("div"); ckHost.className="card";
@@ -4508,7 +4548,7 @@ window.STATION_CONTENT.karte2 = function(host){
   makeMiniQuiz(quizHost, [
     {type:"input", q:"Du bist 10 Jahre alt. Wie viele Tage hast du gelebt? (1 Jahr = 365 Tage)", a:"3650", hint:"10 mal 365 – Trick: 10 mal eine Zahl ist einfach „eine 0 anhängen“."},
     {type:"input", q:"Brötchen 1 €, du hast 6 €. Wie viele Brötchen?", a:"6", hint:"Wie oft passt 1 in 6?"},
-    {type:"input", q:"Schritte zur Schule: 1 km, 1 Schritt ≈ 50 cm. Schätzung der Schritte?", a:"2000", hint:"1 km = 100 000 cm. Wie oft passt 50 cm rein?"},
+    {type:"input", q:"Schritte zur Schule: 1 km, 1 Schritt ≈ 50 cm. Schätzung der Schritte?", a:"2000", hint:"1 km = 100 000 cm. Wie oft passt 50 cm rein?"},
     {type:"mc", q:"Pizza für 8 Kinder, jeder 3 Stücke. Wie viele Stücke insgesamt?", opts:["11","16","24","32"], a:2, hint:"8 mal 3."},
     {type:"input", q:"Du sammelst 25 € im Monat. Wie viel in einem Jahr (12 Monate)?", a:"300", hint:"Trick: 25·10 ist leicht, dann 25·2 dazu."},
     {type:"input", q:"Klasse mit 28 Kindern, Ausflug in 4er-Gruppen. Wie viele Gruppen?", a:"7", hint:"28 geteilt durch 4."},
@@ -4536,35 +4576,35 @@ window.STATION_CONTENT.karte2 = function(host){
    1 Aufgabe ≈ 1 Minute. */
 window.QUESTION_POOL = [
   /* ===== Stellenwerttafel (GS Kl. 4) ===== */
-  {cat:"Stellenwert", type:"mc", q:"Welche Ziffer steht in 42 087 an der Hunderterstelle?", opts:["4","2","0","8"], a:2},
-  {cat:"Stellenwert", type:"mc", q:"Welche Ziffer steht in 503 290 an der Zehntausenderstelle?", opts:["5","0","3","2"], a:1},
+  {cat:"Stellenwert", type:"mc", q:"Welche Ziffer steht in 42 087 an der Hunderterstelle?", opts:["4","2","0","8"], a:2},
+  {cat:"Stellenwert", type:"mc", q:"Welche Ziffer steht in 503 290 an der Zehntausenderstelle?", opts:["5","0","3","2"], a:1},
   {cat:"Stellenwert", type:"input", q:"Schreibe in Ziffern: „dreihundertzweitausendvierzig” (ohne Leerzeichen)", a:"302040"},
   {cat:"Stellenwert", type:"input", q:"Schreibe in Ziffern: „einhundertachttausendsiebzig” (ohne Leerzeichen)", a:"108070"},
   {cat:"Stellenwert", type:"input", q:"Schreibe in Ziffern: „siebzigtausendfünfhundertdrei” (ohne Leerzeichen)", a:"70503"},
-  {cat:"Stellenwert", type:"mc", q:"Welche Zahl entspricht 1 020 405?", opts:["eine Million zwanzigtausend vierhundertfünf","einhundertzwanzig vierhundertfünf","eine Million zweitausend vierhundertfünf","einhundertzwanzigtausend vierhundertfünf"], a:0},
-  {cat:"Stellenwert", type:"mc", q:"Welcher Wert steht für die 5 in 35 048?", opts:["5","50","500","5 000"], a:3},
+  {cat:"Stellenwert", type:"mc", q:"Welche Zahl entspricht 1 020 405?", opts:["eine Million zwanzigtausend vierhundertfünf","einhundertzwanzig vierhundertfünf","eine Million zweitausend vierhundertfünf","einhundertzwanzigtausend vierhundertfünf"], a:0},
+  {cat:"Stellenwert", type:"mc", q:"Welcher Wert steht für die 5 in 35 048?", opts:["5","50","500","5 000"], a:3},
   {cat:"Stellenwert", type:"mc", q:"Ist 0 eine natürliche Zahl?", opts:["Nein","Ja – sie ist die kleinste","Nur in Klasse 1","Nur beim Plus"], a:1},
 
   /* ===== Zahlenstrahl (GS Kl. 4) ===== */
-  {cat:"Zahlenstrahl", type:"mc", q:"Auf einem Zahlenstrahl 0 bis 1 000 mit 10 Markierungen – wofür steht eine Markierung?", opts:["10","50","100","1000"], a:2},
-  {cat:"Zahlenstrahl", type:"input", q:"Skala 0–500, 5 Markierungen bis 500. Pfeil beim 3. Strich. Welche Zahl?", a:"300"},
-  {cat:"Zahlenstrahl", type:"mc", q:"Welche Skala passt am besten zum Markieren von 18 000?", opts:["0–100","0–1 000","0–30 000","0–10 000 000"], a:2},
-  {cat:"Zahlenstrahl", type:"mc", q:"Wo liegt 350 auf einem Strahl 0 bis 1 000 ungefähr?", opts:["bei 35","ganz links","bei einem Drittel","in der Mitte"], a:2},
+  {cat:"Zahlenstrahl", type:"mc", q:"Auf einem Zahlenstrahl 0 bis 1 000 mit 10 Markierungen – wofür steht eine Markierung?", opts:["10","50","100","1000"], a:2},
+  {cat:"Zahlenstrahl", type:"input", q:"Skala 0–500, 5 Markierungen bis 500. Markierung beim 3. Strich. Welche Zahl?", a:"300"},
+  {cat:"Zahlenstrahl", type:"mc", q:"Welche Skala passt am besten zum Markieren von 18 000?", opts:["0–100","0–1 000","0–30 000","0–10 000 000"], a:2},
+  {cat:"Zahlenstrahl", type:"mc", q:"Wo liegt 350 auf einem Strahl 0 bis 1 000 ungefähr?", opts:["bei 35","ganz links","bei einem Drittel","in der Mitte"], a:2},
 
   /* ===== Runden (GS Kl. 4) ===== */
   {cat:"Runden", type:"mc", q:"Runde 248 auf Hunderter:", opts:["200","250","300","240"], a:0},
   {cat:"Runden", type:"mc", q:"Runde 651 auf Hunderter:", opts:["600","650","700","655"], a:2},
-  {cat:"Runden", type:"input", q:"Runde 1 749 auf Hunderter:", a:"1700"},
-  {cat:"Runden", type:"input", q:"Runde 6 480 auf Hunderter:", a:"6500"},
-  {cat:"Runden", type:"input", q:"Runde 9 950 auf Hunderter:", a:"10000"},
-  {cat:"Runden", type:"input", q:"Runde 3 412 auf Tausender:", a:"3000"},
-  {cat:"Runden", type:"input", q:"Runde 17 850 auf Tausender:", a:"18000"},
+  {cat:"Runden", type:"input", q:"Runde 1 749 auf Hunderter:", a:"1700"},
+  {cat:"Runden", type:"input", q:"Runde 6 480 auf Hunderter:", a:"6500"},
+  {cat:"Runden", type:"input", q:"Runde 9 950 auf Hunderter:", a:"10000"},
+  {cat:"Runden", type:"input", q:"Runde 3 412 auf Tausender:", a:"3000"},
+  {cat:"Runden", type:"input", q:"Runde 17 850 auf Tausender:", a:"18000"},
   {cat:"Runden", type:"input", q:"Runde 86 auf Zehner:", a:"90"},
   {cat:"Runden", type:"input", q:"Runde 131 auf Zehner:", a:"130"},
-  {cat:"Vergleichen", type:"mc", q:"Welche Zahl ist am größten?", opts:["3 421","3 241","3 412","3 124"], a:0},
-  {cat:"Ordnen",    type:"input", q:"Sortiere klein → groß: 4 825, 4 285, 4 528, 4 852, 4 258. Die kleinste?", a:"4258"},
-  {cat:"Ordnen",    type:"input", q:"Sortiere klein → groß: 4 825, 4 285, 4 528, 4 852, 4 258. Die größte?", a:"4852"},
-  {cat:"Ordnen",    type:"input", q:"Sortiere: 3 421, 3 241, 3 412, 3 124, 3 142. Die größte?", a:"3421"},
+  {cat:"Vergleichen", type:"mc", q:"Welche Zahl ist am größten?", opts:["3 421","3 241","3 412","3 124"], a:0},
+  {cat:"Ordnen",    type:"input", q:"Sortiere klein → groß: 4 825, 4 285, 4 528, 4 852, 4 258. Die kleinste?", a:"4258"},
+  {cat:"Ordnen",    type:"input", q:"Sortiere klein → groß: 4 825, 4 285, 4 528, 4 852, 4 258. Die größte?", a:"4852"},
+  {cat:"Ordnen",    type:"input", q:"Sortiere: 3 421, 3 241, 3 412, 3 124, 3 142. Die größte?", a:"3421"},
 
   {cat:"1×1", type:"input", q:"7 · 8 = ?", a:"56"},
   {cat:"1×1", type:"input", q:"9 · 6 = ?", a:"54"},
@@ -4629,34 +4669,34 @@ console.log("Aufgabenpool (Klasse-4-Wiederholung) geladen:", window.QUESTION_POO
 /* ===== Etappe 2: Wow-Fakt des Tages =====
    60 Karten · pro Tag wird deterministisch eine ausgewählt. */
 window.WOW_FAKTEN = [
-  {ico:"🫀", t:"Dein Herz hat heute schon ungefähr 100 000-mal geschlagen.", e:"70 Schläge pro Minute · 60 Minuten · 24 Stunden ≈ 100 800."},
-  {ico:"🌬️", t:"Du machst etwa 23 000 Atemzüge am Tag.", e:"16 Atemzüge pro Minute · 1 440 Minuten am Tag."},
-  {ico:"👁️", t:"Deine Augen blinzeln rund 17 000-mal pro Tag.", e:"Ca. 12 Mal pro Minute, im Wachzustand etwa 16 Stunden."},
+  {ico:"🫀", t:"Dein Herz hat heute schon ungefähr 100 000-mal geschlagen.", e:"70 Schläge pro Minute · 60 Minuten · 24 Stunden ≈ 100 800."},
+  {ico:"🌬️", t:"Du machst etwa 23 000 Atemzüge am Tag.", e:"16 Atemzüge pro Minute · 1 440 Minuten am Tag."},
+  {ico:"👁️", t:"Deine Augen blinzeln rund 17 000-mal pro Tag.", e:"Ca. 12 Mal pro Minute, im Wachzustand etwa 16 Stunden."},
   {ico:"🦷", t:"Du wirst im Leben zwei Mal Zähne bekommen: 20 Milchzähne und 32 bleibende.", e:"Das macht 52 Zähne insgesamt — wenn man sie alle zählt."},
-  {ico:"🧠", t:"In deinem Gehirn arbeiten etwa 86 Milliarden Nervenzellen.", e:"86 000 000 000 — eine 86 mit neun Nullen."},
+  {ico:"🧠", t:"In deinem Gehirn arbeiten etwa 86 Milliarden Nervenzellen.", e:"86 000 000 000 — eine 86 mit neun Nullen."},
   {ico:"💧", t:"Dein Körper ist zu rund 70 % Wasser.", e:"Wenn du 35 kg wiegst, sind ca. 24 Liter Wasser in dir."},
-  {ico:"🌍", t:"Der Erdumfang am Äquator ist 40 075 km.", e:"Mit 100 km/h Autofahrt rund um die Welt: über 400 Stunden."},
-  {ico:"🌕", t:"Der Mond ist im Schnitt 384 000 km von der Erde entfernt.", e:"Mit dem Auto bei 100 km/h: 3 840 Stunden = 160 Tage."},
+  {ico:"🌍", t:"Der Erdumfang am Äquator ist 40 075 km.", e:"Mit 100 km/h Autofahrt rund um die Welt: über 400 Stunden."},
+  {ico:"🌕", t:"Der Mond ist im Schnitt 384 000 km von der Erde entfernt.", e:"Mit dem Auto bei 100 km/h: 3 840 Stunden = 160 Tage."},
   {ico:"☀️", t:"Die Sonne ist 150 Millionen km entfernt.", e:"Das Licht braucht 8 Minuten 20 Sekunden bis zu uns."},
   {ico:"🌟", t:"Unsere Milchstraße enthält etwa 200 Milliarden Sterne.", e:"Eine 2 mit elf Nullen."},
   {ico:"🚄", t:"Der ICE kann 300 km/h schnell sein.", e:"In einer Sekunde legt er ungefähr 83 Meter zurück."},
   {ico:"✈️", t:"Ein Verkehrsflugzeug fliegt bei rund 900 km/h.", e:"In 6 Sekunden fliegt es ein Fußballfeld weit."},
-  {ico:"🏃", t:"Beim normalen Spazieren machst du etwa 100 Schritte pro Minute.", e:"In einer Stunde sind das 6 000 Schritte."},
-  {ico:"🐝", t:"Für ein 500-g-Glas Honig fliegen Bienen rund 12 000-mal aus.", e:"Sie besuchen dafür Millionen von Blüten."},
+  {ico:"🏃", t:"Beim normalen Spazieren machst du etwa 100 Schritte pro Minute.", e:"In einer Stunde sind das 6 000 Schritte."},
+  {ico:"🐝", t:"Für ein 500-g-Glas Honig fliegen Bienen rund 12 000-mal aus.", e:"Sie besuchen dafür Millionen von Blüten."},
   {ico:"🐧", t:"Kaiserpinguine tauchen bis zu 600 Meter tief.", e:"Das ist tiefer als die meisten U-Boote tauchen können."},
   {ico:"🐬", t:"Delfine schwimmen bis zu 60 km/h.", e:"So schnell wie ein Auto in der Stadt."},
-  {ico:"🐘", t:"Ein erwachsener afrikanischer Elefant wiegt 6 000 kg.", e:"So schwer wie 75 Schüler:innen zusammen (à 40 kg)."},
+  {ico:"🐘", t:"Ein erwachsener afrikanischer Elefant wiegt 6 000 kg.", e:"So schwer wie 75 Schüler:innen zusammen (à 40 kg)."},
   {ico:"🦒", t:"Giraffen und Menschen haben gleich viele Halswirbel: 7.", e:"Bei der Giraffe sind sie nur viel länger — jeder ca. 25 cm."},
   {ico:"🐌", t:"Eine Weinbergschnecke schafft etwa 7 cm pro Minute.", e:"Bis zum Mond bräuchte sie 14 Millionen Jahre."},
-  {ico:"🦋", t:"Monarchfalter ziehen 4 000 km in den Süden.", e:"Mit Flügeln so dünn wie eine Plastiktüte."},
+  {ico:"🦋", t:"Monarchfalter ziehen 4 000 km in den Süden.", e:"Mit Flügeln so dünn wie eine Plastiktüte."},
   {ico:"🛏️", t:"Ein Mensch verschläft etwa 25 Jahre seines Lebens.", e:"Bei 8 Stunden pro Nacht macht das ein Drittel aus."},
-  {ico:"📚", t:"Wer eine Stunde am Tag liest, schafft ca. 30 Bücher pro Jahr.", e:"60 Minuten · 365 Tage = 21 900 Lese-Minuten."},
-  {ico:"🎒", t:"Ein Schulranzen wiegt im Schnitt 5 kg.", e:"In einem Schuljahr trägst du ihn ca. 1 000 kg weit (200 Tage)."},
-  {ico:"⏰", t:"Ein Tag hat 86 400 Sekunden.", e:"24 · 60 · 60 — versuche, eine Million Sekunden zu warten: 11 Tage und 14 Stunden."},
+  {ico:"📚", t:"Wer eine Stunde am Tag liest, schafft ca. 30 Bücher pro Jahr.", e:"60 Minuten · 365 Tage = 21 900 Lese-Minuten."},
+  {ico:"🎒", t:"Ein Schulranzen wiegt im Schnitt 5 kg.", e:"In einem Schuljahr trägst du ihn ca. 1 000 kg weit (200 Tage)."},
+  {ico:"⏰", t:"Ein Tag hat 86 400 Sekunden.", e:"24 · 60 · 60 — versuche, eine Million Sekunden zu warten: 11 Tage und 14 Stunden."},
   {ico:"🌡️", t:"Deine Körpertemperatur ist 37 °C.", e:"Schon 2 °C mehr (39 °C) ist Fieber — kleine Zahl, große Wirkung."},
   {ico:"💶", t:"Eine 1-Cent-Münze ist 1,67 mm dick.", e:"600 davon übereinander gestapelt = 1 Meter Höhe."},
-  {ico:"⚽", t:"Im Dynamo-Stadion in Dresden passen 32 000 Zuschauer.", e:"Das ist ungefähr die Schülerzahl von 60 großen Schulen."},
-  {ico:"🌧️", t:"1 mm Regen heißt: 1 Liter Wasser auf 1 Quadratmeter.", e:"Auf einen Schulhof von 1 000 m² fallen also 1 000 Liter."},
+  {ico:"⚽", t:"Im Dynamo-Stadion in Dresden passen 32 000 Zuschauer.", e:"Das ist ungefähr die Schülerzahl von 60 großen Schulen."},
+  {ico:"🌧️", t:"1 mm Regen heißt: 1 Liter Wasser auf 1 Quadratmeter.", e:"Auf einen Schulhof von 1 000 m² fallen also 1 000 Liter."},
   {ico:"❄️", t:"Zwei Schneeflocken waren noch nie genau gleich.", e:"Jede einzelne ist ein einzigartiges Sechseck-Muster."},
   {ico:"🦠", t:"In deinem Darm leben rund 100 Billionen Bakterien.", e:"Eine Zahl mit 14 Nullen — mehr als Sterne in der Milchstraße."},
   {ico:"🍅", t:"Eine Tomate besteht zu 95 % aus Wasser.", e:"Eine 100-g-Tomate enthält 95 g Wasser und nur 5 g Rest."},
@@ -4664,27 +4704,27 @@ window.WOW_FAKTEN = [
   {ico:"🔢", t:"π beginnt mit 3,14159 26535 89793 …", e:"Hinter dem Komma kommen unendlich viele Ziffern — und niemand hat ein Muster gefunden."},
   {ico:"🃏", t:"Ein Stapel mit 52 Spielkarten kann auf 8 · 10⁶⁷ verschiedene Arten gemischt werden.", e:"Mehr als Atome in deinem Körper."},
   {ico:"🎲", t:"Auf einem Würfel zeigt jede Augenzahl 1 bis 6.", e:"Im Schnitt würfelst du also 3,5 Augen — auch wenn das nie passieren kann."},
-  {ico:"🌊", t:"1 Liter Meerwasser wiegt rund 1 030 Gramm.", e:"Süßwasser wiegt genau 1 000 Gramm — der Unterschied kommt vom Salz."},
-  {ico:"⛰️", t:"Der Mount Everest ist 8 849 m hoch.", e:"Wenn du ihn mit 4 km/h erwanderst, brauchst du 88 Stunden Aufstieg."},
-  {ico:"🌊", t:"Der Marianengraben ist fast 11 000 m tief.", e:"Tiefer als der Everest hoch ist — 200 m mehr."},
-  {ico:"🚀", t:"Damit eine Rakete in den Orbit kommt, muss sie 28 000 km/h schnell fliegen.", e:"Das sind fast 8 km pro Sekunde."},
+  {ico:"🌊", t:"1 Liter Meerwasser wiegt rund 1 030 Gramm.", e:"Süßwasser wiegt genau 1 000 Gramm — der Unterschied kommt vom Salz."},
+  {ico:"⛰️", t:"Der Mount Everest ist 8 849 m hoch.", e:"Wenn du ihn mit 4 km/h erwanderst, brauchst du 88 Stunden Aufstieg."},
+  {ico:"🌊", t:"Der Marianengraben ist fast 11 000 m tief.", e:"Tiefer als der Everest hoch ist — 200 m mehr."},
+  {ico:"🚀", t:"Damit eine Rakete in den Orbit kommt, muss sie 28 000 km/h schnell fliegen.", e:"Das sind fast 8 km pro Sekunde."},
   {ico:"🐢", t:"Galápagos-Riesenschildkröten werden 150 Jahre alt.", e:"Manche, die heute leben, kannten noch Charles Darwin."},
-  {ico:"🌽", t:"Auf einem Maiskolben sitzen 600 bis 1 000 Körner.", e:"In geraden Reihen — meist genau 16 Reihen pro Kolben."},
+  {ico:"🌽", t:"Auf einem Maiskolben sitzen 600 bis 1 000 Körner.", e:"In geraden Reihen — meist genau 16 Reihen pro Kolben."},
   {ico:"🚌", t:"In einen Linienbus passen rund 50 Personen.", e:"Für eine Schule mit 400 Kindern braucht man 8 Busse."},
   {ico:"📱", t:"Menschen entsperren ihr Smartphone ca. 80-mal pro Tag.", e:"Bei 16 wachen Stunden also alle 12 Minuten."},
   {ico:"🎈", t:"1 m³ Helium kann etwa 1 kg in die Luft heben.", e:"Für ein 30-kg-Kind brauchst du 30 m³ Helium — ein Würfel mit 3 m Kantenlänge."},
-  {ico:"🏊", t:"Ein olympisches Schwimmbecken fasst 2 500 000 Liter Wasser.", e:"50 m lang · 25 m breit · 2 m tief."},
-  {ico:"⚡", t:"Ein Blitz ist bis zu 30 000 °C heiß.", e:"Fünfmal heißer als die Sonnenoberfläche (6 000 °C)."},
-  {ico:"📖", t:"Ein Buch mit 200 Seiten enthält rund 60 000 Wörter.", e:"300 Wörter pro Seite · 200 Seiten."},
+  {ico:"🏊", t:"Ein olympisches Schwimmbecken fasst 2 500 000 Liter Wasser.", e:"50 m lang · 25 m breit · 2 m tief."},
+  {ico:"⚡", t:"Ein Blitz ist bis zu 30 000 °C heiß.", e:"Fünfmal heißer als die Sonnenoberfläche (6 000 °C)."},
+  {ico:"📖", t:"Ein Buch mit 200 Seiten enthält rund 60 000 Wörter.", e:"300 Wörter pro Seite · 200 Seiten."},
   {ico:"🍫", t:"Eine 100-g-Tafel Schokolade liefert ca. 540 kcal.", e:"Du musst dafür etwa 1 Stunde Fahrrad fahren."},
   {ico:"🥛", t:"Aus 10 Litern Milch macht man 1 kg Käse.", e:"Der Rest geht ins Molken-Pulver oder die Verarbeitung."},
   {ico:"🦷", t:"Du putzt in einem ganzen Jahr ungefähr 730-mal Zähne.", e:"2-mal pro Tag · 365 Tage."},
   {ico:"📐", t:"Ein DIN-A4-Blatt ist 21 cm · 29,7 cm groß.", e:"Faltest du es einmal in der Mitte, hast du A5; nochmal A6."},
-  {ico:"🎒", t:"Ein Stift schreibt etwa 50 000 Meter, bevor die Mine leer ist.", e:"Das sind 50 Kilometer Strich auf dem Papier."},
-  {ico:"🏛️", t:"Im Kölner Dom passen rund 4 000 Menschen rein.", e:"Er ist 157 Meter hoch — höher als ein 40-stöckiges Haus."},
+  {ico:"🎒", t:"Ein Stift schreibt etwa 50 000 Meter, bevor die Mine leer ist.", e:"Das sind 50 Kilometer Strich auf dem Papier."},
+  {ico:"🏛️", t:"Im Kölner Dom passen rund 4 000 Menschen rein.", e:"Er ist 157 Meter hoch — höher als ein 40-stöckiges Haus."},
   {ico:"🦓", t:"Jedes Zebra hat ein einzigartiges Streifenmuster.", e:"Wie ein Fingerabdruck — keine zwei sind gleich."},
-  {ico:"🌳", t:"Der älteste Baum der Welt (Methusalem) ist über 4 800 Jahre alt.", e:"Er wuchs schon, als die Pyramiden gebaut wurden."},
-  {ico:"🌎", t:"In Sachsen leben rund 4 100 000 Menschen.", e:"Das sind 4,1 Millionen — verteilt auf 18 400 km² Fläche."},
+  {ico:"🌳", t:"Der älteste Baum der Welt (Methusalem) ist über 4 800 Jahre alt.", e:"Er wuchs schon, als die Pyramiden gebaut wurden."},
+  {ico:"🌎", t:"In Sachsen leben rund 4 100 000 Menschen.", e:"Das sind 4,1 Millionen — verteilt auf 18 400 km² Fläche."},
   {ico:"⌛", t:"Eine Million Sekunden sind 11 Tage und 13 Stunden.", e:"Eine Milliarde Sekunden sind dagegen 32 Jahre."},
   {ico:"🧊", t:"1 Liter Wasser wird beim Gefrieren zu 1,09 Liter Eis.", e:"Deshalb platzen volle Wasserflaschen, wenn sie einfrieren."},
   {ico:"🔭", t:"Im Universum gibt es schätzungsweise 2 Billionen Galaxien.", e:"Und in jeder davon Milliarden von Sternen."},
@@ -4715,7 +4755,7 @@ window.renderWowKarte = function(){
   if(!card){
     card = document.createElement("div");
     card.className = "card wow-card anim-slide";
-    card.style.cssText = "background:linear-gradient(135deg,#F9C846 0%,#FFA000 100%);color:#fff;border:none;margin-bottom:1.2rem;box-shadow:var(--shadow-lg)";
+    card.style.cssText = "background:linear-gradient(135deg,#F9C846 0%,#FFA000 100%);color:#fff;border:none;margin-bottom:1.2rem;box-shadow:var(--shadow-lg)";
     /* an erster Stelle einfügen — ganz oben auf der Startseite */
     home.insertBefore(card, home.firstChild);
   }
@@ -4736,14 +4776,14 @@ window.renderWowKarte = function(){
 /* ===== Etappe 3: Ich erkläre einem Erwachsenen ===== */
 window.ERKLAER_SKRIPTE = {
   diag:        "Beim Diagnose-Parcours habe ich getestet, was ich schon kann — das hilft mir zu sehen, wo ich noch üben muss.",
-  riesen:      "Stell dir vor, du müsstest 305 048 in Worten sagen. Du liest sie in Dreierblöcken von rechts: erst 305 Tausend, dann 48. Eine 1 mit sechs Nullen ist eine Million.",
-  swt:         "Jede Ziffer hat einen Wert, der von ihrer Stelle abhängt. In 4 728 steht die 4 für 4 000, die 7 für 700, die 2 für 20 und die 8 für 8.",
-  zs:          "Auf einem Zahlenstrahl wachsen Zahlen von links nach rechts. Bevor ich eine Zahl einzeichne, schaue ich auf die Skala: Wenn zwischen 0 und 1 000 zehn Markierungen sind, ist jede Markierung 100 wert.",
-  runden:      "Beim Runden auf Hunderter schaue ich auf die Zehnerstelle. Ist sie 0 bis 4, runde ich ab; ist sie 5 bis 9, runde ich auf. 1 749 wird zu 1 700, 6 480 wird zu 6 500.",
-  ordnen:      "Ich vergleiche Zahlen Stelle für Stelle. 3 421 ist größer als 3 412, weil bei gleicher Tausender- und Hunderterstelle die Zehnerstelle den Ausschlag gibt. Das Krokodil-Maul zeigt immer zur größeren Zahl.",
+  riesen:      "Stell dir vor, du müsstest 305 048 in Worten sagen. Du liest sie in Dreierblöcken von rechts: erst 305 Tausend, dann 48. Eine 1 mit sechs Nullen ist eine Million.",
+  swt:         "Jede Ziffer hat einen Wert, der von ihrer Stelle abhängt. In 4 728 steht die 4 für 4 000, die 7 für 700, die 2 für 20 und die 8 für 8.",
+  zs:          "Auf einem Zahlenstrahl wachsen Zahlen von links nach rechts. Bevor ich eine Zahl einzeichne, schaue ich auf die Skala: Wenn zwischen 0 und 1 000 zehn Markierungen sind, ist jede Markierung 100 wert.",
+  runden:      "Beim Runden auf Hunderter schaue ich auf die Zehnerstelle. Ist sie 0 bis 4, runde ich ab; ist sie 5 bis 9, runde ich auf. 1 749 wird zu 1 700, 6 480 wird zu 6 500.",
+  ordnen:      "Ich vergleiche Zahlen Stelle für Stelle. 3 421 ist größer als 3 412, weil bei gleicher Tausender- und Hunderterstelle die Zehnerstelle den Ausschlag gibt. Das Krokodil-Maul zeigt immer zur größeren Zahl.",
   kopf:        "Im Kopfrechnen helfen mir Umkehraufgaben: Wenn 7 mal 8 gleich 56 ist, dann ist auch 56 geteilt durch 7 gleich 8 und 56 geteilt durch 8 gleich 7.",
   schriftl:    "Beim schriftlichen Rechnen schreibe ich die Zahlen untereinander, sodass Einer unter Einer und Zehner unter Zehner stehen. Dann rechne ich Stelle für Stelle und übertrage, wenn ich darf.",
-  geschickt:   "Beim geschickten Rechnen suche ich Zahlen, die zusammen einen runden Wert geben. 25 mal 17 mal 4 rechne ich nicht der Reihe nach, sondern: 25 mal 4 = 100, dann 100 mal 17 = 1 700.",
+  geschickt:   "Beim geschickten Rechnen suche ich Zahlen, die zusammen einen runden Wert geben. 25 mal 17 mal 4 rechne ich nicht der Reihe nach, sondern: 25 mal 4 = 100, dann 100 mal 17 = 1 700.",
   div:         "Bei der Division mit Rest gehe ich Stelle für Stelle vor. Wenn nichts mehr aufgeht, bleibt ein Rest. Mit der Probe prüfe ich: Teiler mal Ergebnis plus Rest muss die Ausgangszahl ergeben.",
   teil:        "Es gibt schnelle Regeln: Eine Zahl ist durch 2 teilbar, wenn sie gerade endet; durch 5, wenn sie auf 0 oder 5 endet; durch 3, wenn ihre Quersumme durch 3 teilbar ist.",
   projekt:     "Ich habe selbst eine Sachaufgabe erfunden — mit einer kleinen Geschichte aus meinem Alltag, einer Rechenfrage am Ende und einem vollständigen Antwortsatz.",
@@ -4830,8 +4870,8 @@ window.showErklaerModal = function(stationId){
 /* ===== Etappe 4: Mathe-Tricks-Galerie ===== */
 window.MATHE_TRICKS = [
   {min:5,   ico:"🔟", title:"Der Mal-Zehn-Trick",
-    text:"Wenn du eine Zahl mit 10 multiplizierst, hängst du einfach eine 0 hinten dran. Mit 100 sind es zwei Nullen, mit 1 000 sind es drei Nullen.",
-    bsp:"47 · 10 = 470   ·   8 · 100 = 800   ·   23 · 1 000 = 23 000"},
+    text:"Wenn du eine Zahl mit 10 multiplizierst, hängst du einfach eine 0 hinten dran. Mit 100 sind es zwei Nullen, mit 1 000 sind es drei Nullen.",
+    bsp:"47 · 10 = 470   ·   8 · 100 = 800   ·   23 · 1 000 = 23 000"},
   {min:15,  ico:"⏪", title:"Verdoppeln & Halbieren",
     text:"Bei Multiplikation mit 5 kannst du erst halbieren und dann mit 10 multiplizieren — viel leichter im Kopf.",
     bsp:"16 · 5 = (16 : 2) · 10 = 8 · 10 = 80   ·   24 · 5 = 12 · 10 = 120"},
@@ -4840,16 +4880,16 @@ window.MATHE_TRICKS = [
     bsp:"9 · 1 = 09 · 9 · 2 = 18 · 9 · 3 = 27 · 9 · 7 = 63 · …"},
   {min:40,  ico:"📐", title:"Quersumme verrät Teilbarkeit",
     text:"Eine Zahl ist genau dann durch 3 teilbar, wenn ihre Quersumme durch 3 teilbar ist. Genauso bei 9.",
-    bsp:"117 → 1+1+7 = 9 → durch 3 und durch 9 teilbar.   ·   1 234 → 1+2+3+4 = 10 → weder noch."},
+    bsp:"117 → 1+1+7 = 9 → durch 3 und durch 9 teilbar.   ·   1 234 → 1+2+3+4 = 10 → weder noch."},
   {min:60,  ico:"🎯", title:"Quadrate von Zahlen, die auf 5 enden",
     text:"Bei 25², 35², 45², … nimm die Zehnerziffer, multipliziere sie mit ihrem Nachfolger und hänge 25 dran.",
-    bsp:"25² = 2·3 = 6, dann 25 anhängen → 625   ·   35² = 3·4 = 12, dann 25 → 1 225   ·   65² = 6·7 = 42 → 4 225"},
+    bsp:"25² = 2·3 = 6, dann 25 anhängen → 625   ·   35² = 3·4 = 12, dann 25 → 1 225   ·   65² = 6·7 = 42 → 4 225"},
   {min:80,  ico:"🤹", title:"Der Mal-11-Trick",
     text:"Bei zweistelligen Zahlen × 11: schreibe die Ziffern auseinander und die Summe in die Mitte.",
     bsp:"23 · 11 = 2_(2+3)_3 = 253   ·   45 · 11 = 4_(4+5)_5 = 495.   Wenn die Summe ≥ 10: 1 in die Zehnerstelle übertragen. 67·11 = 6_13_7 → 737."},
   {min:100, ico:"⏫", title:"Mal-99 und mal-101",
     text:"x · 99 = x · 100 − x.   x · 101 = x · 100 + x.   So sparst du dir aufwändige schriftliche Rechnungen.",
-    bsp:"7 · 99 = 700 − 7 = 693   ·   12 · 101 = 1 200 + 12 = 1 212"},
+    bsp:"7 · 99 = 700 − 7 = 693   ·   12 · 101 = 1 200 + 12 = 1 212"},
   {min:130, ico:"⚖️", title:"25 % = halbieren² · 50 % = halbieren · 75 % = ¾",
     text:"25 % einer Zahl: zweimal halbieren. 50 %: einmal halbieren. 75 %: erst die Hälfte, dann die Hälfte davon abziehen.",
     bsp:"25 % von 80: 80 → 40 → 20.   ·   50 % von 80 = 40.   ·   75 % von 80: 80 − 20 = 60."},
@@ -4861,7 +4901,7 @@ window.MATHE_TRICKS = [
     bsp:"Wie(3) · O(1) · dies(4) · π · macht(1, π selbst ist 3,14 …) … besser: „Wer kennt sehr leicht den Kreis das ist π.“ → 3,1415926"},
   {min:250, ico:"🃏", title:"Schnellrechnen mit 5er-Bündeln",
     text:"5 + 6 + 7 + 8 + 9 + 10 = ? Statt der Reihe nach: bündele Paare zu 15 (5+10, 6+9, 7+8) → 3 · 15 = 45.",
-    bsp:"1+2+3+…+10 = 5 Paare zu 11 = 55.   ·   1+2+…+100 = 50 Paare zu 101 = 5 050 (die berühmte Gauß-Aufgabe)."},
+    bsp:"1+2+3+…+10 = 5 Paare zu 11 = 55.   ·   1+2+…+100 = 50 Paare zu 101 = 5 050 (die berühmte Gauß-Aufgabe)."},
   {min:320, ico:"🌙", title:"Wochentag deines Geburtstags",
     text:"Mit ein bisschen Übung kannst du zu jedem Datum den Wochentag bestimmen (Doomsday-Methode). Für deine Klasse: probiere es an Geburtstagen aus.",
     bsp:"Jeder Monat hat ein „Anker-Datum“ (3.1, 28.2, 7.3, 4.4, 9.5, 6.6, 11.7, 8.8, 5.9, 10.10, 7.11, 12.12) — diese Daten sind im selben Jahr alle derselbe Wochentag."}
@@ -4998,9 +5038,9 @@ window.renderSchatzkarte = function(){
 
   /* SVG bauen */
   let parts = [];
-  parts.push('<svg viewBox="0 0 820 500" style="width:100%;height:auto;background:linear-gradient(180deg,#B3E5FC 0%,#81D4FA 60%,#4FC3F7 100%);border-radius:14px;display:block;box-shadow:var(--shadow)">');
-  parts.push('<path d="M0,450 Q200,440 400,455 T800,450" stroke="#E1F5FE" fill="none" stroke-width="3" opacity=".6"/>');
-  parts.push('<path d="M0,470 Q200,460 400,475 T800,470" stroke="#fff" fill="none" stroke-width="2" opacity=".5"/>');
+  parts.push('<svg viewBox="0 0 820 500" style="width:100%;height:auto;background:linear-gradient(180deg,#B3E5FC 0%,#81D4FA 60%,#4FC3F7 100%);border-radius:14px;display:block;box-shadow:var(--shadow)">');
+  parts.push('<path d="M0,450 Q200,440 400,455 T800,450" stroke="#E1F5FE" fill="none" stroke-width="3" opacity=".6"/>');
+  parts.push('<path d="M0,470 Q200,460 400,475 T800,470" stroke="#fff" fill="none" stroke-width="2" opacity=".5"/>');
   parts.push('<g opacity=".85"><ellipse cx="120" cy="60" rx="40" ry="14" fill="#fff"/><ellipse cx="150" cy="55" rx="30" ry="12" fill="#fff"/></g>');
   parts.push('<g opacity=".85"><ellipse cx="630" cy="40" rx="35" ry="12" fill="#fff"/><ellipse cx="660" cy="45" rx="28" ry="10" fill="#fff"/></g>');
   /* Schatz-Truhe-Symbol oberhalb der Ziel-Insel */
@@ -5105,7 +5145,7 @@ window.showCinematic = function(){
   if(document.getElementById("cine-overlay")) return; // schon offen
   const ov = document.createElement("div");
   ov.id = "cine-overlay";
-  ov.style.cssText = "position:fixed;inset:0;z-index:250;background:radial-gradient(circle at center,#01566A 0%,#002E40 100%);display:flex;align-items:center;justify-content:center;text-align:center;color:#fff;padding:2rem;overflow:auto";
+  ov.style.cssText = "position:fixed;inset:0;z-index:250;background:radial-gradient(circle at center,#01566A 0%,#002E40 100%);display:flex;align-items:center;justify-content:center;text-align:center;color:#fff;padding:2rem;overflow:auto";
   const wrap = document.createElement("div");
   wrap.className = "anim-bounce";
   wrap.style.cssText = "max-width:560px;width:100%";
@@ -5382,10 +5422,9 @@ window.isStationUnlocked = function(stationId){
   const station = (typeof stationById === "function") ? stationById(stationId) : null;
   if(!station) return true;
   if(station.type === "wahl"){
-    if(typeof pflichtStations !== "function") return true;
-    return pflichtStations().every(function(s){
-      return !!(state.stations && state.stations[s.id] && state.stations[s.id].done);
-    });
+    /* Wahl-Stationen sind jederzeit offen — sie sind keine Pflicht und sollen
+       Schülerinnen und Schülern Freiheit zur Vertiefung geben. */
+    return true;
   }
   const idx = PFLICHT_REIHENFOLGE.indexOf(stationId);
   if(idx <= 0) return true;
@@ -5639,7 +5678,7 @@ window.showZielGlueckwunsch = function(){
   if(!ov){
     ov = document.createElement("div");
     ov.id = "ziel-overlay";
-    ov.style.cssText = "position:fixed;inset:0;z-index:240;background:radial-gradient(circle at center,#FFCB52 0%,#F9A825 60%,#E65100 100%);display:none;align-items:center;justify-content:center;padding:1rem;overflow:auto";
+    ov.style.cssText = "position:fixed;inset:0;z-index:240;background:radial-gradient(circle at center,#FFCB52 0%,#F9A825 60%,#E65100 100%);display:none;align-items:center;justify-content:center;padding:1rem;overflow:auto";
     ov.addEventListener("click", function(e){ if(e.target === ov) ov.style.display = "none"; });
     document.body.appendChild(ov);
   }
