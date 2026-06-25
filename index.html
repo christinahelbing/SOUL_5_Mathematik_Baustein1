@@ -373,7 +373,9 @@
   .avs button.sel{border-color:var(--coral);background:#FFF1F1}
 
   /* ===== Footer-Hinweis ===== */
-  .footer-hint{text-align:center;color:var(--grey);font-size:.82rem;margin-top:2rem;padding:1rem}
+  .footer-hint{text-align:center;color:var(--grey);font-size:.82rem;padding:1rem;margin-top:auto;order:9999}
+  .container{display:flex;flex-direction:column;min-height:calc(100vh - 80px)}
+  .container > section.view{order:1}
 
   /* ===== Konfetti ===== */
   .confetti{position:fixed;inset:0;pointer-events:none;z-index:80}
@@ -2020,10 +2022,9 @@ function renderDiagnose(){
     let recommendHtml = "";
     if(allRight){
       recommendHtml += '<div style="background:linear-gradient(135deg,#F9C846,#FFA000);color:#fff;padding:1.1rem 1.2rem;border-radius:16px;margin:1rem 0;box-shadow:var(--shadow-lg)">'
-        + '<div style="font-size:.82rem;letter-spacing:.08em;text-transform:uppercase;font-weight:700;opacity:.95">🏆 Expertenstandard erreichbar!</div>'
-        + '<h3 style="color:#fff;margin:.35rem 0 .5rem">Volltreffer! Alle Aufgaben richtig.</h3>'
-        + '<p style="color:#fff;margin:.3rem 0;line-height:1.55">Bei dir sitzt das Klasse-4-Wissen sicher — herzlichen Glückwunsch! Damit du den <strong>Expertenstandard</strong> erreichst, machst du <strong>zusätzlich zu den 12 Pflichtstationen unbedingt auch die Wahlstationen</strong>. Dort warten die Schätz-Olympiade, Detektiv-Aufgaben, Magische Quadrate und ein erster Vorgeschmack auf Klasse-5-Inhalte (Rechengesetze und Primzahlen).</p>'
-        + '<p style="color:rgba(255,255,255,.96);margin:.4rem 0 0;font-size:.92rem">So holst du das Maximum aus diesem Baustein heraus.</p>'
+        + '<div style="font-size:.82rem;letter-spacing:.08em;text-transform:uppercase;font-weight:700;opacity:.95">Starker Start</div>'
+        + '<h3 style="color:#fff;margin:.35rem 0 .5rem">Alle Diagnose-Aufgaben richtig.</h3>'
+        + '<p style="color:#fff;margin:.3rem 0;line-height:1.55">Beim Grundschulwissen aus Klasse 4 bist du sicher unterwegs — schön! In Klasse 5 wartet noch einiges Neues, deshalb arbeitest du am besten <strong>alle Pflichtstationen</strong> gewohnt durch. <strong>Zusätzlich solltest du auch die Wahlstationen mitnehmen</strong>, um Mathe noch tiefer zu durchdringen: Schätz-Olympiade, Detektiv-Aufgaben, Magische Quadrate sowie ein erster Vorgeschmack auf Klasse-5-Inhalte (Rechengesetze und Primzahlen).</p>'
         + '</div>';
     }
     if(wichtig.length){
@@ -2042,7 +2043,7 @@ function renderDiagnose(){
 
     const allRight = correct === DIAG.length;
     const note =
-      allRight ? "🌟 Wow, ALLES richtig! Das war absolut perfekt." :
+      allRight ? "Alle Aufgaben richtig — schöne Grundlage. Lies unten weiter, wie du den Baustein am besten angehst." :
       correct >= DIAG.length * 0.9 ? "Wow, fast alles richtig! Du startest in der Wahl-Spur." :
       correct >= DIAG.length * 0.7 ? "Solider Start. Schau dir die markierten Themen genau an." :
       correct >= DIAG.length * 0.4 ? "Kein Problem – wir trainieren jetzt gezielt deine Baustellen." :
@@ -5842,7 +5843,117 @@ window.showZielGlueckwunsch = function(){
   else window.addEventListener("DOMContentLoaded", addHamburger);
 })();
 
-console.log("Flash-Module geladen: Etappe 2-8 (mit Mobile-Responsive)");
+/* ===== Etappe 9: Auto-Scroll-to-Top bei Navigation ===== */
+window.scrollToTop = function(){
+  try {
+    window.scrollTo({top:0, left:0, behavior:"instant"});
+  } catch(e){
+    window.scrollTo(0, 0);
+  }
+};
+
+/* Monkey-Patch goto: scroll nach jedem View-Wechsel nach oben */
+(function(){
+  const __origGoto = window.goto;
+  if(typeof __origGoto === "function"){
+    window.goto = function(view){
+      __origGoto.apply(this, arguments);
+      /* Mini-Delay, damit der View-Wechsel zuerst durchläuft */
+      setTimeout(scrollToTop, 0);
+    };
+  }
+})();
+
+/* Monkey-Patch openStation: scroll nach Station-Öffnung nach oben */
+(function(){
+  const __origOpen = window.openStation;
+  if(typeof __origOpen === "function"){
+    window.openStation = function(id){
+      __origOpen.apply(this, arguments);
+      setTimeout(scrollToTop, 0);
+    };
+  }
+})();
+
+/* Monkey-Patch openKnobel (Knobel-Detail): auch nach oben scrollen */
+(function(){
+  const __origOK = window.openKnobel;
+  if(typeof __origOK === "function"){
+    window.openKnobel = function(id){
+      __origOK.apply(this, arguments);
+      setTimeout(scrollToTop, 0);
+    };
+  }
+})();
+
+/* Monkey-Patch renderTricks, renderSchatzkarte, renderDiagnose: scroll nach Render */
+(function(){
+  ["renderTricks","renderSchatzkarte","renderDiagnose"].forEach(function(fn){
+    const __orig = window[fn];
+    if(typeof __orig === "function"){
+      window[fn] = function(){
+        __orig.apply(this, arguments);
+        setTimeout(scrollToTop, 0);
+      };
+    }
+  });
+})();
+
+/* ===== Etappe 10: Wow-Karte robuster, Footer überall unten, Karte vollständig ===== */
+
+/* Beim Boot SOFORT renderWowKarte versuchen, falls renderHome schon lief.
+   Auch nach kurzem Delay nachhaken, falls Etappe-Loading async lief. */
+(function(){
+  function ensureWow(){
+    if(typeof renderWowKarte === "function"){
+      try { renderWowKarte(); } catch(e){ console.warn("Wow-Karte (boot):", e); }
+    }
+  }
+  if(document.readyState !== "loading") setTimeout(ensureWow, 100);
+  else window.addEventListener("DOMContentLoaded", function(){ setTimeout(ensureWow, 200); });
+  /* Bei jedem Klick auf den Home-Nav-Button erneut Wow-Karte sicherstellen */
+  window.addEventListener("DOMContentLoaded", function(){
+    setTimeout(function(){
+      const homeBtn = document.querySelector('.nav button[data-view="home"]');
+      if(homeBtn) homeBtn.addEventListener("click", function(){ setTimeout(ensureWow, 30); });
+    }, 500);
+  });
+})();
+
+/* Footer-Hint bei jedem View-Wechsel ans Ende des Containers schieben.
+   So bleibt er sicher unter dynamisch eingefügten Views wie Tricks und Schatzkarte. */
+(function(){
+  function moveFooterToEnd(){
+    const container = document.querySelector(".container");
+    const footer = container ? container.querySelector(".footer-hint") : null;
+    if(container && footer && container.lastElementChild !== footer){
+      container.appendChild(footer);
+    }
+  }
+  /* Bei jeder Navigation */
+  const __origGoto2 = window.goto;
+  if(typeof __origGoto2 === "function"){
+    window.goto = function(view){
+      __origGoto2.apply(this, arguments);
+      setTimeout(moveFooterToEnd, 10);
+    };
+  }
+  /* Auch beim Aufruf der dynamischen Views */
+  ["renderTricks","renderSchatzkarte"].forEach(function(fn){
+    const __orig = window[fn];
+    if(typeof __orig === "function"){
+      window[fn] = function(){
+        __orig.apply(this, arguments);
+        setTimeout(moveFooterToEnd, 10);
+      };
+    }
+  });
+  /* Initial beim Boot */
+  if(document.readyState !== "loading") setTimeout(moveFooterToEnd, 100);
+  else window.addEventListener("DOMContentLoaded", function(){ setTimeout(moveFooterToEnd, 200); });
+})();
+
+console.log("Flash-Module geladen: Etappe 2-10 (Wow robuster, Footer-Fix, Karte sichtbar)");
 </script>
 
 </body>
