@@ -5687,7 +5687,123 @@ window.showZielGlueckwunsch = function(){
   };
 };
 
-console.log("Flash-Module geladen: Etappe 2-7 (+ Ziel-Glückwunsch)");
+/* ===== Etappe 8: Mobile / Responsive Topbar ===== */
+(function(){
+  /* CSS für Hamburger-Menü und kompakte Mobile-Layouts injizieren */
+  const css = document.createElement("style");
+  css.textContent = ""
+    + ".nav-hamburger{display:none;background:rgba(255,255,255,.15);width:38px;height:38px;border-radius:8px;align-items:center;justify-content:center;font-size:1.4rem;border:none;color:inherit;cursor:pointer;line-height:1;padding:0}"
+    + ".nav-hamburger:hover{background:rgba(255,255,255,.25)}"
+
+    /* Tablet + Smartphone */
+    + "@media (max-width:900px){"
+    + "  .topbar{flex-wrap:wrap;padding:.55rem .8rem;gap:.4rem;position:sticky;top:0}"
+    + "  .brand{gap:.5rem}"
+    + "  .brand .logo{width:30px;height:30px;font-size:.95rem}"
+    + "  .brand>div:nth-child(2){font-size:1rem;line-height:1.1}"
+    + "  .nav-hamburger{display:inline-flex;margin-left:auto;order:5}"
+    + "  #theme-toggle,#sound-toggle,#eltern-btn{width:34px !important;height:34px !important;font-size:.95rem !important;flex-shrink:0}"
+    + "  .user-chip{padding:.25rem .45rem;font-size:.82rem;flex-shrink:0}"
+    + "  .user-chip span{display:none}"
+    + "  .user-chip .av{width:26px;height:26px;font-size:.95rem}"
+    + "  /* Nav als ausklappbares Vollbreiten-Menü unterhalb der Topbar */"
+    + "  .topbar .nav{display:none !important;width:100%;flex-direction:column;gap:.25rem;background:rgba(0,0,0,.18);border-radius:10px;padding:.55rem;margin-top:.4rem;order:10;max-height:60vh;overflow-y:auto}"
+    + "  .topbar .nav.open{display:flex !important;animation:slide-up .25s ease}"
+    + "  .topbar .nav button{text-align:left;padding:.8rem 1rem;width:100%;border-radius:8px;font-size:1rem;font-weight:600}"
+    + "  .topbar .nav button.active{background:var(--coral);box-shadow:none}"
+
+    + "  .container{padding:1rem .8rem 2.5rem}"
+    + "  h1{font-size:1.7rem;margin:.1rem 0 .4rem;line-height:1.2}"
+    + "  h2{font-size:1.2rem;margin:1rem 0 .5rem}"
+    + "  h3{font-size:1.05rem}"
+    + "  .card{padding:1rem 1.05rem;border-radius:12px}"
+    + "  .grid.cols-2{grid-template-columns:1fr !important}"
+    + "  .grid.cols-4{grid-template-columns:1fr 1fr !important}"
+    + "  .row{flex-wrap:wrap}"
+
+    + "  /* Spiele-Bereich + Diagramme schrumpfen */"
+    + "  .station-list{gap:.6rem}"
+    + "  .station-card{padding:.85rem 1rem}"
+    + "  .station-card .badge{width:46px;height:46px;font-size:1.4rem}"
+    + "  .station-card .meta .t{font-size:1rem}"
+    + "  .station-card .meta .s{font-size:.85rem}"
+    + "}"
+
+    /* sehr kleine Smartphones */
+    + "@media (max-width:480px){"
+    + "  .brand>div:nth-child(2){display:none}"
+    + "  .topbar{padding:.45rem .65rem;gap:.3rem}"
+    + "  h1{font-size:1.45rem}"
+    + "  .container{padding:.85rem .7rem 2rem}"
+    + "  .wow-card{padding:.85rem .95rem !important}"
+    + "  .wow-card div[style*=\"font-size:2.6rem\"]{font-size:2rem !important}"
+    + "  .wow-card p{font-size:1rem !important}"
+    + "  .grid.cols-4{grid-template-columns:1fr 1fr !important;gap:.5rem}"
+    + "  .stat-card{padding:.6rem .5rem}"
+    + "  .stat-card .v{font-size:1.4rem}"
+    + "  .levelup-card{padding:1.6rem 1.4rem}"
+    + "  .levelup-card h2{font-size:1.6rem}"
+    + "  .levelup-card .ico{font-size:3rem}"
+    + "  /* Schatzkarte SVG-Labels lesbarer */"
+    + "  #view-karte svg text{font-size:11px}"
+    + "}";
+  document.head.appendChild(css);
+
+  /* Hamburger-Button einbauen */
+  function addHamburger(){
+    const topbar = document.getElementById("topbar");
+    if(!topbar || document.getElementById("nav-hamburger")) return;
+    const btn = document.createElement("button");
+    btn.id = "nav-hamburger";
+    btn.className = "nav-hamburger";
+    btn.setAttribute("aria-label", "Menü öffnen/schließen");
+    btn.title = "Menü";
+    btn.textContent = "☰";
+    btn.onclick = function(){
+      const nav = topbar.querySelector(".nav");
+      if(!nav) return;
+      const isOpen = nav.classList.toggle("open");
+      btn.textContent = isOpen ? "✕" : "☰";
+      if(typeof playSound === "function") playSound("click");
+    };
+    /* Direkt vor das User-Chip einfügen (oder ans Ende falls fehlt) */
+    const userChip = document.getElementById("user-chip");
+    if(userChip) topbar.insertBefore(btn, userChip);
+    else topbar.appendChild(btn);
+
+    /* Beim Klick auf einen Nav-Button automatisch Menü schließen */
+    const nav = topbar.querySelector(".nav");
+    if(nav){
+      nav.addEventListener("click", function(e){
+        const t = e.target.closest("button");
+        if(t && nav.contains(t)){
+          nav.classList.remove("open");
+          btn.textContent = "☰";
+        }
+      });
+    }
+    /* Bei Klick außerhalb schließen */
+    document.addEventListener("click", function(e){
+      if(!topbar.contains(e.target)){
+        const n = topbar.querySelector(".nav.open");
+        if(n){ n.classList.remove("open"); btn.textContent = "☰"; }
+      }
+    });
+    /* Bei Window-Resize sicher: wenn jetzt Desktop, Menü-Klasse löschen */
+    window.addEventListener("resize", function(){
+      if(window.innerWidth > 900){
+        const n = topbar.querySelector(".nav.open");
+        if(n) n.classList.remove("open");
+        btn.textContent = "☰";
+      }
+    });
+  }
+
+  if(document.readyState !== "loading") addHamburger();
+  else window.addEventListener("DOMContentLoaded", addHamburger);
+})();
+
+console.log("Flash-Module geladen: Etappe 2-8 (mit Mobile-Responsive)");
 </script>
 
 </body>
