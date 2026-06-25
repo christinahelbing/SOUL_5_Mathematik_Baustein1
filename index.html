@@ -11,13 +11,49 @@
     --light:#F5F7FA; --light-2:#E9EEF3; --white:#FFFFFF;
     --green:#2E7D32; --green-light:#E8F5E9;
     --red:#C62828; --red-light:#FFEBEE;
+    --bg:#FAFBFC; --card-bg:#fff; --text:#263238;
     --shadow:0 4px 14px rgba(38,50,56,.10);
     --shadow-lg:0 10px 30px rgba(38,50,56,.18);
     --radius-sm:8px; --radius:14px; --radius-lg:22px;
     --font:"Segoe UI","Calibri",system-ui,Arial,sans-serif;
   }
+  html[data-theme="dark"]{
+    --teal:#3DBEC7; --teal-dark:#88E0E7; --coral:#FF9498; --coral-dark:#FFC2C4;
+    --gold:#FFD972; --gold-dark:#FFE9A8; --dark:#F1F5F8; --grey:#A0AEB6;
+    --light:#1F2A30; --light-2:#2A363C; --white:#243036;
+    --green:#7DD881; --green-light:#1B3A1F;
+    --red:#FF7A7A; --red-light:#3A1A1A;
+    --bg:#161E22; --card-bg:#243036; --text:#F1F5F8;
+    --shadow:0 4px 14px rgba(0,0,0,.35);
+    --shadow-lg:0 10px 30px rgba(0,0,0,.5);
+  }
   *{box-sizing:border-box}
-  html,body{margin:0;padding:0;font-family:var(--font);color:var(--dark);background:#FAFBFC;-webkit-text-size-adjust:100%}
+  html,body{margin:0;padding:0;font-family:var(--font);color:var(--text);background:var(--bg);-webkit-text-size-adjust:100%;transition:background .25s ease, color .25s ease}
+
+  /* ===== Mikro-Animationen ===== */
+  @keyframes bounce-in{0%{transform:scale(.85);opacity:0}60%{transform:scale(1.08);opacity:1}100%{transform:scale(1)}}
+  @keyframes pulse-glow{0%,100%{box-shadow:0 0 0 0 rgba(249,200,70,.0)}50%{box-shadow:0 0 0 12px rgba(249,200,70,.25)}}
+  @keyframes star-pop{0%{transform:scale(0) rotate(0deg);opacity:0}50%{transform:scale(1.3) rotate(180deg);opacity:1}100%{transform:scale(1) rotate(360deg)}}
+  @keyframes slide-up{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
+  @keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+  .anim-bounce{animation:bounce-in .45s cubic-bezier(.34,1.56,.64,1)}
+  .anim-glow{animation:pulse-glow 1.4s ease infinite}
+  .anim-star{animation:star-pop .6s ease}
+  .anim-slide{animation:slide-up .35s ease}
+  .anim-shimmer{background:linear-gradient(90deg,transparent,rgba(249,200,70,.4),transparent);background-size:200% 100%;animation:shimmer 1.5s infinite}
+  /* Sanftes Hover für interaktive Karten */
+  .card,button,.btn{transition:transform .15s ease, box-shadow .2s ease, background .2s ease}
+
+  /* ===== Level-Up-Banner (fullscreen overlay) ===== */
+  .levelup-overlay{position:fixed;inset:0;z-index:200;display:none;align-items:center;justify-content:center;
+    background:radial-gradient(circle at center,rgba(0,0,0,.5) 0%, rgba(0,0,0,.85) 100%);pointer-events:none}
+  .levelup-overlay.show{display:flex;animation:fade .3s ease}
+  .levelup-card{background:linear-gradient(135deg,var(--gold) 0%,#FFA000 100%);
+    padding:2.5rem 3rem;border-radius:24px;text-align:center;color:#fff;
+    box-shadow:0 20px 60px rgba(0,0,0,.5);animation:bounce-in .6s cubic-bezier(.34,1.56,.64,1)}
+  .levelup-card .ico{font-size:4rem;line-height:1;margin-bottom:.4rem}
+  .levelup-card h2{color:#fff;margin:.3rem 0;font-size:2.2rem;letter-spacing:.04em}
+  .levelup-card p{color:#fff;font-size:1.1rem;margin:.3rem 0;opacity:.95}
   body{min-height:100vh;line-height:1.55}
   a{color:var(--teal-dark);text-decoration:none}
   button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
@@ -491,9 +527,20 @@
     <button data-view="reflexion">Reflexion</button>
     <button data-view="dashboard">Mein Fortschritt</button>
   </div>
+  <button id="theme-toggle" title="Tag- / Nachtmodus umschalten" style="background:rgba(255,255,255,.12);width:34px;height:34px;border-radius:50%;font-size:1.1rem;display:flex;align-items:center;justify-content:center">🌙</button>
+  <button id="sound-toggle" title="Sound an/aus" style="background:rgba(255,255,255,.12);width:34px;height:34px;border-radius:50%;font-size:1.1rem;display:flex;align-items:center;justify-content:center">🔊</button>
   <div class="user-chip" id="user-chip" title="Profil bearbeiten">
     <div class="av" id="u-av">🦊</div>
     <span id="u-name">Hi</span>
+  </div>
+</div>
+
+<!-- Level-Up-Overlay (kurzer Fullscreen-Burst) -->
+<div class="levelup-overlay" id="levelup-overlay">
+  <div class="levelup-card">
+    <div class="ico" id="lvl-ico">🚀</div>
+    <h2 id="lvl-title">LEVEL UP!</h2>
+    <p id="lvl-subtitle">Du bist jetzt …</p>
   </div>
 </div>
 
@@ -979,6 +1026,9 @@ const DEFAULT_STATE = {
   name: "Forscher/in", avatar: "🦊", createdAt: null,
   stars: 0, totalMinutes: 0, totalCorrect: 0, totalAnswered: 0,
   recentAnswers: [],              // letzte 30 Antworten als 1=richtig, 0=falsch – für aktuelle Quote
+  theme: "light",                 // "light" | "dark"
+  soundOn: true,                  // Sound-Feedback an/aus
+  lastLevel: 1,                   // zuletzt erreichtes Level – für Level-Up-Erkennung
   streak: 0, lastActiveDate: null, activeDates: [],
   diagnosis: {},                  // {1: "g"|"y"|"r", ...}
   stations: {},                   // {id: {progress:0..100, done:bool, completedSteps:[]}}
@@ -1035,6 +1085,7 @@ function earnAchievement(id){
 
 /* ==== Sterne / Antwort-Buchhaltung ==== */
 function recordAnswer(isCorrect){
+  const oldLevel = getLevel(state.stars).current.n;
   state.totalAnswered++;
   if(isCorrect){ state.totalCorrect++; state.stars++; }
   /* Rolling Window: nur die letzten 30 Antworten behalten,
@@ -1044,7 +1095,90 @@ function recordAnswer(isCorrect){
   if(state.recentAnswers.length > 30) state.recentAnswers.shift();
   if(state.stars >= 50) earnAchievement("stars50");
   pingActivity();
+  /* Sound + Level-Up-Check */
+  if(typeof playSound === "function") playSound(isCorrect ? "good" : "bad");
+  const newLevel = getLevel(state.stars).current.n;
+  if(newLevel > oldLevel && typeof triggerLevelUp === "function") triggerLevelUp(newLevel);
   saveState();
+}
+
+/* ==== Sound-System (Web Audio API, keine externen Assets) ==== */
+let __audioCtx = null;
+function audioCtx(){
+  if(!__audioCtx){
+    try { __audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
+    catch(e){ return null; }
+  }
+  return __audioCtx;
+}
+function playSound(name){
+  if(!state.soundOn) return;
+  const ctx = audioCtx(); if(!ctx) return;
+  /* Auf User-Interaktion warten, falls Context noch suspended */
+  if(ctx.state === "suspended"){ ctx.resume().catch(()=>{}); }
+  const now = ctx.currentTime;
+  function blip(freq, dur, type, vol){
+    const o = ctx.createOscillator(); const g = ctx.createGain();
+    o.type = type || "sine"; o.frequency.value = freq;
+    g.gain.setValueAtTime(0, now);
+    g.gain.linearRampToValueAtTime(vol || 0.12, now + 0.01);
+    g.gain.exponentialRampToValueAtTime(0.0001, now + dur);
+    o.connect(g).connect(ctx.destination);
+    o.start(now); o.stop(now + dur + 0.02);
+  }
+  if(name === "good"){      /* zweistufiges Ping „dö-ding" */
+    blip(659.25, 0.10, "sine", 0.08);                                  // E5
+    setTimeout(() => blip(987.77, 0.18, "sine", 0.10), 80);             // B5
+  } else if(name === "bad"){
+    blip(220, 0.18, "sine", 0.07);                                      // weiches A3, kein „böses" Geräusch
+  } else if(name === "star"){
+    blip(1318.51, 0.08, "triangle", 0.09);                              // E6 kurz
+  } else if(name === "levelup"){
+    [523.25, 659.25, 783.99, 1046.50].forEach((f,i) =>                  // Fanfare C5-E5-G5-C6
+      setTimeout(() => blip(f, 0.22, "triangle", 0.10), i*100));
+  } else if(name === "click"){
+    blip(800, 0.04, "square", 0.04);
+  }
+}
+
+/* ==== Theme (Tag/Nacht) ==== */
+function applyTheme(theme){
+  document.documentElement.setAttribute("data-theme", theme === "dark" ? "dark" : "light");
+  const btn = document.getElementById("theme-toggle");
+  if(btn) btn.textContent = theme === "dark" ? "☀️" : "🌙";
+}
+function toggleTheme(){
+  state.theme = (state.theme === "dark") ? "light" : "dark";
+  applyTheme(state.theme);
+  saveState();
+  playSound("click");
+}
+function applySoundButton(){
+  const btn = document.getElementById("sound-toggle");
+  if(btn) btn.textContent = state.soundOn ? "🔊" : "🔈";
+}
+function toggleSound(){
+  state.soundOn = !state.soundOn;
+  applySoundButton();
+  saveState();
+  if(state.soundOn) playSound("good");
+}
+
+/* ==== Level-Up-Banner ==== */
+function triggerLevelUp(newLevelN){
+  const lv = LEVELS.find(l => l.n === newLevelN) || LEVELS[0];
+  const overlay = document.getElementById("levelup-overlay");
+  if(overlay){
+    document.getElementById("lvl-ico").textContent = lv.ico;
+    document.getElementById("lvl-title").textContent = "LEVEL " + lv.n + " · " + lv.name;
+    document.getElementById("lvl-subtitle").textContent = "Geschafft! Du steigst auf zum " + lv.name + ".";
+    overlay.classList.add("show");
+    setTimeout(() => overlay.classList.remove("show"), 2600);
+  }
+  playSound("levelup");
+  state.lastLevel = newLevelN;
+  /* Großes Konfetti */
+  if(typeof celebrate === "function") celebrate(180);
 }
 
 /* Aktuelle Quote: gleitender Durchschnitt der letzten 20 Antworten.
@@ -1139,28 +1273,49 @@ function toast(msg){
   setTimeout(()=>t.remove(), 2800);
 }
 
-/* Konfetti */
-function celebrate(){
+/* Konfetti – jetzt mit konfigurierbarer Anzahl und längerer Dauer.
+   `n` Standardwert 120; für Level-Up wird mit ~180 gefeiert. */
+function celebrate(n){
+  n = n || 120;
   const c = $("#confetti"); c.classList.remove("hidden");
   const ctx = c.getContext("2d");
   c.width = innerWidth; c.height = innerHeight;
-  const pieces = Array.from({length:90}, ()=>({
+  /* Farben + Sterne für mehr Spielzeug-Optik */
+  const colors = ["#F9C846","#F96167","#028090","#01566A","#43A047","#FF9498","#FFD972"];
+  const pieces = Array.from({length:n}, ()=>({
     x: Math.random()*c.width, y: -20-Math.random()*200,
-    vx:(Math.random()-.5)*4, vy:2+Math.random()*4,
-    s: 4+Math.random()*6,
-    col:["#F9C846","#F96167","#028090","#01566A","#43A047"][Math.floor(Math.random()*5)],
-    r: Math.random()*6.28
+    vx:(Math.random()-.5)*6, vy:2+Math.random()*5,
+    s: 4+Math.random()*8,
+    col: colors[Math.floor(Math.random()*colors.length)],
+    r: Math.random()*6.28,
+    vr: (Math.random()-.5)*.18,
+    shape: Math.random() < 0.25 ? "star" : "rect"
   }));
   let t=0;
+  const max = 220;
   function frame(){
     t++; ctx.clearRect(0,0,c.width,c.height);
     pieces.forEach(p=>{
-      p.x+=p.vx; p.y+=p.vy; p.r+=.05;
-      ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.r);
-      ctx.fillStyle=p.col; ctx.fillRect(-p.s/2,-p.s/2,p.s,p.s);
+      p.x+=p.vx; p.y+=p.vy; p.r+=p.vr;
+      p.vy += 0.06; /* leichte Schwerkraft */
+      const alpha = t > max-40 ? Math.max(0, (max-t)/40) : 1;
+      ctx.save(); ctx.globalAlpha = alpha; ctx.translate(p.x,p.y); ctx.rotate(p.r);
+      ctx.fillStyle = p.col;
+      if(p.shape === "star"){
+        ctx.beginPath();
+        for(let i=0; i<5; i++){
+          const a = (i*2*Math.PI)/5 - Math.PI/2;
+          const a2 = a + Math.PI/5;
+          ctx.lineTo(Math.cos(a)*p.s, Math.sin(a)*p.s);
+          ctx.lineTo(Math.cos(a2)*p.s/2.4, Math.sin(a2)*p.s/2.4);
+        }
+        ctx.closePath(); ctx.fill();
+      } else {
+        ctx.fillRect(-p.s/2,-p.s/2,p.s,p.s);
+      }
       ctx.restore();
     });
-    if(t<140) requestAnimationFrame(frame);
+    if(t<max) requestAnimationFrame(frame);
     else c.classList.add("hidden");
   }
   frame();
@@ -2510,8 +2665,19 @@ function boot(){
   /* Default-Profil falls leer */
   if(!state.name) state.name = "Forscher/in";
   if(!state.avatar) state.avatar = "🦊";
+  if(state.theme === undefined) state.theme = "light";
+  if(state.soundOn === undefined) state.soundOn = true;
+  if(state.lastLevel === undefined) state.lastLevel = getLevel(state.stars||0).current.n;
   /* Topbar definitiv sichtbar */
   $("#topbar").classList.remove("hidden");
+  /* Theme & Sound initial anwenden */
+  applyTheme(state.theme);
+  applySoundButton();
+  /* Toggle-Buttons binden */
+  const tt = document.getElementById("theme-toggle");
+  if(tt) tt.onclick = toggleTheme;
+  const st_btn = document.getElementById("sound-toggle");
+  if(st_btn) st_btn.onclick = toggleSound;
   refreshUserChip();
   pingActivity();
   saveState();
@@ -4395,17 +4561,11 @@ window.QUESTION_POOL = [
   {cat:"Runden", type:"input", q:"Runde 17 850 auf Tausender:", a:"18000"},
   {cat:"Runden", type:"input", q:"Runde 86 auf Zehner:", a:"90"},
   {cat:"Runden", type:"input", q:"Runde 131 auf Zehner:", a:"130"},
-
-  /* ===== Vergleichen / Ordnen (GS Kl. 4) ===== */
-  {cat:"Vergleichen", type:"mc", q:"Welches Zeichen passt: 8 091 ☐ 8 109?", opts:["<",">","="," keins"], a:0},
-  {cat:"Vergleichen", type:"mc", q:"Welches Zeichen passt: 23 400 ☐ 23 040?", opts:["<",">","="," keins"], a:1},
-  {cat:"Vergleichen", type:"mc", q:"Welche Aussage stimmt?", opts:["100 000 < 99 999","100 000 > 99 999","100 000 = 99 999","Nicht vergleichbar"], a:1},
   {cat:"Vergleichen", type:"mc", q:"Welche Zahl ist am größten?", opts:["3 421","3 241","3 412","3 124"], a:0},
   {cat:"Ordnen",    type:"input", q:"Sortiere klein → groß: 4 825, 4 285, 4 528, 4 852, 4 258. Die kleinste?", a:"4258"},
   {cat:"Ordnen",    type:"input", q:"Sortiere klein → groß: 4 825, 4 285, 4 528, 4 852, 4 258. Die größte?", a:"4852"},
   {cat:"Ordnen",    type:"input", q:"Sortiere: 3 421, 3 241, 3 412, 3 124, 3 142. Die größte?", a:"3421"},
 
-  /* ===== Kleines 1×1 (GS Kl. 3/4) ===== */
   {cat:"1×1", type:"input", q:"7 · 8 = ?", a:"56"},
   {cat:"1×1", type:"input", q:"9 · 6 = ?", a:"54"},
   {cat:"1×1", type:"input", q:"6 · 9 = ?", a:"54"},
@@ -4419,7 +4579,6 @@ window.QUESTION_POOL = [
   {cat:"1×1", type:"input", q:"Setze ein: ___ · 7 = 56", a:"8"},
   {cat:"1×1", type:"input", q:"Setze ein: 9 · ___ = 81", a:"9"},
 
-  /* ===== Geteilt im Kopf (GS Kl. 4) ===== */
   {cat:"Geteilt", type:"input", q:"56 : 8 = ?", a:"7"},
   {cat:"Geteilt", type:"input", q:"81 : 9 = ?", a:"9"},
   {cat:"Geteilt", type:"input", q:"42 : 7 = ?", a:"6"},
@@ -4428,7 +4587,6 @@ window.QUESTION_POOL = [
   {cat:"Geteilt", type:"input", q:"64 : 8 = ?", a:"8"},
   {cat:"Geteilt", type:"input", q:"Setze ein: 42 : ___ = 7", a:"6"},
 
-  /* ===== Plus/Minus im Kopf bis 1000 (GS Kl. 4) ===== */
   {cat:"Plus/Minus", type:"input", q:"83 + 47 = ?", a:"130"},
   {cat:"Plus/Minus", type:"input", q:"120 + 95 = ?", a:"215"},
   {cat:"Plus/Minus", type:"input", q:"500 − 78 = ?", a:"422"},
@@ -4437,20 +4595,17 @@ window.QUESTION_POOL = [
   {cat:"Plus/Minus", type:"input", q:"912 − 287 = ?", a:"625"},
   {cat:"Plus/Minus", type:"input", q:"7 · 6 + 9 = ?", a:"51"},
 
-  /* ===== Schriftliche Division (GS Kl. 4) ===== */
   {cat:"Division schriftl.", type:"input", q:"348 : 6 = ?", a:"58"},
   {cat:"Division schriftl.", type:"input", q:"476 : 4 = ?", a:"119"},
   {cat:"Division schriftl.", type:"input", q:"902 : 7 (ohne Rest) = ?", a:"128"},
   {cat:"Division schriftl.", type:"mc",    q:"725 : 4 mit Rest = ?", opts:["180 Rest 5","181 Rest 1","182 Rest 2","181 ohne Rest"], a:1},
   {cat:"Division schriftl.", type:"input", q:"Probe zu 348 : 6 = 58: 6 · 58 = ?", a:"348"},
 
-  /* ===== Teilbarkeit-Grundlagen (GS Kl. 3/4) ===== */
   {cat:"Teilbarkeit", type:"mc", q:"Welche Zahl ist durch 5 teilbar?", opts:["27","42","65","83"], a:2},
   {cat:"Teilbarkeit", type:"mc", q:"Welche Zahl ist durch 10 teilbar?", opts:["35","68","70","106"], a:2},
   {cat:"Teilbarkeit", type:"mc", q:"Welche Zahl ist durch 2 teilbar?", opts:["31","45","87","94"], a:3},
   {cat:"Teilbarkeit", type:"mc", q:"Welche Zahl ist durch 3 teilbar?", opts:["17","31","45","82"], a:2},
 
-  /* ===== Einfache Sachaufgaben (GS Kl. 4) ===== */
   {cat:"Sachaufgabe", type:"input", q:"Eine Tafel Schokolade kostet 1 €. Du zahlst mit 5 €. Wie viel Wechselgeld (in €)?", a:"4"},
   {cat:"Sachaufgabe", type:"input", q:"Pizza für 8 Kinder, jeder bekommt 3 Stücke. Wie viele Stücke insgesamt?", a:"24"},
   {cat:"Sachaufgabe", type:"input", q:"96 Kuchenstücke, 12 Kinder. Wie viele pro Kind?", a:"8"},
@@ -4460,53 +4615,6 @@ window.QUESTION_POOL = [
   {cat:"Sachaufgabe", type:"input", q:"Eine Klasse hat 24 Kinder. Sie teilen sich in 4 Gruppen auf. Wie viele pro Gruppe?", a:"6"},
   {cat:"Sachaufgabe", type:"input", q:"Du brauchst 250 ml pro Becher, 4 Becher voll. Wie viele ml insgesamt?", a:"1000"},
 
-  //* ===== Erweiterungen: andere Zahlen als in den Stationen ===== */
-  {cat:"Stellenwert", type:"mc", q:"Welche Ziffer steht in 56 304 an der Hunderterstelle?", opts:["5","6","3","0"], a:2},
-  {cat:"Stellenwert", type:"mc", q:"Welche Ziffer steht in 718 295 an der Zehntausenderstelle?", opts:["7","1","8","2"], a:1},
-  {cat:"Stellenwert", type:"input", q:"Schreibe in Ziffern: „zweihundertvierundsechzigtausendzwölf” (ohne Leerzeichen)", a:"264012"},
-  {cat:"Stellenwert", type:"input", q:"Schreibe in Ziffern: „achtzigtausendsiebenhundert” (ohne Leerzeichen)", a:"80700"},
-  {cat:"Stellenwert", type:"mc", q:"Welchen Wert hat die 6 in 64 802?", opts:["6","60","600","60 000"], a:3},
-
-  {cat:"Zahlenstrahl", type:"input", q:"Skala 0–600, 6 Striche bis 600. Pfeil beim 4. Strich. Welche Zahl?", a:"400"},
-  {cat:"Zahlenstrahl", type:"input", q:"Skala 0–50, 5 Striche. Pfeil beim 3. Strich. Welche Zahl?", a:"30"},
-  {cat:"Zahlenstrahl", type:"mc", q:"Welche Zahl liegt zwischen 4 700 und 4 720?", opts:["4 695","4 710","4 725","4 700"], a:1},
-
-  {cat:"Runden", type:"input", q:"Runde 425 auf Hunderter:", a:"400"},
-  {cat:"Runden", type:"input", q:"Runde 8 760 auf Hunderter:", a:"8800"},
-  {cat:"Runden", type:"input", q:"Runde 28 350 auf Tausender:", a:"28000"},
-  {cat:"Runden", type:"input", q:"Runde 729 auf Zehner:", a:"730"},
-  {cat:"Runden", type:"input", q:"Überschlag auf Hunderter: 312 + 489 ≈", a:"800"},
-
-  {cat:"Vergleichen", type:"mc", q:"Welches Zeichen passt: 6 405 ☐ 6 504?", opts:["<",">","="," keins"], a:0},
-  {cat:"Vergleichen", type:"mc", q:"Welche Zahl ist am größten?", opts:["5 207","5 270","5 027","5 720"], a:3},
-  {cat:"Ordnen", type:"input", q:"Sortiere klein → groß: 7 105, 7 015, 7 510, 7 150, 7 501. Die kleinste?", a:"7015"},
-  {cat:"Ordnen", type:"input", q:"Sortiere: 12 050, 12 500, 12 005, 12 055, 12 505. Die größte?", a:"12505"},
-
-  {cat:"1×1", type:"input", q:"3 · 8 = ?", a:"24"},
-  {cat:"1×1", type:"input", q:"4 · 8 = ?", a:"32"},
-  {cat:"1×1", type:"input", q:"3 · 9 = ?", a:"27"},
-  {cat:"1×1", type:"input", q:"2 · 9 = ?", a:"18"},
-  {cat:"1×1", type:"input", q:"5 · 8 = ?", a:"40"},
-  {cat:"1×1", type:"input", q:"Setze ein: 6 · ___ = 42", a:"7"},
-  {cat:"1×1", type:"input", q:"Setze ein: ___ · 8 = 64", a:"8"},
-
-  {cat:"Geteilt", type:"input", q:"35 : 5 = ?", a:"7"},
-  {cat:"Geteilt", type:"input", q:"54 : 6 = ?", a:"9"},
-  {cat:"Geteilt", type:"input", q:"28 : 4 = ?", a:"7"},
-  {cat:"Geteilt", type:"input", q:"36 : 6 = ?", a:"6"},
-  {cat:"Geteilt", type:"input", q:"45 : 9 = ?", a:"5"},
-
-  {cat:"Plus/Minus", type:"input", q:"57 + 68 = ?", a:"125"},
-  {cat:"Plus/Minus", type:"input", q:"234 + 459 = ?", a:"693"},
-  {cat:"Plus/Minus", type:"input", q:"700 − 234 = ?", a:"466"},
-  {cat:"Plus/Minus", type:"input", q:"480 − 197 = ?", a:"283"},
-  {cat:"Plus/Minus", type:"input", q:"540 + 280 = ?", a:"820"},
-  {cat:"Plus/Minus", type:"input", q:"912 − 487 = ?", a:"425"},
-
-  {cat:"Teilbarkeit", type:"mc", q:"Welche Zahl ist durch 5 teilbar?", opts:["48","73","85","91"], a:2},
-  {cat:"Teilbarkeit", type:"mc", q:"Welche Zahl ist durch 3 teilbar?", opts:["52","61","48","79"], a:2},
-  {cat:"Teilbarkeit", type:"mc", q:"Welche Zahl ist durch 2 teilbar?", opts:["57","73","91","68"], a:3},
-
   {cat:"Sachaufgabe", type:"input", q:"Du hast 8 € und kaufst 4 Lutscher für je 1 €. Wie viel Geld bleibt?", a:"4"},
   {cat:"Sachaufgabe", type:"input", q:"3 Klassen mit je 24 Kindern fahren zur Klassenfahrt. Wie viele Kinder insgesamt?", a:"72"},
   {cat:"Sachaufgabe", type:"input", q:"Ein Buch hat 192 Seiten. Du liest 24 Seiten pro Tag. Wie viele Tage brauchst du?", a:"8"},
@@ -4514,6 +4622,1072 @@ window.QUESTION_POOL = [
   {cat:"Sachaufgabe", type:"input", q:"Im Bus sitzen 38 Personen. An der nächsten Haltestelle steigen 14 aus. Wie viele sind noch drin?", a:"24"},
 ];
 console.log("Aufgabenpool (Klasse-4-Wiederholung) geladen:", window.QUESTION_POOL.length, "Aufgaben");
+</script>
+
+<!-- ============ PART 4: FLASH-FEATURES (Wow-Fakt, Tricks, Schatzkarte, …) ============ -->
+<script id="part-flash">
+/* ===== Etappe 2: Wow-Fakt des Tages =====
+   60 Karten · pro Tag wird deterministisch eine ausgewählt. */
+window.WOW_FAKTEN = [
+  {ico:"🫀", t:"Dein Herz hat heute schon ungefähr 100 000-mal geschlagen.", e:"70 Schläge pro Minute · 60 Minuten · 24 Stunden ≈ 100 800."},
+  {ico:"🌬️", t:"Du machst etwa 23 000 Atemzüge am Tag.", e:"16 Atemzüge pro Minute · 1 440 Minuten am Tag."},
+  {ico:"👁️", t:"Deine Augen blinzeln rund 17 000-mal pro Tag.", e:"Ca. 12 Mal pro Minute, im Wachzustand etwa 16 Stunden."},
+  {ico:"🦷", t:"Du wirst im Leben zwei Mal Zähne bekommen: 20 Milchzähne und 32 bleibende.", e:"Das macht 52 Zähne insgesamt — wenn man sie alle zählt."},
+  {ico:"🧠", t:"In deinem Gehirn arbeiten etwa 86 Milliarden Nervenzellen.", e:"86 000 000 000 — eine 86 mit neun Nullen."},
+  {ico:"💧", t:"Dein Körper ist zu rund 70 % Wasser.", e:"Wenn du 35 kg wiegst, sind ca. 24 Liter Wasser in dir."},
+  {ico:"🌍", t:"Der Erdumfang am Äquator ist 40 075 km.", e:"Mit 100 km/h Autofahrt rund um die Welt: über 400 Stunden."},
+  {ico:"🌕", t:"Der Mond ist im Schnitt 384 000 km von der Erde entfernt.", e:"Mit dem Auto bei 100 km/h: 3 840 Stunden = 160 Tage."},
+  {ico:"☀️", t:"Die Sonne ist 150 Millionen km entfernt.", e:"Das Licht braucht 8 Minuten 20 Sekunden bis zu uns."},
+  {ico:"🌟", t:"Unsere Milchstraße enthält etwa 200 Milliarden Sterne.", e:"Eine 2 mit elf Nullen."},
+  {ico:"🚄", t:"Der ICE kann 300 km/h schnell sein.", e:"In einer Sekunde legt er ungefähr 83 Meter zurück."},
+  {ico:"✈️", t:"Ein Verkehrsflugzeug fliegt bei rund 900 km/h.", e:"In 6 Sekunden fliegt es ein Fußballfeld weit."},
+  {ico:"🏃", t:"Beim normalen Spazieren machst du etwa 100 Schritte pro Minute.", e:"In einer Stunde sind das 6 000 Schritte."},
+  {ico:"🐝", t:"Für ein 500-g-Glas Honig fliegen Bienen rund 12 000-mal aus.", e:"Sie besuchen dafür Millionen von Blüten."},
+  {ico:"🐧", t:"Kaiserpinguine tauchen bis zu 600 Meter tief.", e:"Das ist tiefer als die meisten U-Boote tauchen können."},
+  {ico:"🐬", t:"Delfine schwimmen bis zu 60 km/h.", e:"So schnell wie ein Auto in der Stadt."},
+  {ico:"🐘", t:"Ein erwachsener afrikanischer Elefant wiegt 6 000 kg.", e:"So schwer wie 75 Schüler:innen zusammen (à 40 kg)."},
+  {ico:"🦒", t:"Giraffen und Menschen haben gleich viele Halswirbel: 7.", e:"Bei der Giraffe sind sie nur viel länger — jeder ca. 25 cm."},
+  {ico:"🐌", t:"Eine Weinbergschnecke schafft etwa 7 cm pro Minute.", e:"Bis zum Mond bräuchte sie 14 Millionen Jahre."},
+  {ico:"🦋", t:"Monarchfalter ziehen 4 000 km in den Süden.", e:"Mit Flügeln so dünn wie eine Plastiktüte."},
+  {ico:"🛏️", t:"Ein Mensch verschläft etwa 25 Jahre seines Lebens.", e:"Bei 8 Stunden pro Nacht macht das ein Drittel aus."},
+  {ico:"📚", t:"Wer eine Stunde am Tag liest, schafft ca. 30 Bücher pro Jahr.", e:"60 Minuten · 365 Tage = 21 900 Lese-Minuten."},
+  {ico:"🎒", t:"Ein Schulranzen wiegt im Schnitt 5 kg.", e:"In einem Schuljahr trägst du ihn ca. 1 000 kg weit (200 Tage)."},
+  {ico:"⏰", t:"Ein Tag hat 86 400 Sekunden.", e:"24 · 60 · 60 — versuche, eine Million Sekunden zu warten: 11 Tage und 14 Stunden."},
+  {ico:"🌡️", t:"Deine Körpertemperatur ist 37 °C.", e:"Schon 2 °C mehr (39 °C) ist Fieber — kleine Zahl, große Wirkung."},
+  {ico:"💶", t:"Eine 1-Cent-Münze ist 1,67 mm dick.", e:"600 davon übereinander gestapelt = 1 Meter Höhe."},
+  {ico:"⚽", t:"Im Dynamo-Stadion in Dresden passen 32 000 Zuschauer.", e:"Das ist ungefähr die Schülerzahl von 60 großen Schulen."},
+  {ico:"🌧️", t:"1 mm Regen heißt: 1 Liter Wasser auf 1 Quadratmeter.", e:"Auf einen Schulhof von 1 000 m² fallen also 1 000 Liter."},
+  {ico:"❄️", t:"Zwei Schneeflocken waren noch nie genau gleich.", e:"Jede einzelne ist ein einzigartiges Sechseck-Muster."},
+  {ico:"🦠", t:"In deinem Darm leben rund 100 Billionen Bakterien.", e:"Eine Zahl mit 14 Nullen — mehr als Sterne in der Milchstraße."},
+  {ico:"🍅", t:"Eine Tomate besteht zu 95 % aus Wasser.", e:"Eine 100-g-Tomate enthält 95 g Wasser und nur 5 g Rest."},
+  {ico:"🍰", t:"Eine Pizza hat meistens 8 Stücke.", e:"Für deine Klasse mit 24 Kindern brauchst du also 6 Pizzen, wenn jeder 2 Stücke isst."},
+  {ico:"🔢", t:"π beginnt mit 3,14159 26535 89793 …", e:"Hinter dem Komma kommen unendlich viele Ziffern — und niemand hat ein Muster gefunden."},
+  {ico:"🃏", t:"Ein Stapel mit 52 Spielkarten kann auf 8 · 10⁶⁷ verschiedene Arten gemischt werden.", e:"Mehr als Atome in deinem Körper."},
+  {ico:"🎲", t:"Auf einem Würfel zeigt jede Augenzahl 1 bis 6.", e:"Im Schnitt würfelst du also 3,5 Augen — auch wenn das nie passieren kann."},
+  {ico:"🌊", t:"1 Liter Meerwasser wiegt rund 1 030 Gramm.", e:"Süßwasser wiegt genau 1 000 Gramm — der Unterschied kommt vom Salz."},
+  {ico:"⛰️", t:"Der Mount Everest ist 8 849 m hoch.", e:"Wenn du ihn mit 4 km/h erwanderst, brauchst du 88 Stunden Aufstieg."},
+  {ico:"🌊", t:"Der Marianengraben ist fast 11 000 m tief.", e:"Tiefer als der Everest hoch ist — 200 m mehr."},
+  {ico:"🚀", t:"Damit eine Rakete in den Orbit kommt, muss sie 28 000 km/h schnell fliegen.", e:"Das sind fast 8 km pro Sekunde."},
+  {ico:"🐢", t:"Galápagos-Riesenschildkröten werden 150 Jahre alt.", e:"Manche, die heute leben, kannten noch Charles Darwin."},
+  {ico:"🌽", t:"Auf einem Maiskolben sitzen 600 bis 1 000 Körner.", e:"In geraden Reihen — meist genau 16 Reihen pro Kolben."},
+  {ico:"🚌", t:"In einen Linienbus passen rund 50 Personen.", e:"Für eine Schule mit 400 Kindern braucht man 8 Busse."},
+  {ico:"📱", t:"Menschen entsperren ihr Smartphone ca. 80-mal pro Tag.", e:"Bei 16 wachen Stunden also alle 12 Minuten."},
+  {ico:"🎈", t:"1 m³ Helium kann etwa 1 kg in die Luft heben.", e:"Für ein 30-kg-Kind brauchst du 30 m³ Helium — ein Würfel mit 3 m Kantenlänge."},
+  {ico:"🏊", t:"Ein olympisches Schwimmbecken fasst 2 500 000 Liter Wasser.", e:"50 m lang · 25 m breit · 2 m tief."},
+  {ico:"⚡", t:"Ein Blitz ist bis zu 30 000 °C heiß.", e:"Fünfmal heißer als die Sonnenoberfläche (6 000 °C)."},
+  {ico:"📖", t:"Ein Buch mit 200 Seiten enthält rund 60 000 Wörter.", e:"300 Wörter pro Seite · 200 Seiten."},
+  {ico:"🍫", t:"Eine 100-g-Tafel Schokolade liefert ca. 540 kcal.", e:"Du musst dafür etwa 1 Stunde Fahrrad fahren."},
+  {ico:"🥛", t:"Aus 10 Litern Milch macht man 1 kg Käse.", e:"Der Rest geht ins Molken-Pulver oder die Verarbeitung."},
+  {ico:"🦷", t:"Du putzt in einem ganzen Jahr ungefähr 730-mal Zähne.", e:"2-mal pro Tag · 365 Tage."},
+  {ico:"📐", t:"Ein DIN-A4-Blatt ist 21 cm · 29,7 cm groß.", e:"Faltest du es einmal in der Mitte, hast du A5; nochmal A6."},
+  {ico:"🎒", t:"Ein Stift schreibt etwa 50 000 Meter, bevor die Mine leer ist.", e:"Das sind 50 Kilometer Strich auf dem Papier."},
+  {ico:"🏛️", t:"Im Kölner Dom passen rund 4 000 Menschen rein.", e:"Er ist 157 Meter hoch — höher als ein 40-stöckiges Haus."},
+  {ico:"🦓", t:"Jedes Zebra hat ein einzigartiges Streifenmuster.", e:"Wie ein Fingerabdruck — keine zwei sind gleich."},
+  {ico:"🌳", t:"Der älteste Baum der Welt (Methusalem) ist über 4 800 Jahre alt.", e:"Er wuchs schon, als die Pyramiden gebaut wurden."},
+  {ico:"🌎", t:"In Sachsen leben rund 4 100 000 Menschen.", e:"Das sind 4,1 Millionen — verteilt auf 18 400 km² Fläche."},
+  {ico:"⌛", t:"Eine Million Sekunden sind 11 Tage und 13 Stunden.", e:"Eine Milliarde Sekunden sind dagegen 32 Jahre."},
+  {ico:"🧊", t:"1 Liter Wasser wird beim Gefrieren zu 1,09 Liter Eis.", e:"Deshalb platzen volle Wasserflaschen, wenn sie einfrieren."},
+  {ico:"🔭", t:"Im Universum gibt es schätzungsweise 2 Billionen Galaxien.", e:"Und in jeder davon Milliarden von Sternen."},
+  {ico:"🏃", t:"Ein 100-Meter-Sprinter braucht für die Strecke ca. 10 Sekunden.", e:"Das ist 10 m pro Sekunde oder 36 km/h."},
+];
+
+window.getWowFakt = function(){
+  const d = new Date();
+  /* Tag im Jahr (1–366) */
+  const start = new Date(d.getFullYear(), 0, 0);
+  const diff = d - start;
+  const day = Math.floor(diff / 86400000);
+  return WOW_FAKTEN[day % WOW_FAKTEN.length];
+};
+
+window.renderWowKarte = function(){
+  const home = document.getElementById("view-home");
+  if(!home) return;
+  let card = home.querySelector(".wow-card");
+  const w = getWowFakt();
+  const html = '<div style="display:flex;align-items:flex-start;gap:.8rem">'
+    + '<div style="font-size:2.6rem;line-height:1">' + w.ico + '</div>'
+    + '<div style="flex:1;min-width:0">'
+    + '<div style="font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;opacity:.92;font-weight:700;color:#fff">Wow-Fakt des Tages</div>'
+    + '<p style="margin:.3rem 0 .25rem;font-size:1.15rem;line-height:1.4;color:#fff;font-weight:600">' + w.t + '</p>'
+    + (w.e ? '<p style="margin:0;font-size:.92rem;opacity:.92;color:#fff">' + w.e + '</p>' : '')
+    + '</div></div>';
+  if(!card){
+    card = document.createElement("div");
+    card.className = "card wow-card anim-slide";
+    card.style.cssText = "background:linear-gradient(135deg,#F9C846 0%,#FFA000 100%);color:#fff;border:none;margin-bottom:1.2rem;box-shadow:var(--shadow-lg)";
+    /* an erster Stelle einfügen — ganz oben auf der Startseite */
+    home.insertBefore(card, home.firstChild);
+  }
+  card.innerHTML = html;
+};
+
+/* Monkey-Patch: nach renderHome immer die Wow-Karte (re-)rendern */
+(function(){
+  const __origRH = window.renderHome;
+  if(typeof __origRH === "function"){
+    window.renderHome = function(){
+      __origRH.apply(this, arguments);
+      try { renderWowKarte(); } catch(e){ console.warn("Wow-Karte:", e); }
+    };
+  }
+})();
+
+/* ===== Etappe 3: Ich erkläre einem Erwachsenen ===== */
+window.ERKLAER_SKRIPTE = {
+  diag:        "Beim Diagnose-Parcours habe ich getestet, was ich schon kann — das hilft mir zu sehen, wo ich noch üben muss.",
+  riesen:      "Stell dir vor, du müsstest 305 048 in Worten sagen. Du liest sie in Dreierblöcken von rechts: erst 305 Tausend, dann 48. Eine 1 mit sechs Nullen ist eine Million.",
+  swt:         "Jede Ziffer hat einen Wert, der von ihrer Stelle abhängt. In 4 728 steht die 4 für 4 000, die 7 für 700, die 2 für 20 und die 8 für 8.",
+  zs:          "Auf einem Zahlenstrahl wachsen Zahlen von links nach rechts. Bevor ich eine Zahl einzeichne, schaue ich auf die Skala: Wenn zwischen 0 und 1 000 zehn Markierungen sind, ist jede Markierung 100 wert.",
+  runden:      "Beim Runden auf Hunderter schaue ich auf die Zehnerstelle. Ist sie 0 bis 4, runde ich ab; ist sie 5 bis 9, runde ich auf. 1 749 wird zu 1 700, 6 480 wird zu 6 500.",
+  ordnen:      "Ich vergleiche Zahlen Stelle für Stelle. 3 421 ist größer als 3 412, weil bei gleicher Tausender- und Hunderterstelle die Zehnerstelle den Ausschlag gibt. Das Krokodil-Maul zeigt immer zur größeren Zahl.",
+  kopf:        "Im Kopfrechnen helfen mir Umkehraufgaben: Wenn 7 mal 8 gleich 56 ist, dann ist auch 56 geteilt durch 7 gleich 8 und 56 geteilt durch 8 gleich 7.",
+  schriftl:    "Beim schriftlichen Rechnen schreibe ich die Zahlen untereinander, sodass Einer unter Einer und Zehner unter Zehner stehen. Dann rechne ich Stelle für Stelle und übertrage, wenn ich darf.",
+  geschickt:   "Beim geschickten Rechnen suche ich Zahlen, die zusammen einen runden Wert geben. 25 mal 17 mal 4 rechne ich nicht der Reihe nach, sondern: 25 mal 4 = 100, dann 100 mal 17 = 1 700.",
+  div:         "Bei der Division mit Rest gehe ich Stelle für Stelle vor. Wenn nichts mehr aufgeht, bleibt ein Rest. Mit der Probe prüfe ich: Teiler mal Ergebnis plus Rest muss die Ausgangszahl ergeben.",
+  teil:        "Es gibt schnelle Regeln: Eine Zahl ist durch 2 teilbar, wenn sie gerade endet; durch 5, wenn sie auf 0 oder 5 endet; durch 3, wenn ihre Quersumme durch 3 teilbar ist.",
+  projekt:     "Ich habe selbst eine Sachaufgabe erfunden — mit einer kleinen Geschichte aus meinem Alltag, einer Rechenfrage am Ende und einem vollständigen Antwortsatz.",
+  fermi:       "Fermi-Aufgaben sind Schätzaufgaben aus dem Alltag. Es gibt nicht die eine richtige Antwort — aber ich kann sie zerlegen und mit groben Werten schätzen. Zum Beispiel: Wie viele Atemzüge machst du an einem Tag?",
+  detektiv:    "Bei Detektiv-Aufgaben kombiniere ich mehrere Bedingungen wie Quersumme, Teilbarkeit oder Spannweite, um eine geheime Zahl zu finden.",
+  magisch:     "In einem magischen Quadrat ergibt jede Zeile, jede Spalte und jede Diagonale die gleiche Summe. In einem 3 mal 3-Quadrat mit den Zahlen 1 bis 9 ist die Summe immer 15.",
+  karte2:      "Ich habe noch eine eigene Sachaufgabe zu einem anderen Thema gebaut — wieder mit Geschichte, Rechnung und Antwortsatz.",
+  "neu5-rg":   "Ich habe drei Rechengesetze kennengelernt: Kommutativ — tauschen erlaubt; Assoziativ — Klammern verschieben; Distributiv — Klammer ausmultiplizieren.",
+  "neu5-prim": "Eine Primzahl hat genau zwei Teiler: 1 und sich selbst. Jede Zahl groesser als 1 kann ich als Produkt von Primzahlen schreiben — das ist die Primfaktorzerlegung."
+};
+
+window.showErklaerModal = function(stationId){
+  const st = (typeof stationById === "function") ? stationById(stationId) : null;
+  const skript = ERKLAER_SKRIPTE[stationId] || "Erklaere einem Erwachsenen, was du heute in dieser Station gelernt hast.";
+  const title = st ? st.title : "Diese Station";
+  let ov = document.getElementById("erklaer-overlay");
+  if(!ov){
+    ov = document.createElement("div");
+    ov.id = "erklaer-overlay";
+    ov.style.cssText = "position:fixed;inset:0;z-index:180;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;padding:1rem";
+    ov.addEventListener("click", e => { if(e.target === ov) ov.style.display = "none"; });
+    document.body.appendChild(ov);
+  }
+  ov.innerHTML = '<div class="card anim-bounce" style="max-width:520px;width:100%;background:var(--card-bg);box-shadow:var(--shadow-lg)">'
+    + '<div style="display:flex;align-items:center;gap:.6rem;margin-bottom:.4rem">'
+    + '<div style="font-size:1.8rem">🗣️</div>'
+    + '<div><div style="font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:var(--coral-dark);font-weight:700">Erkläre einem Erwachsenen</div>'
+    + '<h3 style="margin:.1rem 0;color:var(--teal-dark)">' + title + '</h3></div></div>'
+    + '<p style="margin:.5rem 0;font-size:.95rem;color:var(--grey)">Schnapp dir Mama, Papa, Oma, einen Großen — wen auch immer. Lies den Satz unten laut vor oder sage es in deinen eigenen Worten:</p>'
+    + '<div class="info-box" style="background:#FFFBEB;border-left:4px solid var(--gold);font-size:1.05rem;line-height:1.5;color:var(--text)">„' + skript + '"</div>'
+    + '<div class="row" style="margin-top:.8rem;gap:.5rem">'
+    + '<button class="btn coral" id="erklaer-done">✓ Habe ich erklärt — gib mir 2 Sterne ⭐</button>'
+    + '<button class="btn outline" id="erklaer-close">Später</button>'
+    + '</div></div>';
+  ov.style.display = "flex";
+  document.getElementById("erklaer-close").onclick = ()=> ov.style.display = "none";
+  document.getElementById("erklaer-done").onclick = ()=>{
+    const key = "erklaer_" + stationId;
+    if(!state[key]){
+      state[key] = true;
+      state.stars = (state.stars||0) + 2;
+      saveState();
+      if(typeof playSound === "function") playSound("good");
+      if(typeof celebrate === "function") celebrate(80);
+      if(typeof toast === "function") toast("⭐ 2 Sterne für deine Erklärung!");
+    } else {
+      if(typeof toast === "function") toast("Diese Erklärung hast du schon gemacht — Sterne wurden bereits gutgeschrieben.");
+    }
+    ov.style.display = "none";
+  };
+};
+
+/* Monkey-Patch: nach openStation einen "Ich erkläre" Button am Ende einfügen */
+(function(){
+  const __origOpen = window.openStation;
+  if(typeof __origOpen === "function"){
+    window.openStation = function(id){
+      __origOpen.apply(this, arguments);
+      try {
+        const detail = document.getElementById("lernen-detail");
+        if(!detail || id === "diag") return;
+        let card = detail.querySelector(".erklaer-card");
+        if(card) card.remove();
+        card = document.createElement("div");
+        card.className = "card erklaer-card";
+        card.style.cssText = "margin-top:1rem;background:linear-gradient(135deg,#FFFBEB,#FFE3B0);border:none;box-shadow:var(--shadow)";
+        const wrap = document.createElement("div");
+        wrap.style.cssText = "display:flex;align-items:center;gap:.7rem;flex-wrap:wrap";
+        wrap.innerHTML = '<div style="font-size:2rem">🗣️</div>'
+          + '<div style="flex:1;min-width:200px"><div style="font-weight:700;color:var(--gold-dark);font-size:1.05rem">Erkläre einem Erwachsenen, was du gelernt hast</div>'
+          + '<div style="color:var(--text);font-size:.92rem">Mama, Papa, große Geschwister … Wenn du es erklären kannst, hast du es richtig verstanden. Dafür gibt es 2 zusätzliche Sterne ⭐⭐.</div></div>';
+        const btn = document.createElement("button");
+        btn.className = "btn coral";
+        btn.textContent = "Los geht's →";
+        btn.onclick = () => showErklaerModal(id);
+        wrap.appendChild(btn);
+        card.appendChild(wrap);
+        detail.appendChild(card);
+      } catch(e){ console.warn("Erklär-Card:", e); }
+    };
+  }
+})();
+
+/* ===== Etappe 4: Mathe-Tricks-Galerie ===== */
+window.MATHE_TRICKS = [
+  {min:5,   ico:"🔟", title:"Der Mal-Zehn-Trick",
+    text:"Wenn du eine Zahl mit 10 multiplizierst, hängst du einfach eine 0 hinten dran. Mit 100 sind es zwei Nullen, mit 1 000 sind es drei Nullen.",
+    bsp:"47 · 10 = 470   ·   8 · 100 = 800   ·   23 · 1 000 = 23 000"},
+  {min:15,  ico:"⏪", title:"Verdoppeln & Halbieren",
+    text:"Bei Multiplikation mit 5 kannst du erst halbieren und dann mit 10 multiplizieren — viel leichter im Kopf.",
+    bsp:"16 · 5 = (16 : 2) · 10 = 8 · 10 = 80   ·   24 · 5 = 12 · 10 = 120"},
+  {min:25,  ico:"✋", title:"Der 9er-Finger-Trick",
+    text:"Halte beide Hände vor dich. Möchtest du 9 · 4 wissen? Klappe den 4. Finger von links ein. Links davon: 3 Finger = 3 Zehner. Rechts davon: 6 Finger = 6 Einer. Ergebnis: 36.",
+    bsp:"9 · 1 = 09 · 9 · 2 = 18 · 9 · 3 = 27 · 9 · 7 = 63 · …"},
+  {min:40,  ico:"📐", title:"Quersumme verrät Teilbarkeit",
+    text:"Eine Zahl ist genau dann durch 3 teilbar, wenn ihre Quersumme durch 3 teilbar ist. Genauso bei 9.",
+    bsp:"117 → 1+1+7 = 9 → durch 3 und durch 9 teilbar.   ·   1 234 → 1+2+3+4 = 10 → weder noch."},
+  {min:60,  ico:"🎯", title:"Quadrate von Zahlen, die auf 5 enden",
+    text:"Bei 25², 35², 45², … nimm die Zehnerziffer, multipliziere sie mit ihrem Nachfolger und hänge 25 dran.",
+    bsp:"25² = 2·3 = 6, dann 25 anhängen → 625   ·   35² = 3·4 = 12, dann 25 → 1 225   ·   65² = 6·7 = 42 → 4 225"},
+  {min:80,  ico:"🤹", title:"Der Mal-11-Trick",
+    text:"Bei zweistelligen Zahlen × 11: schreibe die Ziffern auseinander und die Summe in die Mitte.",
+    bsp:"23 · 11 = 2_(2+3)_3 = 253   ·   45 · 11 = 4_(4+5)_5 = 495.   Wenn die Summe ≥ 10: 1 in die Zehnerstelle übertragen. 67·11 = 6_13_7 → 737."},
+  {min:100, ico:"⏫", title:"Mal-99 und mal-101",
+    text:"x · 99 = x · 100 − x.   x · 101 = x · 100 + x.   So sparst du dir aufwändige schriftliche Rechnungen.",
+    bsp:"7 · 99 = 700 − 7 = 693   ·   12 · 101 = 1 200 + 12 = 1 212"},
+  {min:130, ico:"⚖️", title:"25 % = halbieren² · 50 % = halbieren · 75 % = ¾",
+    text:"25 % einer Zahl: zweimal halbieren. 50 %: einmal halbieren. 75 %: erst die Hälfte, dann die Hälfte davon abziehen.",
+    bsp:"25 % von 80: 80 → 40 → 20.   ·   50 % von 80 = 40.   ·   75 % von 80: 80 − 20 = 60."},
+  {min:160, ico:"🪜", title:"Distributiv-Treppe",
+    text:"Multiplikationen zerlegen: zerlege einen der Faktoren in Summanden und multipliziere einzeln.",
+    bsp:"24 · 15 = 24 · 10 + 24 · 5 = 240 + 120 = 360   ·   17 · 12 = 17 · 10 + 17 · 2 = 170 + 34 = 204"},
+  {min:200, ico:"♾️", title:"Pi auf 12 Stellen merken",
+    text:"Lerne den Merksatz auswendig — die Anzahl Buchstaben pro Wort ist eine Ziffer von π: „Wie? O dies π macht ernstlich so vielen viele Mühe.“",
+    bsp:"Wie(3) · O(1) · dies(4) · π · macht(1, π selbst ist 3,14 …) … besser: „Wer kennt sehr leicht den Kreis das ist π.“ → 3,1415926"},
+  {min:250, ico:"🃏", title:"Schnellrechnen mit 5er-Bündeln",
+    text:"5 + 6 + 7 + 8 + 9 + 10 = ? Statt der Reihe nach: bündele Paare zu 15 (5+10, 6+9, 7+8) → 3 · 15 = 45.",
+    bsp:"1+2+3+…+10 = 5 Paare zu 11 = 55.   ·   1+2+…+100 = 50 Paare zu 101 = 5 050 (die berühmte Gauß-Aufgabe)."},
+  {min:320, ico:"🌙", title:"Wochentag deines Geburtstags",
+    text:"Mit ein bisschen Übung kannst du zu jedem Datum den Wochentag bestimmen (Doomsday-Methode). Für deine Klasse: probiere es an Geburtstagen aus.",
+    bsp:"Jeder Monat hat ein „Anker-Datum“ (3.1, 28.2, 7.3, 4.4, 9.5, 6.6, 11.7, 8.8, 5.9, 10.10, 7.11, 12.12) — diese Daten sind im selben Jahr alle derselbe Wochentag."}
+];
+
+window.renderTricks = function(){
+  let sec = document.getElementById("view-tricks");
+  if(!sec){
+    sec = document.createElement("section");
+    sec.id = "view-tricks";
+    sec.className = "view";
+    document.querySelector(".container").appendChild(sec);
+  }
+  /* aktive Klasse */
+  document.querySelectorAll(".view").forEach(v => v.classList.remove("active"));
+  sec.classList.add("active");
+  /* Topbar-Highlight */
+  document.querySelectorAll(".nav button").forEach(b => b.classList.remove("active"));
+  const navBtn = document.querySelector('.nav button[data-view="tricks"]');
+  if(navBtn) navBtn.classList.add("active");
+  /* Inhalt rendern */
+  const stars = state.stars || 0;
+  let html = '<h1>🧠 Mathe-Tricks-Galerie</h1>'
+    + '<p class="muted">Geheime Rechen-Tricks. Sie schalten sich frei, wenn du genug Sterne gesammelt hast — also fleißig üben!</p>'
+    + '<div class="info-box" style="background:#FFFBEB;border-left:4px solid var(--gold)">Du hast <strong>' + stars + ' Sterne</strong> gesammelt. Nächste Trick-Freischaltung: '
+    + (MATHE_TRICKS.find(t => t.min > stars) ? 'bei <strong>' + MATHE_TRICKS.find(t => t.min > stars).min + ' Sternen</strong>.</div>' : '<strong>alle freigeschaltet!</strong> ⭐</div>');
+  html += '<div style="display:grid;gap:.9rem;margin-top:.9rem">';
+  MATHE_TRICKS.forEach((t, i) => {
+    const locked = stars < t.min;
+    if(locked){
+      html += '<div class="card" style="opacity:.6;background:var(--light-2)">'
+        + '<div style="display:flex;align-items:center;gap:.6rem">'
+        + '<div style="font-size:1.8rem;filter:grayscale(1)">🔒</div>'
+        + '<div><strong style="color:var(--grey)">Trick ' + (i+1) + '</strong> — noch verschlossen<br>'
+        + '<span class="muted" style="font-size:.9rem">Sammle ' + t.min + ' Sterne, um diesen Trick freizuschalten.</span></div></div></div>';
+    } else {
+      html += '<div class="card anim-slide" style="border-left:5px solid var(--gold)">'
+        + '<div style="display:flex;align-items:flex-start;gap:.7rem">'
+        + '<div style="font-size:2.2rem;line-height:1">' + t.ico + '</div>'
+        + '<div style="flex:1"><div style="font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:var(--gold-dark);font-weight:700">Trick ' + (i+1) + ' · freigeschaltet bei ' + t.min + '⭐</div>'
+        + '<h3 style="margin:.15rem 0 .35rem;color:var(--teal-dark)">' + t.title + '</h3>'
+        + '<p style="margin:.2rem 0;color:var(--text)">' + t.text + '</p>'
+        + '<div class="info-box" style="background:#F0FAFA;border-left:3px solid var(--teal);font-family:monospace;font-size:.95rem;margin-top:.5rem">' + t.bsp + '</div>'
+        + '</div></div></div>';
+    }
+  });
+  html += '</div>';
+  sec.innerHTML = html;
+};
+
+/* Topbar-Button "Tricks" beim Boot anhängen */
+(function(){
+  const __origBoot = window.boot;
+  if(typeof __origBoot === "function"){
+    window.boot = function(){
+      __origBoot.apply(this, arguments);
+      try {
+        const nav = document.querySelector(".nav");
+        if(nav && !nav.querySelector('button[data-view="tricks"]')){
+          const btn = document.createElement("button");
+          btn.dataset.view = "tricks";
+          btn.textContent = "🧠 Tricks";
+          btn.onclick = () => renderTricks();
+          /* Vor dem "Mein Fortschritt"-Button einfügen */
+          const dashBtn = nav.querySelector('button[data-view="dashboard"]');
+          if(dashBtn) nav.insertBefore(btn, dashBtn);
+          else nav.appendChild(btn);
+        }
+      } catch(e){ console.warn("Tricks-Nav:", e); }
+    };
+    /* Falls boot schon gelaufen ist (DOMContentLoaded vorbei), direkt anhängen */
+    if(document.readyState !== "loading"){
+      try {
+        const nav = document.querySelector(".nav");
+        if(nav && !nav.querySelector('button[data-view="tricks"]')){
+          const btn = document.createElement("button");
+          btn.dataset.view = "tricks";
+          btn.textContent = "🧠 Tricks";
+          btn.onclick = () => renderTricks();
+          const dashBtn = nav.querySelector('button[data-view="dashboard"]');
+          if(dashBtn) nav.insertBefore(btn, dashBtn);
+          else nav.appendChild(btn);
+        }
+      } catch(e){}
+    }
+  }
+})();
+
+/* ===== Etappe 5: Schatzkarte mit Inseln ===== */
+window.SCHATZKARTE_INSELN = [
+  {id:"riesen",    x: 80, y:440, name:"Riesenzahlen"},
+  {id:"swt",       x:180, y:380, name:"Stellenwert"},
+  {id:"zs",        x:120, y:300, name:"Zahlenstrahl"},
+  {id:"runden",    x:230, y:230, name:"Runden"},
+  {id:"ordnen",    x:340, y:300, name:"Ordnen"},
+  {id:"kopf",      x:290, y:170, name:"Kopfrechnen"},
+  {id:"schriftl",  x:410, y:130, name:"Schriftlich"},
+  {id:"geschickt", x:510, y:230, name:"Geschickt"},
+  {id:"div",       x:610, y:310, name:"Division"},
+  {id:"teil",      x:570, y:120, name:"Teilbarkeit"},
+  {id:"projekt",   x:700, y:200, name:"Sachaufgaben"},
+  {id:"__ziel",    x:750, y: 80, name:"Ziel", isZiel:true}
+];
+
+window.renderSchatzkarte = function(){
+  let sec = document.getElementById("view-karte");
+  if(!sec){
+    sec = document.createElement("section");
+    sec.id = "view-karte";
+    sec.className = "view";
+    document.querySelector(".container").appendChild(sec);
+  }
+  document.querySelectorAll(".view").forEach(v => v.classList.remove("active"));
+  sec.classList.add("active");
+  document.querySelectorAll(".nav button").forEach(b => b.classList.remove("active"));
+  const navBtn = document.querySelector('.nav button[data-view="karte"]');
+  if(navBtn) navBtn.classList.add("active");
+
+  /* "Done"-Status pro Insel ermitteln. Die letzte Insel ist die Ziel-Insel:
+     done erst, wenn ALLE Pflicht-Stationen davor bestanden sind. */
+  const pflicht = (typeof pflichtStations === "function") ? pflichtStations() : [];
+  const allPflichtDone = pflicht.length > 0 && pflicht.every(function(s){
+    return !!(state.stations && state.stations[s.id] && state.stations[s.id].done);
+  });
+  const done = SCHATZKARTE_INSELN.map(function(isl){
+    if(isl.isZiel) return allPflichtDone;
+    return !!(state.stations && state.stations[isl.id] && state.stations[isl.id].done);
+  });
+  let lastDoneIdx = -1;
+  done.forEach(function(d, i){ if(d) lastDoneIdx = i; });
+  /* Die "nächste" Insel: erste, die nicht done ist */
+  let nextIdx = done.findIndex(function(d){ return !d; });
+  if(nextIdx < 0) nextIdx = SCHATZKARTE_INSELN.length - 1;
+
+  /* SVG bauen */
+  let parts = [];
+  parts.push('<svg viewBox="0 0 820 500" style="width:100%;height:auto;background:linear-gradient(180deg,#B3E5FC 0%,#81D4FA 60%,#4FC3F7 100%);border-radius:14px;display:block;box-shadow:var(--shadow)">');
+  parts.push('<path d="M0,450 Q200,440 400,455 T800,450" stroke="#E1F5FE" fill="none" stroke-width="3" opacity=".6"/>');
+  parts.push('<path d="M0,470 Q200,460 400,475 T800,470" stroke="#fff" fill="none" stroke-width="2" opacity=".5"/>');
+  parts.push('<g opacity=".85"><ellipse cx="120" cy="60" rx="40" ry="14" fill="#fff"/><ellipse cx="150" cy="55" rx="30" ry="12" fill="#fff"/></g>');
+  parts.push('<g opacity=".85"><ellipse cx="630" cy="40" rx="35" ry="12" fill="#fff"/><ellipse cx="660" cy="45" rx="28" ry="10" fill="#fff"/></g>');
+  /* Schatz-Truhe-Symbol oberhalb der Ziel-Insel */
+  const zielInsel = SCHATZKARTE_INSELN[SCHATZKARTE_INSELN.length - 1];
+  parts.push('<text x="' + zielInsel.x + '" y="' + (zielInsel.y - 42) + '" text-anchor="middle" font-size="28">🏆</text>');
+  /* Reise-Pfad */
+  let pathD = "M" + SCHATZKARTE_INSELN.map(function(i){ return i.x + "," + i.y; }).join(" L");
+  parts.push('<path d="' + pathD + '" stroke="#F9C846" stroke-width="4" fill="none" stroke-dasharray="8 5" opacity=".7"/>');
+  /* Inseln */
+  SCHATZKARTE_INSELN.forEach(function(isl, i){
+    const isDone = done[i];
+    const isNext = i === nextIdx && !isDone;
+    const r = isNext ? 30 : 26;
+    let fill;
+    if(isl.isZiel){
+      /* Ziel-Insel: gold, wenn freigeschaltet; sonst grau */
+      fill = allPflichtDone ? "#F9C846" : "#CFD8DC";
+    } else {
+      fill = isDone ? "#F9C846" : (isNext ? "#F96167" : "#CFD8DC");
+    }
+    const stations = (typeof stationById === "function") ? stationById(isl.id) : null;
+    const icon = isl.isZiel ? (allPflichtDone ? "🏆" : "🔒") : (stations ? stations.icon : "❓");
+    parts.push('<g class="schatz-insel" data-station="' + isl.id + '" style="cursor:pointer">');
+    if(isNext){
+      parts.push('<circle cx="' + isl.x + '" cy="' + isl.y + '" r="' + (r+10) + '" fill="rgba(249,97,103,.35)"><animate attributeName="r" values="' + (r+10) + ';' + (r+22) + ';' + (r+10) + '" dur="2s" repeatCount="indefinite"/><animate attributeName="opacity" values=".5;.15;.5" dur="2s" repeatCount="indefinite"/></circle>');
+    }
+    /* Ziel-Insel mit goldenem Glühen, wenn freigeschaltet */
+    if(isl.isZiel && allPflichtDone){
+      parts.push('<circle cx="' + isl.x + '" cy="' + isl.y + '" r="' + (r+12) + '" fill="rgba(249,200,70,.4)"><animate attributeName="r" values="' + (r+12) + ';' + (r+24) + ';' + (r+12) + '" dur="2.4s" repeatCount="indefinite"/><animate attributeName="opacity" values=".6;.2;.6" dur="2.4s" repeatCount="indefinite"/></circle>');
+    }
+    parts.push('<ellipse cx="' + isl.x + '" cy="' + (isl.y + r - 2) + '" rx="' + (r + 8) + '" ry="6" fill="#FFE082" opacity=".8"/>');
+    parts.push('<circle cx="' + isl.x + '" cy="' + isl.y + '" r="' + r + '" fill="' + fill + '" stroke="#fff" stroke-width="3"/>');
+    parts.push('<text x="' + isl.x + '" y="' + (isl.y + 9) + '" text-anchor="middle" font-size="' + Math.round(r * 0.9) + '">' + icon + '</text>');
+    parts.push('<text x="' + isl.x + '" y="' + (isl.y + r + 18) + '" text-anchor="middle" font-size="13" font-weight="700" fill="#01566A" style="text-shadow:0 0 4px rgba(255,255,255,.9)">' + (i+1) + ". " + isl.name + '</text>');
+    parts.push('</g>');
+  });
+  /* Avatar bei der letzten bestandenen Insel */
+  const aIdx = lastDoneIdx >= 0 ? lastDoneIdx : 0;
+  const ax = SCHATZKARTE_INSELN[aIdx].x;
+  const ay = SCHATZKARTE_INSELN[aIdx].y - 55;
+  parts.push('<g><text x="' + ax + '" y="' + ay + '" text-anchor="middle" font-size="36" style="filter:drop-shadow(0 3px 4px rgba(0,0,0,.3))">' + (state.avatar || "🦊") + '</text>');
+  parts.push('<ellipse cx="' + ax + '" cy="' + (ay + 8) + '" rx="14" ry="4" fill="rgba(0,0,0,.2)"/></g>');
+  parts.push('</svg>');
+
+  /* Layout: H1 + Erklärung oben, dann Karte, dann Stats-Cards UNTER der Karte */
+  const inselsErobert = done.filter(function(d){ return d; }).length;
+  const naechsteName = (lastDoneIdx >= 0 && nextIdx < SCHATZKARTE_INSELN.length)
+    ? SCHATZKARTE_INSELN[nextIdx].name
+    : SCHATZKARTE_INSELN[0].name;
+  sec.innerHTML = '<h1>🗺️ Deine Schatzkarte</h1>'
+    + '<p class="muted">12 Inseln führen dich durch die Welt der natürlichen Zahlen. Die rote Insel ist deine nächste, die goldenen hast du schon erobert. Am Ende wartet das große Ziel — die Schatzinsel 🏆.</p>'
+    + '<div style="margin:1.2rem 0">' + parts.join("") + '</div>'
+    + '<div class="row" style="margin-top:.8rem;gap:.6rem;flex-wrap:wrap">'
+    + '<div class="card" style="flex:1;min-width:180px;border-left:4px solid var(--gold)"><div style="font-size:1.6rem;font-weight:700;color:var(--gold-dark)">' + inselsErobert + ' / ' + SCHATZKARTE_INSELN.length + '</div><div class="muted">Inseln erobert</div></div>'
+    + '<div class="card" style="flex:1;min-width:180px;border-left:4px solid var(--coral)"><div style="font-size:1rem;font-weight:700;color:var(--coral-dark)">' + (allPflichtDone ? "🏆 Ziel erreicht!" : "Nächste: " + naechsteName) + '</div><div class="muted">' + (allPflichtDone ? "Klicke das Ziel an, um zu feiern!" : "deine kommende Aufgabe") + '</div></div>'
+    + '</div>';
+
+  /* Click-Handler */
+  sec.querySelectorAll(".schatz-insel").forEach(function(g){
+    g.addEventListener("click", function(){
+      const sid = g.getAttribute("data-station");
+      if(sid === "__ziel"){
+        if(allPflichtDone){
+          showZielGlueckwunsch();
+        } else {
+          showLockModal("__ziel");
+        }
+        return;
+      }
+      if(sid && typeof openStation === "function") openStation(sid);
+    });
+  });
+};
+
+/* Topbar-Button "Schatzkarte" anhängen */
+(function(){
+  function addSchatzBtn(){
+    const nav = document.querySelector(".nav");
+    if(!nav) return;
+    if(nav.querySelector('button[data-view="karte"]')) return;
+    const btn = document.createElement("button");
+    btn.dataset.view = "karte";
+    btn.textContent = "🗺️ Karte";
+    btn.onclick = () => renderSchatzkarte();
+    /* Vor "Stationen" einfügen */
+    const lernenBtn = nav.querySelector('button[data-view="lernen"]');
+    if(lernenBtn) nav.insertBefore(btn, lernenBtn);
+    else nav.appendChild(btn);
+  }
+  if(document.readyState !== "loading") addSchatzBtn();
+  else window.addEventListener("DOMContentLoaded", addSchatzBtn);
+})();
+
+
+/* ===== Etappe 6: Cinematic Onboarding + Avatare + Eltern-Bericht ===== */
+
+/* 12 Forscher-Tiere zur Auswahl im Cinematic Onboarding */
+window.AVATAR_LIST = ["🦊","🦉","🐢","🐧","🐬","🦁","🐺","🦄","🐉","🐨","🐼","🐙"];
+
+/* Cinematic Onboarding: nur beim allerersten Start. Setzt cinematicSeen=true im State. */
+window.showCinematic = function(){
+  if(document.getElementById("cine-overlay")) return; // schon offen
+  const ov = document.createElement("div");
+  ov.id = "cine-overlay";
+  ov.style.cssText = "position:fixed;inset:0;z-index:250;background:radial-gradient(circle at center,#01566A 0%,#002E40 100%);display:flex;align-items:center;justify-content:center;text-align:center;color:#fff;padding:2rem;overflow:auto";
+  const wrap = document.createElement("div");
+  wrap.className = "anim-bounce";
+  wrap.style.cssText = "max-width:560px;width:100%";
+  wrap.innerHTML = '<div style="font-size:5rem;line-height:1;margin-bottom:.6rem">🌌</div>'
+    + '<h1 style="color:#fff;font-size:2.3rem;margin:.2rem 0">Willkommen, Forscher/in!</h1>'
+    + '<p style="color:rgba(255,255,255,.95);font-size:1.1rem;line-height:1.55;margin:.8rem 0 1.2rem">Du betrittst die <strong style="color:#F9C846">Welt der natürlichen Zahlen</strong>. Vor dir liegen 12 Inseln, eine Schatzkarte und ein Jahr voller Mathematik. Bereit, der Reise zu folgen?</p>'
+    + '<div style="background:rgba(255,255,255,.1);border-radius:14px;padding:1rem;margin:1rem 0">'
+    + '<div style="font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;opacity:.85;color:#fff;margin-bottom:.5rem">Wähle dein Forscher-Tier:</div>'
+    + '<div id="cine-avatars" style="display:flex;flex-wrap:wrap;gap:.4rem;justify-content:center"></div>'
+    + '<input id="cine-name" type="text" placeholder="Dein Name oder Spitzname" style="margin-top:.9rem;padding:.6rem .9rem;border-radius:8px;border:none;background:#fff;color:#01566A;font-size:1rem;width:100%;max-width:280px;text-align:center" maxlength="20"/>'
+    + '</div>'
+    + '<button id="cine-start" style="background:#F9C846;color:#01566A;font-size:1.15rem;padding:.85rem 1.9rem;font-weight:700;border-radius:99px;box-shadow:0 6px 22px rgba(249,200,70,.5);border:none;cursor:pointer">🚀 Reise beginnen!</button>'
+    + '<div style="margin-top:.7rem"><button id="cine-skip" style="background:transparent;color:rgba(255,255,255,.7);font-size:.85rem;padding:.5rem;border:none;cursor:pointer;text-decoration:underline">überspringen</button></div>';
+  ov.appendChild(wrap);
+  document.body.appendChild(ov);
+
+  /* Avatare rendern */
+  const avHost = document.getElementById("cine-avatars");
+  let chosen = state.avatar || AVATAR_LIST[0];
+  AVATAR_LIST.forEach(av => {
+    const b = document.createElement("button");
+    b.textContent = av;
+    b.style.cssText = "width:50px;height:50px;font-size:1.7rem;border-radius:50%;border:none;cursor:pointer;transition:all .15s;background:" + (av === chosen ? "#F9C846" : "rgba(255,255,255,.15)") + ";color:inherit";
+    b.onclick = () => {
+      chosen = av;
+      avHost.querySelectorAll("button").forEach(o => o.style.background = "rgba(255,255,255,.15)");
+      b.style.background = "#F9C846";
+      b.classList.add("anim-bounce");
+      setTimeout(() => b.classList.remove("anim-bounce"), 500);
+      if(typeof playSound === "function") playSound("click");
+    };
+    avHost.appendChild(b);
+  });
+
+  /* Name-Default vorbelegen */
+  if(state.name && state.name !== "Forscher/in"){
+    document.getElementById("cine-name").value = state.name;
+  }
+
+  function finish(){
+    const nm = document.getElementById("cine-name").value.trim();
+    if(nm) state.name = nm;
+    state.avatar = chosen;
+    state.cinematicSeen = true;
+    if(!state.createdAt) state.createdAt = new Date().toISOString();
+    saveState();
+    if(typeof refreshUserChip === "function") refreshUserChip();
+    if(typeof playSound === "function") playSound("levelup");
+    if(typeof celebrate === "function") celebrate(150);
+    ov.style.transition = "opacity .5s";
+    ov.style.opacity = "0";
+    setTimeout(() => ov.remove(), 500);
+    /* Nach kurzer Pause die Wow-Karte neu rendern (jetzt mit richtigem Avatar) */
+    setTimeout(() => { if(typeof renderHome === "function") renderHome(); }, 700);
+  }
+  document.getElementById("cine-start").onclick = finish;
+  document.getElementById("cine-skip").onclick = () => {
+    state.cinematicSeen = true;
+    saveState();
+    ov.style.transition = "opacity .3s";
+    ov.style.opacity = "0";
+    setTimeout(() => ov.remove(), 300);
+  };
+};
+
+/* Eltern-Bericht: aggregiert Stats und zeigt ein druckbares Modal */
+window.showElternBericht = function(){
+  let ov = document.getElementById("eltern-overlay");
+  if(!ov){
+    ov = document.createElement("div");
+    ov.id = "eltern-overlay";
+    ov.style.cssText = "position:fixed;inset:0;z-index:180;background:rgba(0,0,0,.6);display:none;align-items:flex-start;justify-content:center;padding:1rem;overflow:auto";
+    ov.addEventListener("click", e => { if(e.target === ov) ov.style.display = "none"; });
+    document.body.appendChild(ov);
+  }
+  const lv = (typeof getLevel === "function") ? getLevel(state.stars || 0) : {current:{ico:"🥚",n:1,name:"Frischling"}};
+  const pflicht = (typeof pflichtStations === "function") ? pflichtStations() : [];
+  const wahl = (typeof wahlStations === "function") ? wahlStations() : [];
+  const donePflicht = pflicht.filter(s => state.stations && state.stations[s.id] && state.stations[s.id].done).length;
+  const doneWahl = wahl.filter(s => state.stations && state.stations[s.id] && state.stations[s.id].done).length;
+  const acc = (typeof currentAccuracy === "function") ? currentAccuracy() : null;
+  const lifeAcc = state.totalAnswered ? Math.round(state.totalCorrect / state.totalAnswered * 100) : null;
+  const knobelDone = state.knobel ? Object.values(state.knobel).filter(k => k && k.done).length : 0;
+  const today = new Date();
+  const formatted = today.toLocaleDateString("de-DE", {day:"numeric", month:"long", year:"numeric"});
+  /* Schwachstellen ermitteln (Stationen mit niedrigstem Fortschritt) */
+  const stationProgress = pflicht.map(s => ({
+    name: s.title,
+    p: (state.stations && state.stations[s.id] && state.stations[s.id].progress) || 0
+  })).sort((a,b) => a.p - b.p);
+  const weak = stationProgress.filter(s => s.p < 75).slice(0, 3);
+
+  const card = document.createElement("div");
+  card.className = "card anim-bounce";
+  card.style.cssText = "max-width:680px;width:100%;background:var(--card-bg);box-shadow:var(--shadow-lg);margin:1rem 0";
+  let inner = '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:.7rem;border-bottom:2px solid var(--teal);padding-bottom:.7rem;margin-bottom:.9rem">'
+    + '<div><div style="font-size:.78rem;color:var(--grey);letter-spacing:.06em;text-transform:uppercase;font-weight:700">Wochenbericht für Eltern und Lehrkräfte</div>'
+    + '<h2 style="margin:.15rem 0;color:var(--teal-dark)">' + (state.name || "Forscher/in") + '</h2>'
+    + '<div style="color:var(--grey);font-size:.9rem">Stand: ' + formatted + ' · Baustein 1: Welt der natürlichen Zahlen</div></div>'
+    + '<div style="font-size:3rem;line-height:1">' + (state.avatar || "🦊") + '</div>'
+    + '</div>';
+  inner += '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:.6rem;margin:.5rem 0 .8rem">'
+    + '<div style="background:#F0FAFA;padding:.7rem;border-radius:8px;text-align:center"><div style="font-size:1.4rem;font-weight:700;color:var(--teal-dark)">' + (state.stars||0) + '</div><div style="font-size:.82rem;color:var(--grey)">Sterne</div></div>'
+    + '<div style="background:#FFFBEB;padding:.7rem;border-radius:8px;text-align:center"><div style="font-size:1.4rem;font-weight:700;color:var(--gold-dark)">' + lv.current.ico + ' L' + lv.current.n + '</div><div style="font-size:.82rem;color:var(--grey)">' + lv.current.name + '</div></div>'
+    + '<div style="background:#E8F5E9;padding:.7rem;border-radius:8px;text-align:center"><div style="font-size:1.4rem;font-weight:700;color:var(--green)">' + donePflicht + ' / ' + pflicht.length + '</div><div style="font-size:.82rem;color:var(--grey)">Pflichtstationen</div></div>'
+    + '<div style="background:#FFF1F1;padding:.7rem;border-radius:8px;text-align:center"><div style="font-size:1.4rem;font-weight:700;color:var(--coral-dark)">' + (acc !== null ? acc + " %" : "–") + '</div><div style="font-size:.82rem;color:var(--grey)">Aktuelle Quote' + (lifeAcc !== null ? " · Ø " + lifeAcc + " %" : "") + '</div></div>'
+    + '</div>';
+  inner += '<div style="margin:.6rem 0"><strong>Weitere Werte:</strong> ' + (state.totalAnswered || 0) + ' beantwortete Aufgaben · ' + (state.totalMinutes || 0) + ' Übungsminuten · ' + doneWahl + ' Wahlstationen · ' + knobelDone + ' Knobel-Aufgaben gelöst · 🔥 ' + (state.streak || 0) + ' Tage Streak</div>';
+  if(weak.length){
+    inner += '<div class="info-box" style="background:#FFF1F1;border-left:4px solid var(--coral);margin-top:.7rem"><strong>Übung empfehlen:</strong> ' + weak.map(s => s.name + " (" + s.p + " %)").join(" · ") + '</div>';
+  } else if(donePflicht > 0){
+    inner += '<div class="info-box" style="background:#E8F5E9;border-left:4px solid var(--green);margin-top:.7rem"><strong>Stark!</strong> ' + (state.name || "Das Kind") + ' arbeitet alle Pflichtstationen erfolgreich durch.</div>';
+  }
+  inner += '<div class="row" style="margin-top:.9rem;gap:.5rem">'
+    + '<button class="btn teal" id="eltern-print">🖨️ Drucken / als PDF speichern</button>'
+    + '<button class="btn outline" id="eltern-close">Schließen</button>'
+    + '</div>';
+  card.innerHTML = inner;
+  ov.innerHTML = "";
+  ov.appendChild(card);
+  ov.style.display = "flex";
+  document.getElementById("eltern-print").onclick = () => window.print();
+  document.getElementById("eltern-close").onclick = () => ov.style.display = "none";
+};
+
+/* Topbar-Button für Eltern-Bericht (kleines 🎓-Symbol vor der User-Chip) */
+(function(){
+  function addElternBtn(){
+    const topbar = document.getElementById("topbar");
+    if(!topbar) return;
+    if(document.getElementById("eltern-btn")) return;
+    const btn = document.createElement("button");
+    btn.id = "eltern-btn";
+    btn.title = "Bericht für Eltern / Lehrkraft";
+    btn.style.cssText = "background:rgba(255,255,255,.12);width:34px;height:34px;border-radius:50%;font-size:1.05rem;display:flex;align-items:center;justify-content:center;border:none;color:inherit;cursor:pointer";
+    btn.textContent = "🎓";
+    btn.onclick = showElternBericht;
+    const userChip = document.getElementById("user-chip");
+    if(userChip) topbar.insertBefore(btn, userChip);
+    else topbar.appendChild(btn);
+  }
+  if(document.readyState !== "loading") addElternBtn();
+  else window.addEventListener("DOMContentLoaded", addElternBtn);
+})();
+
+/* Print-CSS injizieren: beim Drucken nur das Eltern-Overlay zeigen */
+(function(){
+  const style = document.createElement("style");
+  style.textContent = "@media print {"
+    + "  body > *:not(#eltern-overlay) { display:none !important; }"
+    + "  #eltern-overlay { position:static !important; background:#fff !important; padding:0 !important; display:block !important; }"
+    + "  #eltern-overlay .btn { display:none !important; }"
+    + "  #eltern-overlay .card { box-shadow:none !important; }"
+    + "}";
+  document.head.appendChild(style);
+})();
+
+/* Avatar wächst mit Level – Badge ergänzen */
+window.getAvatarBadge = function(){
+  const lv = (typeof getLevel === "function") ? getLevel(state.stars || 0).current : {n:1};
+  if(lv.n >= 7) return "👑";   // Großmeister
+  if(lv.n >= 5) return "🎓";   // Experte
+  if(lv.n >= 3) return "🎩";   // Forscher
+  return "";
+};
+/* Monkey-Patch refreshUserChip, um Badge neben Avatar zu zeigen */
+(function(){
+  const __origRC = window.refreshUserChip;
+  if(typeof __origRC === "function"){
+    window.refreshUserChip = function(){
+      __origRC.apply(this, arguments);
+      try {
+        const badge = getAvatarBadge();
+        const av = document.getElementById("u-av");
+        if(av){
+          /* badge als kleiner Tag oben rechts */
+          let bg = av.querySelector(".av-badge");
+          if(badge){
+            if(!bg){
+              bg = document.createElement("span");
+              bg.className = "av-badge";
+              bg.style.cssText = "position:absolute;top:-6px;right:-6px;font-size:.8rem;background:#F9C846;border-radius:50%;width:18px;height:18px;display:flex;align-items:center;justify-content:center;line-height:1;box-shadow:0 2px 4px rgba(0,0,0,.2)";
+              av.style.position = "relative";
+              av.appendChild(bg);
+            }
+            bg.textContent = badge;
+          } else if(bg){
+            bg.remove();
+          }
+        }
+      } catch(e){ console.warn("Avatar-Badge:", e); }
+    };
+  }
+})();
+
+/* Beim Boot Cinematic anbieten, falls noch nicht gesehen */
+(function(){
+  function maybeCine(){
+    if(!state.createdAt && !state.cinematicSeen){
+      setTimeout(() => { try { showCinematic(); } catch(e){ console.warn(e); } }, 600);
+    }
+  }
+  if(document.readyState !== "loading") setTimeout(maybeCine, 200);
+  else window.addEventListener("DOMContentLoaded", () => setTimeout(maybeCine, 400));
+})();
+
+
+/* ===== Etappe 7: Sequentielle Pflichtstationen + Diagnose-Fokus-Badge ===== */
+
+/* Reihenfolge der Pflichtstationen — alle müssen in dieser Sequenz absolviert werden. */
+window.PFLICHT_REIHENFOLGE = ["diag","riesen","swt","zs","runden","ordnen","kopf","schriftl","geschickt","div","teil","projekt"];
+
+/* Themen-Zuordnung pro Diagnose-Aufgabe (Reihenfolge entspricht dem DIAG-Array in renderDiagnose). */
+window.DIAG_TOPIC_LIST = [
+  "swt","swt","swt",         /* 1-3 Stellenwerttafel */
+  "zs","zs",                 /* 4-5 Zahlenstrahl */
+  "ordnen","ordnen",         /* 6-7 Vergleichen & Ordnen */
+  "runden","runden",         /* 8-9 Runden */
+  "kopf","kopf",             /* 10-11 Kopfrechnen */
+  "schriftl","schriftl",     /* 12-13 Schriftlich Plus/Minus */
+  "div","div",               /* 14-15 Division mit Rest */
+  "geschickt",               /* 16 Geschickt rechnen */
+  "teil","teil",             /* 17-18 Teilbarkeit */
+  "projekt"                  /* 19 Sachaufgabe */
+];
+
+/* Berechnet die Liste der Stations-IDs, die nach der Diagnose im Fokus stehen
+   (Quote pro Topic < 75 %). Dynamisch aus state.diagnosis abgeleitet — bleibt
+   solange erhalten, wie state.diagnosis nicht zurückgesetzt wird. */
+window.computeDiagnoseFocus = function(){
+  if(!state.diagnosis || !Object.keys(state.diagnosis).length) return [];
+  const stats = {};
+  Object.keys(state.diagnosis).forEach(k => {
+    const i = parseInt(k, 10) - 1;
+    const topic = DIAG_TOPIC_LIST[i];
+    if(!topic) return;
+    if(!stats[topic]) stats[topic] = {total:0, correct:0};
+    stats[topic].total++;
+    if(state.diagnosis[k] === "g") stats[topic].correct++;
+  });
+  return Object.entries(stats)
+    .filter(function(arr){ const s = arr[1]; return s.total > 0 && (s.correct / s.total) < 0.75; })
+    .map(function(arr){ return arr[0]; });
+};
+
+/* Liefert die Stations-IDs, in denen das Kind in der Diagnose perfekt war (100 %). */
+window.computeDiagnoseStrong = function(){
+  if(!state.diagnosis || !Object.keys(state.diagnosis).length) return [];
+  const stats = {};
+  Object.keys(state.diagnosis).forEach(k => {
+    const i = parseInt(k, 10) - 1;
+    const topic = DIAG_TOPIC_LIST[i];
+    if(!topic) return;
+    if(!stats[topic]) stats[topic] = {total:0, correct:0};
+    stats[topic].total++;
+    if(state.diagnosis[k] === "g") stats[topic].correct++;
+  });
+  return Object.entries(stats)
+    .filter(function(arr){ const s = arr[1]; return s.total > 0 && s.correct === s.total; })
+    .map(function(arr){ return arr[0]; });
+};
+
+/* Prüft, ob eine Station bereits freigeschaltet ist. Regeln:
+   - "diag" (Diagnose) ist immer offen.
+   - Pflichtstationen müssen sequentiell absolviert werden. Eine Station ist nur
+     offen, wenn die vorherige (laut PFLICHT_REIHENFOLGE) als "done" markiert ist.
+   - Diagnose-Fokus überschreibt die Sperre: Stationen mit Schwächen aus der
+     Diagnose sind sofort offen, damit gezielt geübt werden kann.
+   - Wahl-Stationen sind offen, sobald alle Pflichtstationen bestanden sind. */
+window.isStationUnlocked = function(stationId){
+  if(stationId === "diag") return true;
+  const focus = computeDiagnoseFocus();
+  if(focus.indexOf(stationId) >= 0) return true;
+  const station = (typeof stationById === "function") ? stationById(stationId) : null;
+  if(!station) return true;
+  if(station.type === "wahl"){
+    if(typeof pflichtStations !== "function") return true;
+    return pflichtStations().every(function(s){
+      return !!(state.stations && state.stations[s.id] && state.stations[s.id].done);
+    });
+  }
+  const idx = PFLICHT_REIHENFOLGE.indexOf(stationId);
+  if(idx <= 0) return true;
+  const prevId = PFLICHT_REIHENFOLGE[idx - 1];
+  return !!(state.stations && state.stations[prevId] && state.stations[prevId].done);
+};
+
+window.previousStationName = function(stationId){
+  const idx = PFLICHT_REIHENFOLGE.indexOf(stationId);
+  if(idx <= 0) return null;
+  const prevId = PFLICHT_REIHENFOLGE[idx - 1];
+  const prev = (typeof stationById === "function") ? stationById(prevId) : null;
+  return prev ? prev.title : null;
+};
+
+window.showLockModal = function(stationId){
+  const station = (typeof stationById === "function") ? stationById(stationId) : null;
+  const prevName = previousStationName(stationId);
+  const isWahl = station && station.type === "wahl";
+  let ov = document.getElementById("lock-overlay");
+  if(!ov){
+    ov = document.createElement("div");
+    ov.id = "lock-overlay";
+    ov.style.cssText = "position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.65);display:none;align-items:center;justify-content:center;padding:1rem";
+    ov.addEventListener("click", function(e){ if(e.target === ov) ov.style.display = "none"; });
+    document.body.appendChild(ov);
+  }
+  let msg;
+  if(stationId === "__ziel"){
+    msg = "Das Ziel ist der krönende Abschluss deiner Reise. Es schaltet sich frei, sobald du <strong>alle 12 Pflicht-Inseln</strong> erobert hast. Du bist auf dem Weg dorthin!";
+  } else if(isWahl){
+    msg = "Wahl-Stationen schaltest du frei, sobald du <strong>alle 12 Pflichtstationen</strong> bestanden hast. Du bist also bald so weit!";
+  } else if(prevName){
+    msg = 'Bevor du <strong>' + (station ? station.title : "diese Station") + '</strong> öffnen kannst, musst du zuerst <strong>' + prevName + '</strong> bestehen.';
+  } else {
+    msg = "Diese Station ist noch nicht freigeschaltet.";
+  }
+  ov.innerHTML = '<div class="card anim-bounce" style="max-width:480px;width:100%;background:var(--card-bg);box-shadow:var(--shadow-lg);text-align:center">'
+    + '<div style="font-size:3.5rem;line-height:1;margin-bottom:.4rem">🔒</div>'
+    + '<h3 style="margin:.2rem 0;color:var(--teal-dark)">Noch nicht freigeschaltet</h3>'
+    + '<p style="color:var(--text);font-size:1rem;line-height:1.5;margin:.7rem 0">' + msg + '</p>'
+    + '<p class="muted" style="font-size:.88rem;margin:.6rem 0">Übe Schritt für Schritt — jede Station baut auf der vorherigen auf. Wenn du in der Diagnose eine Schwäche entdeckt hast, ist diese Station ausnahmsweise sofort offen.</p>'
+    + '<div class="row" style="justify-content:center;margin-top:.7rem"><button class="btn teal" id="lock-close">Verstanden</button></div>'
+    + '</div>';
+  ov.style.display = "flex";
+  document.getElementById("lock-close").onclick = function(){ ov.style.display = "none"; };
+  if(typeof playSound === "function") playSound("click");
+};
+
+/* Stations-Cards in einer Liste mit Schloss / Fokus-Badge versehen.
+   Erkennt die Station per Titel-Suche, weil die Original-Karten kein data-attribute haben. */
+window.decorateStationCards = function(host){
+  if(!host) return;
+  const focus = computeDiagnoseFocus();
+  host.querySelectorAll(".station-card").forEach(function(card){
+    const titleEl = card.querySelector(".t");
+    if(!titleEl) return;
+    const titleText = titleEl.textContent || "";
+    let station = null;
+    if(typeof STATIONS !== "undefined" && Array.isArray(STATIONS)){
+      station = STATIONS.find(function(s){ return titleText.indexOf(s.title) >= 0; });
+    }
+    if(!station) return;
+    card.dataset.stationId = station.id;
+    const unlocked = isStationUnlocked(station.id);
+    const isFocus = focus.indexOf(station.id) >= 0;
+    /* Schloss-Badge bei gesperrten Stationen */
+    let lock = card.querySelector(".lock-badge");
+    if(!unlocked){
+      card.style.opacity = "0.6";
+      card.style.background = "var(--light-2)";
+      if(!lock){
+        lock = document.createElement("div");
+        lock.className = "lock-badge";
+        lock.style.cssText = "position:absolute;top:8px;right:8px;font-size:1.2rem;background:#fff;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,.15);z-index:2";
+        lock.textContent = "🔒";
+        card.style.position = "relative";
+        card.appendChild(lock);
+      }
+    } else {
+      card.style.opacity = "";
+      card.style.background = "";
+      if(lock) lock.remove();
+    }
+    /* Fokus-Badge (gold, mit Zielscheibe) */
+    let focusEl = card.querySelector(".focus-badge");
+    if(isFocus){
+      if(!focusEl){
+        focusEl = document.createElement("div");
+        focusEl.className = "focus-badge";
+        focusEl.style.cssText = "position:absolute;bottom:8px;right:8px;background:linear-gradient(135deg,#F9C846,#FFA000);color:#01566A;font-weight:700;font-size:.78rem;padding:.28rem .6rem;border-radius:99px;box-shadow:0 2px 6px rgba(249,200,70,.5);display:flex;align-items:center;gap:.3rem;z-index:2";
+        focusEl.innerHTML = '🎯 <span>Im Fokus</span>';
+        card.style.position = "relative";
+        card.appendChild(focusEl);
+      }
+    } else {
+      if(focusEl) focusEl.remove();
+    }
+  });
+};
+
+/* Monkey-Patch: openStation prüft Lock-Status. Bei Lock: Modal zeigen, sonst durchlassen. */
+(function(){
+  const __origOpen = window.openStation;
+  if(typeof __origOpen === "function"){
+    window.openStation = function(id){
+      if(!isStationUnlocked(id)){
+        showLockModal(id);
+        return;
+      }
+      __origOpen.apply(this, arguments);
+    };
+  }
+})();
+
+/* Monkey-Patch: nach renderLernenList die Karten dekorieren */
+(function(){
+  const __origRL = window.renderLernenList;
+  if(typeof __origRL === "function"){
+    window.renderLernenList = function(){
+      __origRL.apply(this, arguments);
+      try { decorateStationCards(document.getElementById("station-list")); } catch(e){ console.warn("decorate lernen:", e); }
+    };
+  }
+})();
+
+/* Monkey-Patch: nach renderHome auch Home-Liste dekorieren */
+(function(){
+  const __origRH = window.renderHome;
+  if(typeof __origRH === "function"){
+    window.renderHome = function(){
+      __origRH.apply(this, arguments);
+      try { decorateStationCards(document.getElementById("home-station-list")); } catch(e){ console.warn("decorate home:", e); }
+    };
+  }
+})();
+/* Auch renderHomeFilteredList (Filter-Buttons in Home) dekorieren, falls vorhanden */
+(function(){
+  const __origRHF = window.renderHomeFilteredList;
+  if(typeof __origRHF === "function"){
+    window.renderHomeFilteredList = function(){
+      __origRHF.apply(this, arguments);
+      try { decorateStationCards(document.getElementById("home-station-list")); } catch(e){ console.warn("decorate home filtered:", e); }
+    };
+  }
+})();
+
+/* Monkey-Patch: beim Aufruf von renderDiagnose den alten Diagnose-Stand
+   verwerfen, damit die Fokus-Liste mit der neuen Diagnose neu berechnet wird. */
+(function(){
+  const __origRD = window.renderDiagnose;
+  if(typeof __origRD === "function"){
+    window.renderDiagnose = function(){
+      state.diagnosis = {};
+      try { saveState(); } catch(e){}
+      __origRD.apply(this, arguments);
+    };
+  }
+})();
+
+/* Diagnose-Auswertung erweitern: am Ende der Diagnose-Auswertung wird die
+   Schwächen-Liste auch noch einmal als Banner oben in der Stations-Liste angezeigt.
+   Außerdem: beim Wechsel zur Stations-Liste ein Info-Banner anzeigen, falls
+   Fokus-Stationen vorhanden sind und der Schüler noch nicht alle bestanden hat. */
+window.renderDiagnoseFokusBanner = function(host){
+  if(!host) return;
+  /* Alten Banner entfernen */
+  const old = host.querySelector(".diag-focus-banner");
+  if(old) old.remove();
+  const focus = computeDiagnoseFocus();
+  if(!focus.length) return;
+  const stationsInfo = focus.map(function(sid){
+    const s = (typeof stationById === "function") ? stationById(sid) : null;
+    return s ? s.title : sid;
+  });
+  const banner = document.createElement("div");
+  banner.className = "diag-focus-banner anim-slide";
+  banner.style.cssText = "background:linear-gradient(135deg,#FFFBEB,#FFE3B0);border-left:5px solid var(--gold);padding:.9rem 1.1rem;border-radius:14px;margin:.6rem 0 1rem;box-shadow:var(--shadow);display:flex;gap:.7rem;align-items:flex-start";
+  banner.innerHTML = '<div style="font-size:2rem;line-height:1">🎯</div>'
+    + '<div style="flex:1"><div style="font-weight:700;color:var(--gold-dark);margin-bottom:.15rem">Deine Fokus-Stationen aus der Diagnose</div>'
+    + '<div style="color:var(--text);font-size:.95rem">Diese Stationen helfen dir am meisten: <strong>' + stationsInfo.join(" · ") + '</strong>. Sie sind in der Liste mit 🎯 markiert und ausnahmsweise sofort freigeschaltet — auch wenn die Pflicht-Reihenfolge sie noch sperren würde. Diese Markierung bleibt, bis du eine neue Diagnose machst.</div></div>';
+  /* Vor die station-list einfügen */
+  const listEl = host.querySelector("#station-list, .station-list");
+  if(listEl) host.insertBefore(banner, listEl);
+  else host.appendChild(banner);
+};
+/* Monkey-Patch renderLernenList wieder, um auch den Banner hinzuzufügen */
+(function(){
+  const __origRL2 = window.renderLernenList;
+  if(typeof __origRL2 === "function"){
+    window.renderLernenList = function(){
+      __origRL2.apply(this, arguments);
+      try {
+        const view = document.querySelector("#view-lernen #lernen-list");
+        if(view) renderDiagnoseFokusBanner(view);
+      } catch(e){ console.warn("Fokus-Banner Lernen:", e); }
+    };
+  }
+})();
+
+/* Schatzkarte: ergänze Schloss-Symbol auf gesperrten Inseln nach dem Render. */
+(function(){
+  const __origRS = window.renderSchatzkarte;
+  if(typeof __origRS === "function"){
+    window.renderSchatzkarte = function(){
+      __origRS.apply(this, arguments);
+      try {
+        const sec = document.getElementById("view-karte");
+        if(!sec) return;
+        const focus = computeDiagnoseFocus();
+        sec.querySelectorAll(".schatz-insel").forEach(function(g){
+          const sid = g.getAttribute("data-station");
+          if(!sid) return;
+          const unlocked = isStationUnlocked(sid);
+          const isFocus = focus.indexOf(sid) >= 0;
+          /* SVG: füge ein Schloss-Text-Element hinzu, falls gesperrt */
+          if(!unlocked && !g.querySelector(".isl-lock")){
+            const cx = parseFloat(g.querySelector("circle:last-of-type")?.getAttribute("cx") || "0");
+            const cy = parseFloat(g.querySelector("circle:last-of-type")?.getAttribute("cy") || "0");
+            const lockText = document.createElementNS("http://www.w3.org/2000/svg", "text");
+            lockText.setAttribute("class", "isl-lock");
+            lockText.setAttribute("x", String(cx + 18));
+            lockText.setAttribute("y", String(cy - 16));
+            lockText.setAttribute("text-anchor", "middle");
+            lockText.setAttribute("font-size", "16");
+            lockText.textContent = "🔒";
+            g.appendChild(lockText);
+          }
+          if(isFocus && !g.querySelector(".isl-focus")){
+            const cx = parseFloat(g.querySelector("circle:last-of-type")?.getAttribute("cx") || "0");
+            const cy = parseFloat(g.querySelector("circle:last-of-type")?.getAttribute("cy") || "0");
+            const focusText = document.createElementNS("http://www.w3.org/2000/svg", "text");
+            focusText.setAttribute("class", "isl-focus");
+            focusText.setAttribute("x", String(cx - 18));
+            focusText.setAttribute("y", String(cy - 16));
+            focusText.setAttribute("text-anchor", "middle");
+            focusText.setAttribute("font-size", "18");
+            focusText.textContent = "🎯";
+            g.appendChild(focusText);
+          }
+        });
+      } catch(e){ console.warn("Schatzkarte Lock:", e); }
+    };
+  }
+})();
+
+
+/* ===== Etappe 7+: Glückwunsch-Bildschirm beim Erreichen des Ziels ===== */
+window.showZielGlueckwunsch = function(){
+  let ov = document.getElementById("ziel-overlay");
+  if(!ov){
+    ov = document.createElement("div");
+    ov.id = "ziel-overlay";
+    ov.style.cssText = "position:fixed;inset:0;z-index:240;background:radial-gradient(circle at center,#FFCB52 0%,#F9A825 60%,#E65100 100%);display:none;align-items:center;justify-content:center;padding:1rem;overflow:auto";
+    ov.addEventListener("click", function(e){ if(e.target === ov) ov.style.display = "none"; });
+    document.body.appendChild(ov);
+  }
+  const pflicht = (typeof pflichtStations === "function") ? pflichtStations() : [];
+  const wahl = (typeof wahlStations === "function") ? wahlStations() : [];
+  const wahlDone = wahl.filter(function(s){ return state.stations && state.stations[s.id] && state.stations[s.id].done; }).length;
+  const knobelDone = state.knobel ? Object.values(state.knobel).filter(function(k){ return k && k.done; }).length : 0;
+  const lv = (typeof getLevel === "function") ? getLevel(state.stars || 0) : {current:{ico:"🥚",n:1,name:"Frischling"}};
+  ov.innerHTML = '<div class="anim-bounce" style="max-width:600px;width:100%;text-align:center;color:#fff;padding:2rem 1.5rem">'
+    + '<div style="font-size:6rem;line-height:1;margin-bottom:.4rem;filter:drop-shadow(0 6px 14px rgba(0,0,0,.4))">🏆</div>'
+    + '<div style="font-size:.85rem;letter-spacing:.12em;text-transform:uppercase;opacity:.92;font-weight:700;color:#fff">Du hast das Ziel erreicht</div>'
+    + '<h1 style="color:#fff;font-size:2.7rem;margin:.3rem 0 .5rem;text-shadow:0 4px 10px rgba(0,0,0,.3)">Herzlichen Glückwunsch, ' + (state.name || "Forscher/in") + '!</h1>'
+    + '<p style="font-size:1.2rem;line-height:1.55;color:rgba(255,255,255,.96);margin:.4rem 0 1.2rem">Du hast die <strong>Welt der natürlichen Zahlen</strong> erobert. Alle 12 Pflicht-Inseln liegen hinter dir — was für eine Mathe-Reise!</p>'
+    + '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:.6rem;margin:1rem 0">'
+    + '<div style="background:rgba(255,255,255,.18);padding:.7rem;border-radius:14px;backdrop-filter:blur(6px)"><div style="font-size:1.9rem;font-weight:700">' + pflicht.length + '</div><div style="font-size:.85rem;opacity:.9">Pflicht-Stationen</div></div>'
+    + '<div style="background:rgba(255,255,255,.18);padding:.7rem;border-radius:14px;backdrop-filter:blur(6px)"><div style="font-size:1.9rem;font-weight:700">' + (state.stars || 0) + ' ⭐</div><div style="font-size:.85rem;opacity:.9">Sterne gesammelt</div></div>'
+    + '<div style="background:rgba(255,255,255,.18);padding:.7rem;border-radius:14px;backdrop-filter:blur(6px)"><div style="font-size:1.9rem;font-weight:700">' + lv.current.ico + ' L' + lv.current.n + '</div><div style="font-size:.85rem;opacity:.9">' + lv.current.name + '</div></div>'
+    + '<div style="background:rgba(255,255,255,.18);padding:.7rem;border-radius:14px;backdrop-filter:blur(6px)"><div style="font-size:1.9rem;font-weight:700">' + wahlDone + ' / ' + wahl.length + '</div><div style="font-size:.85rem;opacity:.9">Wahl-Stationen</div></div>'
+    + '<div style="background:rgba(255,255,255,.18);padding:.7rem;border-radius:14px;backdrop-filter:blur(6px)"><div style="font-size:1.9rem;font-weight:700">' + knobelDone + '</div><div style="font-size:.85rem;opacity:.9">Knobel-Aufgaben</div></div>'
+    + '<div style="background:rgba(255,255,255,.18);padding:.7rem;border-radius:14px;backdrop-filter:blur(6px)"><div style="font-size:1.9rem;font-weight:700">' + (state.totalAnswered || 0) + '</div><div style="font-size:.85rem;opacity:.9">Aufgaben gerechnet</div></div>'
+    + '</div>'
+    + '<div style="background:rgba(255,255,255,.22);padding:1rem;border-radius:14px;margin:1rem 0;font-size:1rem;line-height:1.5;color:#fff">'
+    + '<strong>Und jetzt?</strong> Du kannst die <strong>Wahl-Stationen</strong> entdecken, dich im <strong>Knobel-Bereich</strong> austoben, im <strong>Tagestraining</strong> deine Quote schärfen oder die <strong>Mathe-Tricks</strong> sammeln. Mathe geht ab hier richtig los — und du hast das Fundament gelegt.'
+    + '</div>'
+    + '<div class="row" style="justify-content:center;gap:.5rem;flex-wrap:wrap;margin-top:.8rem">'
+    + '<button id="ziel-weiter" class="btn" style="background:#fff;color:#E65100;font-weight:700;padding:.8rem 1.6rem;border-radius:99px;border:none;cursor:pointer;font-size:1.05rem;box-shadow:0 6px 18px rgba(0,0,0,.25)">Weiter zu den Wahl-Stationen</button>'
+    + '<button id="ziel-close" style="background:rgba(255,255,255,.18);color:#fff;font-weight:600;padding:.8rem 1.4rem;border-radius:99px;border:none;cursor:pointer;font-size:1rem">Schließen</button>'
+    + '</div>'
+    + '</div>';
+  ov.style.display = "flex";
+  /* Konfetti + Fanfare */
+  if(typeof celebrate === "function") celebrate(220);
+  if(typeof playSound === "function") playSound("levelup");
+  /* Achievement "Zahlen-König" markieren, falls nicht schon erreicht */
+  if(typeof earnAchievement === "function"){
+    try { earnAchievement("all"); } catch(e){}
+  }
+  /* Buttons */
+  document.getElementById("ziel-close").onclick = function(){
+    ov.style.display = "none";
+  };
+  document.getElementById("ziel-weiter").onclick = function(){
+    ov.style.display = "none";
+    if(typeof goto === "function") goto("lernen");
+  };
+};
+
+console.log("Flash-Module geladen: Etappe 2-7 (+ Ziel-Glückwunsch)");
 </script>
 
 </body>
