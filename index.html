@@ -3461,8 +3461,7 @@ window.STATION_CONTENT.swt = function(host){
         </tbody>
       </table>
       <div class="info-box gold">
-        <strong>Merke:</strong> Die <strong>0</strong> ist die kleinste natürliche Zahl
-        und in der Tafel ein wichtiger Platzhalter („hier nichts”).
+        <strong>Merke:</strong> Die natürlichen Zahlen beginnen bei <strong>1</strong>. Die <strong>0</strong> gehört bei uns nicht dazu — in der Stellenwerttafel ist sie aber ein wichtiger <strong>Platzhalter</strong> („an dieser Stelle steht nichts“).
       </div>
     </div>
     <div class="card" style="background:#F0FAFA;border-left:4px solid var(--teal)">
@@ -3492,12 +3491,12 @@ window.STATION_CONTENT.swt = function(host){
     {type:"input", q:"Schreibe in Ziffern: „dreihundertzweitausendsechzig” (ohne Leerzeichen)", a:"302060", hint:"Schreibe zuerst die Tausender hin und überleg dann, welche Stellen noch fehlen (mit Nullen!)."},
     {type:"input", q:"Schreibe in Ziffern: „fünfhundertneuntausend” (ohne Leerzeichen)", a:"509000", hint:"Was bedeutet „tausend“? Erst die Tausender-Zahl, dann was kommt danach?"},
     {type:"mc", q:"In 305 048 stehen zwei Nullen (an der Zehntausender- und an der Hunderterstelle). Was bedeuten diese Nullen?", opts:["nichts – sie sind nur Verzierung","Platzhalter, damit alle anderen Ziffern an ihrer richtigen Stelle stehen","Tippfehler","Geheimcode"], a:1, hint:"Was würde passieren, wenn du die Nullen einfach weglässt? Schreib die Zahl mal ohne sie auf – wird sie noch richtig gelesen?"},
-    {type:"mc", q:"Ist 0 eine natürliche Zahl?", opts:["Nein","Ja – die kleinste","Nur in Klasse 1","Nur bei Multiplikation"], a:1, hint:"Frag dich: Wo beginnt die Zahlenreihe in der Mathematik?"},
+    {type:"mc", q:"Was ist der Nachfolger der Zahl 99 999?", opts:["10 000","99 998","100 000","1 000 000"], a:2, hint:"Der Nachfolger ist die Zahl, die direkt eins größer ist. Achte darauf, dass eine neue Stelle hinzukommt."},
     {type:"mc", q:"Welchen Wert hat die 7 in 7 425?", opts:["7","70","700","7 000"], a:3, hint:"An welcher Stelle steht die 7? Welche Stelle ist das von rechts gezählt?"},
     {type:"mc", q:"Welchen Wert hat die 5 in 35 048?", opts:["5","50","500","5 000"], a:3, hint:"Die 5 steht an der Tausenderstelle."},
     {type:"input", q:"Wie schreibst du „eine Million” in Ziffern? (ohne Leerzeichen)", a:"1000000", hint:"1 Million sind 1 000 · 1 000. Zähle die Nullen."},
-    {type:"input", q:"Welche Zahl hat 4 Hunderter, 7 Zehner und 3 Einer?", a:"473", hint:"Schreibe die drei Ziffern in der richtigen Reihenfolge: H Z E."},
-    {type:"input", q:"Welche dreistellige Zahl hat 3 Hunderter, 0 Zehner und 5 Einer?", a:"305", hint:"Pass auf die 0 in der Mitte auf – sie ist wichtig!"},
+    {type:"input", q:"Welche Zahl nur hat 4 Hunderter, 7 Zehner und 3 Einer?", a:"473", hint:"Schreibe die drei Ziffern in der richtigen Reihenfolge: H Z E."},
+    {type:"input", q:"Welche dreistellige Zahl nur hat 3 Hunderter, 0 Zehner und 5 Einer?", a:"305", hint:"Pass auf die 0 in der Mitte auf – sie ist wichtig!"},
     {type:"input", q:"Schreibe in Ziffern: „siebenhunderttausend” (ohne Leerzeichen)", a:"700000", hint:"700 mal 1 000. Wie viele Nullen hängst du an?"},
     {type:"mc", q:"In welcher Stelle steht die 9 in 290 510?", opts:["Einer","Zehntausender","Hunderttausender","Tausender"], a:1, hint:"Schreibe 290 510 in die Stellenwerttafel und suche die 9."},
     {type:"input", q:"Schreibe in Ziffern: „eine Million zwanzigtausend” (ohne Leerzeichen)", a:"1020000", hint:"Erst die Million, dann die Tausender. Wo brauchst du Nullen als Platzhalter?"}
@@ -3508,7 +3507,7 @@ window.STATION_CONTENT.swt = function(host){
     "Ich kann eine Zahl bis 1 Million in die Stellenwerttafel eintragen.",
     "Ich kann eine Zahl in Worten und in Ziffern schreiben.",
     "Ich kenne den Trick mit den Dreierblöcken zum Lesen.",
-    "Ich weiß: 0 ist die kleinste natürliche Zahl.",
+    "Ich weiß: die natürlichen Zahlen beginnen bei 1; die 0 ist nur Platzhalter in der Stellenwerttafel.",
   ]));
   host.appendChild(ckHost);
 };
@@ -4585,7 +4584,7 @@ window.QUESTION_POOL = [
   {cat:"Stellenwert", type:"input", q:"Schreibe in Ziffern: „siebzigtausendfünfhundertdrei” (ohne Leerzeichen)", a:"70503"},
   {cat:"Stellenwert", type:"mc", q:"Welche Zahl entspricht 1 020 405?", opts:["eine Million zwanzigtausend vierhundertfünf","einhundertzwanzig vierhundertfünf","eine Million zweitausend vierhundertfünf","einhundertzwanzigtausend vierhundertfünf"], a:0},
   {cat:"Stellenwert", type:"mc", q:"Welcher Wert steht für die 5 in 35 048?", opts:["5","50","500","5 000"], a:3},
-  {cat:"Stellenwert", type:"mc", q:"Ist 0 eine natürliche Zahl?", opts:["Nein","Ja – sie ist die kleinste","Nur in Klasse 1","Nur beim Plus"], a:1},
+  {cat:"Stellenwert", type:"mc", q:"Was ist der Vorgänger von 100 000?", opts:["99 999","99 990","100 001","10 000"], a:0},
 
   /* ===== Zahlenstrahl (GS Kl. 4) ===== */
   {cat:"Zahlenstrahl", type:"mc", q:"Auf einem Zahlenstrahl 0 bis 1 000 mit 10 Markierungen – wofür steht eine Markierung?", opts:["10","50","100","1000"], a:2},
