@@ -1909,7 +1909,7 @@ function renderDiagnose(){
     /* Zahlenstrahl (2) */
     {topic:"zs", q:"Auf welcher Position liegt 350 ungefähr auf einem Zahlenstrahl von 0 bis 1000?", opts:["am Anfang (Nähe 0)","etwa beim ersten Drittel","in der Mitte","am Ende (Nähe 1000)"], a:1,
      hint:"350 ist etwas mehr als ein Drittel von 1 000."},
-    {topic:"zs", q:"Skala 0–500, 5 Striche bis 500. Markierung beim 2. Strich. Welche Zahl?", opts:["100","200","250","400"], a:1,
+    {topic:"zs", q:"Skala 0–500, 5 Teile bis 500. Markierung beim 2. Strich. Welche Zahl?", opts:["100","200","250","400"], a:1,
      hint:"Wie viel ist 1 Strich wert? (500 geteilt durch 5)"},
     /* Vergleichen & Ordnen (2) */
     {topic:"ordnen", q:"Setze das richtige Zeichen: 8 091 ☐ 8 109", opts:["<",">","=","keine Aussage"], a:0,
@@ -1929,8 +1929,8 @@ function renderDiagnose(){
     /* Subtraktion (2) - NEU */
     {topic:"schriftl", q:"Rechne: 500 − 78 = ?", opts:["422","432","478","522"], a:0,
      hint:"Trick: Erst auf den nächsten Zehner aufrunden, dann den Unterschied wieder dazu addieren."},
-    {topic:"schriftl", q:"Wechselgeld: Schokolade 1 €, du gibst 5 €. Wie viel zurück?", opts:["3 €","4 €","5 €","6 €"], a:1,
-     hint:"5 € − 1 € = ?"},
+    {topic:"schriftl", q:"Lina kauft eine Tafel Schokolade für 1 € und bezahlt mit einem 5-Euro-Schein. Wie viel Wechselgeld bekommt sie zurück?", opts:["3 €","4 €","5 €","6 €"], a:1,
+     hint:"Du musst von 5 € den Preis der Schokolade (1 €) abziehen."},
     /* Division mit Rest (2) - NEU */
     {topic:"div", q:"Wie viel ist 96 : 8?", opts:["10","12","14","16"], a:1,
      hint:"Welche Zahl aus der 8er-Reihe trifft genau?"},
@@ -2019,6 +2019,7 @@ function renderDiagnose(){
       .sort((a,b)=> a.quote - b.quote);
     const wichtig = topicQuotes.filter(t => t.quote < 0.75);
     const stark   = topicQuotes.filter(t => t.quote === 1);
+    const allRight = correct === DIAG.length;
 
     let recommendHtml = "";
     if(allRight){
@@ -2042,7 +2043,6 @@ function renderDiagnose(){
       recommendHtml += `<p style="margin-top:.8rem"><strong>Da bist du schon richtig stark:</strong> ${stark.map(t=>TOPIC_INFO[t.topic].name).join(", ")} – diese Stationen kannst du locker durchklicken.</p>`;
     }
 
-    const allRight = correct === DIAG.length;
     const note =
       allRight ? "Alle Aufgaben richtig — schöne Grundlage. Lies unten weiter, wie du den Baustein am besten angehst." :
       correct >= DIAG.length * 0.9 ? "Wow, fast alles richtig! Du startest in der Wahl-Spur." :
